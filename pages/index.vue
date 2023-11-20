@@ -6,7 +6,7 @@
   <font-awesome-icon icon="fa-brands fa-twitter-square" />
   <font-awesome-icon icon="fa-brands fa-youtube-square" />
   <font-awesome-icon icon="fa-brands fa-github-square" />
-  <font-awesome-icon icon="fa-solid fa-circle-check" />
+
   <v-btn variant="outlined" :loading="true"> Button </v-btn>
 </template>
 
