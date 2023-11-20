@@ -1,11 +1,13 @@
 <template>
   <h1 class="text-3xl font-bold underline">Hello world!</h1>
 
-  <Bar :data="chartData" :options="chartOptions" class="!h-[150px]" />
+  <Bar :data="chartData" :options="chartOptions" class="!h-[450px]" />
 
   <font-awesome-icon icon="fa-brands fa-twitter-square" />
   <font-awesome-icon icon="fa-brands fa-youtube-square" />
   <font-awesome-icon icon="fa-brands fa-github-square" />
+
+  <v-btn variant="outlined" :loading="true"> Button </v-btn>
 </template>
 
 <script setup>
@@ -41,7 +43,7 @@ const chartData = ref({
 });
 const chartOptions = ref({
   responsive: true,
-    maintainAspectRatio: false,
+  maintainAspectRatio: false,
 });
 </script>
 
