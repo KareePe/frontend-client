@@ -75,76 +75,100 @@ const fnChangeTab = (value) => {
           </div>
         </div>
         <div class="grid grid-cols-4 w-full h-1/2">
-          <div class="h-full flex flex-col space-y-4">
+          <div class="h-full flex flex-col space-y-4 pl-6">
             <div class="flex space-x-1">
               <!-- <v-icon color="#084F93" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#084F93" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm opacity-[0.4] text-center"
+                class="tracking-[-0.021px] leading-[14px] text-sm opacity-[0.4] text-center"
               >
                 สร้างโปรไฟล์ของคุณ
               </div>
             </div>
             <div class="flex space-x-1">
               <!-- <v-icon color="#084F93" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#084F93" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm opacity-[0.4] text-center"
+                class="tracking-[-0.021px] leading-[14px] text-sm opacity-[0.4] text-center"
               >
                 เพิ่มข้อมูลเกี่ยวกับธุรกิจคุณ
               </div>
             </div>
             <div class="flex space-x-1">
               <!-- <v-icon color="#084F93" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#084F93" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm opacity-[0.4] text-center"
+                class="tracking-[-0.021px] leading-[14px] text-sm opacity-[0.4] text-center"
               >
                 จัดการผู้ใช้งาน
               </div>
             </div>
             <div class="flex space-x-1">
               <!-- <v-icon color="#084F93" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#084F93" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm opacity-[0.4] text-center"
+                class="tracking-[-0.021px] leading-[14px] text-sm opacity-[0.4] text-center"
               >
                 จัดการบทบาท
               </div>
             </div>
           </div>
 
-          <div class="h-full flex flex-col space-y-4 pl-2">
+          <div class="h-full flex flex-col space-y-4 pl-6">
             <div class="flex space-x-1">
               <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#D5E3FF" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm text-center text-[#084F93]"
+                class="tracking-[-0.021px] leading-[14px] text-sm text-center text-[#084F93]"
               >
                 เพิ่มสินค้า
               </div>
             </div>
             <div class="flex space-x-1">
               <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#D5E3FF" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm text-center text-[#084F93]"
+                class="tracking-[-0.021px] leading-[14px] text-sm text-center text-[#084F93]"
               >
                 สร้างคำสั่งซื้อ
               </div>
             </div>
           </div>
 
-          <div class="h-full flex flex-col space-y-4 pl-2">
+          <div class="h-full flex flex-col space-y-4 pl-6">
             <div class="flex space-x-1">
               <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#D5E3FF" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm text-center text-[#084F93]"
+                class="tracking-[-0.021px] leading-[14px] text-sm text-center text-[#084F93]"
               >
                 สร้างคลังสินค้า
               </div>
             </div>
           </div>
 
-          <div class="h-full flex flex-col space-y-4 pl-2">
+          <div class="h-full flex flex-col space-y-4 pl-6">
             <div class="flex space-x-1">
               <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
+              <v-icon color="#D5E3FF" size="15"
+                >fa-solid fa-circle-check</v-icon
+              >
               <div
-                class="tracking-[-0.021px] leading-[18px] text-sm text-center text-[#084F93]"
+                class="tracking-[-0.021px] leading-[14px] text-sm text-center text-[#084F93]"
               >
                 เชื่อมต่อระบบขนส่ง
               </div>
@@ -155,35 +179,38 @@ const fnChangeTab = (value) => {
     </div>
 
     <div class="mt-4 flex justify-between">
-      <div class="flex space-x-1">
-        <!-- <v-icon color="#084F93">mdi-account-circle</v-icon> -->
-        <font-awesome-icon icon="fa-solid fa-circle-check" />
+      <div class="flex space-x-2">
+        <div class="flex justify-center items-center">
+          <v-icon color="#084F93" size="15">fa-solid fa-coins</v-icon>
+        </div>
         <div
-          class="text-[22px] text-[#084F93] leading-[26px] tracking-[-0.079px]"
+          class="text-[22px] text-[#084F93] leading-[26px] tracking-[-0.079px] flex justify-center items-center"
         >
           รายได้
         </div>
       </div>
-
+      <!-- <font-awesome-icon icon="fa-solid fa-plus" /> -->
+      <!-- <i class="fa-solid fa-coins"></i> -->
       <!-- btn group -->
       <div class="flex space-x-2">
+        <!-- append-icon="fa-solid fa-coins" -->
         <v-btn
           class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
-          append-icon="mdi-plus"
           variant="outlined"
+          append-icon="fa-plus"
         >
           เชื่อมต่อช่องทาง
         </v-btn>
         <v-btn
           class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
-          append-icon="mdi-plus"
+          append-icon="fa-plus"
           variant="outlined"
         >
           นำเข้าคำสั่งซื้อ
         </v-btn>
         <v-btn
           class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
-          append-icon="mdi-plus"
+          append-icon="fa-plus"
           variant="outlined"
         >
           สร้างคำสั่งซื้อ
@@ -247,10 +274,38 @@ const fnChangeTab = (value) => {
         </div>
       </div>
 
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 gap-8">
         <div>
           <div class="tracking-[-0.05px] leading-[22px] text-[#000]">
             สินค้าที่ขายได้
+          </div>
+          <div class="card mt-2">
+            <div>
+              <v-select
+                label="วันที่แสดง"
+                density="compact"
+                hide-details
+                class="w-[130px] labelSize"
+                :items="[
+                  'California',
+                  'Colorado',
+                  'Florida',
+                  'Georgia',
+                  'Texas',
+                  'Wyoming',
+                ]"
+                variant="outlined"
+              ></v-select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="tracking-[-0.05px] leading-[22px] text-[#000]">
+            พนักงานที่ขายได้
+          </div>
+          <div class="card mt-2">
+            <div>table</div>
           </div>
         </div>
       </div>
@@ -278,4 +333,8 @@ const fnChangeTab = (value) => {
 }
 </style>
 
-<style></style>
+<style>
+.labelSize div div div label {
+  font-size: 14px;
+}
+</style>
