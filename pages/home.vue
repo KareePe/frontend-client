@@ -14,7 +14,7 @@ const fnChangeTab = (value) => {
 <template>
   <!-- <Toolbars />-->
   <NavbarDynamic :Breadcrumb="['หน้าแรก']" />
-  <div class="ContainerLayout">
+  <div class="containerLayout h-[200vh]">
     <div class="card items-center relative">
       <div
         class="leading-[26px] tracking-[-0.079px] text-[#084F93] text-[22px] font-bold"
@@ -157,6 +157,7 @@ const fnChangeTab = (value) => {
     <div class="mt-4 flex justify-between">
       <div class="flex space-x-1">
         <!-- <v-icon color="#084F93">mdi-account-circle</v-icon> -->
+        <font-awesome-icon icon="fa-solid fa-circle-check" />
         <div
           class="text-[22px] text-[#084F93] leading-[26px] tracking-[-0.079px]"
         >
