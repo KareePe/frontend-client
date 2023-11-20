@@ -5,11 +5,15 @@ export default {
     "./layouts/**/*.vue",
     "./pages/**/*.vue",
     "./plugins/**/*.{js,ts}",
+    "./nuxt.config.{js,ts}",
     "./app.vue",
-    "./error.vue",
+    'node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx}',
+    "./node_modules/flowbite/**/*.js",
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('flowbite/plugin')],
 };
