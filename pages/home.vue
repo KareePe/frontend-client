@@ -10,6 +10,9 @@ ChartJS.register(ArcElement, Tooltip)
 type tabType = 1 | 7 | 30 | 365
 
 const tab = ref<tabType>(1)
+const showModal = ref<boolean>(true)
+const pageModal = ref(4)
+
 const chartData = ref({
   labels: ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5"],
   datasets: [
@@ -35,6 +38,57 @@ const chartOption = ref({
     // }
   }
 })
+
+const radioSizeValue = ref("A")
+
+const paymentMethod = ref("SalesX")
+
+const paymentMethodData = ref([
+  {
+    value: "SalesX",
+    name: "กระเป๋าเงิน SalesX"
+  },
+  {
+    value: "term",
+    name: "เครดิตเทอม",
+    title: "วงเงิน 100,000.00 บาท หรือทุกๆ 7 วัน"
+  }
+])
+
+const radioSize = ref([
+  {
+    name: "กล่อง A",
+    title: "14+20+6 = 40 ซม",
+    value: "A"
+  },
+  {
+    name: "กล่อง B",
+    title: "17+25+9 = 51 ซม",
+    value: "B"
+  },
+  {
+    name: "กล่อง C",
+    title: "20+30+11 = 61 ซม",
+    value: "C"
+  },
+  {
+    name: "กล่อง D",
+    title: "22+35+14 = 71 ซม",
+    value: "D"
+  },
+  {
+    name: "กล่อง E",
+    title: "14+20+6 = 81 ซม",
+    value: "E"
+  },
+  {
+    name: "ใหญ่กว่ากล่อง E",
+    title: "ผลรวม > 81 ซม",
+    value: "E+"
+  }
+])
+
+const radioPackage = ref('flash')
 
 const fnChangeTab = (value: tabType) => {
   tab.value = value
@@ -425,12 +479,568 @@ const fnChangeTab = (value: tabType) => {
             </div>
           </div>
         </div>
-
       </div>
-
-
     </div>
   </div>
+
+  <v-dialog v-model="showModal" width="auto">
+    <!-- 32px, 16px, 24px, 16px -->
+    <v-fade-transition leave-absolute hide-on-leave>
+      <v-card v-if="pageModal === 1" class="rounded-lg min-w-[435px] pt-2">
+        <v-card-text class="flex items-center justify-center relative">
+          <div class="w-[256px] h-[100px] bg-emerald-600 mx-4"></div>
+          <div class="absolute top-2 right-5">
+            <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+          </div>
+        </v-card-text>
+        <v-card-text class="flex flex-col space-y-2">
+          <div class="title-leading-5">รูปแบบการจัดส่ง</div>
+          <div
+            class="text-[14px] tracking-[-0.032px] leading-[20px] opacity-[0.6]"
+          >
+            เลือกส่งของกับ SalesX เพื่อให้การทำงานกับระบบ สะดวกยิ่งขึ้น
+          </div>
+
+          <div class="space-y-1">
+            <div
+              v-for="item in [
+                'ลดขั้นตอนการทำงาน',
+                'ใช้งานแบบไร้รอยต่อ',
+                'เชื่อมต่อกับระบบจัดส่ง',
+                'ส่งก่อนจ่ายที่หลัง'
+              ]"
+              class="flex items-center space-x-2"
+            >
+              <v-icon size="20" color="#084F93">fa-solid fa-check</v-icon>
+              <div
+                class="text-[14px] tracking-[-0.03px] leading-5 opacity-[0.6]"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="text-[14px] tracking-[-0.032px] leading-[20px] opacity-[0.4]"
+          >
+            * คุณสามารถเปลี่ยนแปลงการตั้งค่านี้ได้ในภายหลัง
+          </div>
+        </v-card-text>
+        <v-card-text class="w-full space-y-2">
+          <v-btn
+            class="w-full !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            @click="
+              () => {
+                pageModal = 2
+              }
+            "
+          >
+            เปิดใช้งานส่งพัสดุผ่าน SalesX
+          </v-btn>
+          <v-btn class="w-full !rounded-lg" variant="text" color="#084F93">
+            จัดส่งโดยร้านค้าเอง
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
+      <v-card
+        v-else-if="pageModal === 2"
+        class="rounded-lg min-w-[960px] px-4 pt-2"
+      >
+        <v-card-text class="flex justify-between relative">
+          <div class="">
+            <div class="title-leading-5">โปรไฟล์การจัดส่ง</div>
+            <div class="subTitle-leading-3">
+              กรุณาให้ระบุข้อมูลต่อไปนี้
+              เพื่อช่วยให้แพลตฟอร์มเสนอบริการได้อย่างเหมาะสม
+            </div>
+          </div>
+          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+        </v-card-text>
+
+        <v-card-text class="grid grid-cols-2 gap-4 border-b border-b-[#EEEDF1]">
+          <div class="space-y-2">
+            <div class="title-leading-5 !text-[14px]">
+              จำนวนพัสดุที่จัดส่งต่อเดือน
+            </div>
+            <div>
+              <v-radio-group class="label-radio" hide-details>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  class="test-text"
+                  color="#084F93"
+                  label="ฉันพึ่งเริ่ม"
+                  value="one"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="1 - 299"
+                  color="#084F93"
+                  value="two"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="300 - 999"
+                  color="#084F93"
+                  value="three"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="1000 - 2999"
+                  color="#084F93"
+                  value="four"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  color="#084F93"
+                  label="3000 - 14999"
+                  value="five"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  color="#084F93"
+                  label="5000+"
+                  value="six"
+                ></v-radio>
+              </v-radio-group>
+            </div>
+          </div>
+          <!-- <div>น้ำหนักของพัสดุที่ส่งเป็นประจำ</div> -->
+          <div class="space-y-2">
+            <div class="title-leading-5 !text-[14px]">
+              น้ำหนักของพัสดุที่ส่งเป็นประจำ
+            </div>
+            <div>
+              <v-radio-group class="label-radio" hide-details>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  class="test-text"
+                  color="#084F93"
+                  label="น้อยกว่า 1 Kg"
+                  value="one"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="1.00 - 1.99 Kg"
+                  color="#084F93"
+                  value="two"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="2.00 - 2.99 Kg"
+                  color="#084F93"
+                  value="three"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  label="3.00 - 4.99 Kg"
+                  color="#084F93"
+                  value="four"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  color="#084F93"
+                  label="5.00 - 9.99 Kg"
+                  value="five"
+                ></v-radio>
+                <v-radio
+                  true-icon="fa-solid fa-circle-dot"
+                  color="#084F93"
+                  label="10Kg+"
+                  value="six"
+                ></v-radio>
+              </v-radio-group>
+            </div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-y-2">
+          <div class="title-leading-5 !text-[14px]">
+            ขนาดของพัสดุที่ส่งเป็นประจำ
+          </div>
+
+          <div class="border-b border-b-[#EEEDF1] p-4">
+            <div class="grid grid-cols-6">
+              <div
+                v-for="(item, index) in radioSize"
+                class="flex flex-col justify-center items-center"
+              >
+                <div class="w-[60px] h-[60px] bg-emerald-600"></div>
+                <v-checkbox
+                  color="#084F93"
+                  class="checkbox-label mr-4"
+                  true-icon="fa-solid fa-circle-dot"
+                  false-icon="fa-regular fa-circle"
+                  :true-value="item.value"
+                  :label="item.name"
+                  v-model="radioSizeValue"
+                  hide-details
+                ></v-checkbox>
+                <div
+                  class="flex flex-col justify-center items-center border border-[#eeedf1] p-2 rounded-lg"
+                >
+                  <div
+                    class="opacity-[0.6] text-black text-[14px] leading-[16px]"
+                  >
+                    {{ item.title }}
+                  </div>
+                  <div
+                    class="text-[10px] leading-[14px] tracking-[0.006px] opacity-[0.4]"
+                  >
+                    ความยาวรวม 3 ด้าน
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-x-2 flex mb-2">
+          <v-btn
+            class="w-1/2 !rounded-lg"
+            variant="outlined"
+            color="#084F93"
+            size="large"
+            @click="
+              () => {
+                pageModal = 1
+              }
+            "
+          >
+            ย้อนกลับ
+          </v-btn>
+          <v-btn
+            class="w-1/2 !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            size="large"
+            @click="
+              () => {
+                pageModal = 3
+              }
+            "
+          >
+            ต่อไป
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
+      <v-card
+        v-else-if="pageModal === 3"
+        class="rounded-lg min-w-[620px] px-4 pt-2"
+      >
+        <v-card-text class="flex justify-between">
+          <div class="title-leading-5">เลือกผู้ให้บริการจัดส่ง</div>
+          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+        </v-card-text>
+
+        <v-card-text class="grid grid-cols-4 gap-6">
+          <div class="w-full h-[680px]">
+            <div class="h-[7.69%]"></div>
+            <div class="title-text-detail">รายละเอียดผู้ให้บริการ</div>
+            <div class="title-text-detail">ชื่อ</div>
+            <div class="title-text-detail">ราคา</div>
+            <div class="title-text-detail">ค่า COD</div>
+            <div class="title-text-detail">ค่าเข้ารับ</div>
+            <div class="title-text-detail">ค่าตีกลับ</div>
+            <div class="title-text-detail">Remote area</div>
+            <div class="title-text-detail">วิธีคิดค่าส่ง</div>
+            <div class="title-text-detail">พื้นที่เข้ารับ %</div>
+            <div class="title-text-detail">พื้นที่จัดส่ง %</div>
+            <div class="title-text-detail">Service</div>
+            <div class="title-text-detail">การเรียกสินค้ากลับ</div>
+          </div>
+
+          <div
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
+            @click="radioPackage = 'flash'"
+            :style="{
+              border:
+                radioPackage === 'flash'
+                  ? '1px solid #084f93'
+                  : '1px solid #EEEDF1'
+            }"
+          >
+            <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
+            <div class="h-[15.38%] flex w-full border-b flex-col items-center">
+              <div class="recommend">แนะนำ</div>
+              <v-checkbox
+                true-icon="fa-solid fa-circle-check"
+                false-icon="fa-regular fa-circle"
+                :model-value="radioPackage"
+                true-value="flash"
+                hide-details
+                color="#084F93"
+                class="!flex-none disable-min-height"
+              ></v-checkbox>
+              <div
+                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU)] h-[50px]"
+              ></div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">3 % จากยอดสินค้า</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ฟรี</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">+ 50 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">18 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+          </div>
+
+          <div
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
+            @click="radioPackage = 'jandt'"
+            :style="{
+              border:
+                radioPackage === 'jandt'
+                  ? '1px solid #084f93'
+                  : '1px solid #EEEDF1'
+            }"
+          >
+            <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
+            <div class="h-[15.38%] flex w-full border-b flex-col items-center">
+              <!-- <div class="recommend">แนะนำ</div> -->
+              <v-checkbox
+                true-icon="fa-solid fa-circle-check"
+                false-icon="fa-regular fa-circle"
+                :model-value="radioPackage"
+                true-value="jandt"
+                hide-details
+                color="#084F93"
+                class="!flex-none disable-min-height"
+              ></v-checkbox>
+              <div
+                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(data:image/png;base64,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)] h-[50px]"
+              ></div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">3 % จากยอดสินค้า</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ฟรี</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">+ 50 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">18 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+          </div>
+
+          <div
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
+            @click="radioPackage = 'kerry'"
+            :style="{
+              border:
+                radioPackage === 'kerry'
+                  ? '1px solid #084f93'
+                  : '1px solid #EEEDF1'
+            }"
+          >
+            <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
+            <div class="h-[15.38%] flex w-full border-b flex-col items-center">
+              <!-- <div class="recommend">แนะนำ</div> -->
+              <v-checkbox
+                true-icon="fa-solid fa-circle-check"
+                false-icon="fa-regular fa-circle"
+                :model-value="radioPackage"
+                true-value="kerry"
+                hide-details
+                color="#084F93"
+                class="!flex-none disable-min-height"
+              ></v-checkbox>
+              <div
+                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png)] h-[50px]"
+              ></div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">3 % จากยอดสินค้า</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ฟรี</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">+ 50 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">18 บาท</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full border-b">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+            <div class="h-[7.69%] flex justify-center w-full">
+              <div class="text-detail-value">ทั่วไทย</div>
+            </div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-x-2 flex mb-2">
+          <v-btn
+            class="w-1/2 !rounded-lg"
+            variant="outlined"
+            color="#084F93"
+            size="large"
+            @click="
+              () => {
+                pageModal = 2
+              }
+            "
+          >
+            ย้อนกลับ
+          </v-btn>
+          <v-btn
+            class="w-1/2 !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            size="large"
+            @click="
+              () => {
+                pageModal = 4
+              }
+            "
+          >
+            ต่อไป
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
+      <v-card
+        v-else-if="pageModal === 4"
+        class="rounded-lg min-w-[560px] px-4 pt-2"
+      >
+        <v-card-text class="flex justify-between relative">
+          <div class="title-leading-5">รูปแบบการชำระเงิน</div>
+
+          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+        </v-card-text>
+
+        <v-card-text class="space-y-3">
+          <div
+            class="rounded-lg p-3 pl-5 flex justify-between cursor-pointer select-none"
+            v-for="item in paymentMethodData"
+            :style="{
+              border:
+                paymentMethod === item.value
+                  ? '1px solid #084f93'
+                  : '1px solid #EEEDF1'
+            }"
+            @click="paymentMethod = item.value"
+          >
+            <div class="flex space-x-4 justify-center items-center">
+              <v-icon color="#084F93">fa-solid fa-wallet</v-icon>
+              <div class="leading-[22px] tracking-[-0.05px]">
+                {{ item.name }}
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="leading-[22px] tracking-[-0.05px] max-w-[200px]">
+                {{ item.title }}
+              </div>
+              <v-checkbox
+                true-icon="fa-solid fa-circle-check"
+                false-icon="fa-regular fa-circle"
+                :model-value="paymentMethod"
+                :true-value="item.value"
+                hide-details
+                color="#084F93"
+                readonly
+                class="!flex-none disable-min-height"
+              ></v-checkbox>
+            </div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-x-2 flex mb-2">
+          <v-btn
+            class="w-1/2 !rounded-lg"
+            variant="outlined"
+            color="#084F93"
+            size="large"
+            @click="
+              () => {
+                pageModal = 3
+              }
+            "
+          >
+            ย้อนกลับ
+          </v-btn>
+          <v-btn
+            class="w-1/2 !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            size="large"
+            @click="
+              () => {
+                pageModal = 5
+              }
+            "
+          >
+            ต่อไป
+          </v-btn>
+        </v-card-text>
+      </v-card>
+    </v-fade-transition>
+  </v-dialog>
 </template>
 
 <style scoped>
@@ -444,6 +1054,35 @@ const fnChangeTab = (value: tabType) => {
   border: 1px solid #eeedf1;
 }
 
+.title-text-detail {
+  @apply h-[7.69%] box-border flex items-center justify-end
+  text-[14px] leading-[20px] tracking-[-0.03px] text-black opacity-[0.6];
+}
+
+.recommend {
+  color: #fff;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0.005px;
+  width: 100px;
+  height: 13.063px;
+  transform: rotate(41.028deg) translate(30px, -10px);
+  flex-shrink: 0;
+  background-color: #084f93;
+  position: absolute;
+  right: 0;
+}
+
+.title-leading-5 {
+  @apply text-black opacity-[0.87] font-bold leading-[22px] tracking-[-0.05px] text-[16px];
+}
+
+.subTitle-leading-3 {
+  @apply text-[14px] tracking-[-0.032px] leading-[20px] opacity-[0.6];
+}
+
 .divider {
   @apply absolute h-[2px] bg-[#D4E3FF];
 }
@@ -455,10 +1094,36 @@ const fnChangeTab = (value: tabType) => {
 .legendSpace:not(:first-child) {
   @apply mt-2;
 }
+
+.text-detail-value {
+  @apply flex items-center justify-center text-black tracking-[-0.032px] leading-[20px];
+}
 </style>
 
 <style>
 .labelSize div div div label {
   font-size: 14px;
+}
+.label-radio div div div label {
+  /* background-color: red; */
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.032px;
+}
+.label-radio div div div div {
+  font-size: 15px;
+}
+
+.checkbox-label div div div {
+  font-size: 15px;
+}
+
+.checkbox-label div div label {
+  font-size: 14px;
+  opacity: 0.87;
+}
+
+.disable-min-height div {
+  min-height: auto !important;
 }
 </style>
