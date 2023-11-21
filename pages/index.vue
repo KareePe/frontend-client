@@ -1,9 +1,8 @@
 <script setup lang="ts">
-// definePageMeta({
-//   middleware: "auth-middleware"
-// })
-
 import { ref, onMounted, computed } from "vue";
+definePageMeta({
+  middleware: "auth-middleware",
+});
 
 type tabType = 1 | 7 | 30 | 365;
 
@@ -426,7 +425,6 @@ const series = ref([
       <!-- graph  -->
       <div class="mt-4">
         <div class="w-full rounded-lg">
-          
           <client-only placeholder="Loading..." fallback="Loading Chart...">
             <apexchart
               type="area"
@@ -466,11 +464,56 @@ const series = ref([
                 ></v-select>
               </div>
             </div>
-            
-            <div>
-              
-            </div>
 
+            <v-card
+              variant="flat"
+              class="border border-[#EEEDF1] rounded-[8px] pb-[15px]"
+            >
+              <v-data-table
+                :items="tableItem"
+                :headers="headersTable"
+                item-key="id"
+                no-data-text="ไม่มีข้อมูล"
+                items-per-page-text="จำนวนแสดงผล"
+                :items-per-page="itemsPerPage"
+                :page="page"
+                :search="search"
+              >
+                <template
+                  v-slot:item="{ item, toggleExpand, isExpanded, internalItem }"
+                >
+                  <tr>
+                    <td>
+                      {{ item.primary }}
+                    </td>
+                    <td>
+                      {{ item.secondary1 }}
+                    </td>
+                    <td class="text-table">
+                      {{ item.secondary2 }}
+                    </td>
+                    <td class="text-table">
+                      {{ item.choice }}
+                    </td>
+
+                    <td class="text-table">
+                      <!-- <v-icon @click="fnSelectItem(item)" class="cursor-pointer"
+                >mdi-pencil</v-icon
+              > -->
+                      <v-btn icon="mdi-pencil" variant="text"></v-btn>
+                    </td>
+                  </tr>
+                </template>
+                <template v-slot:no-data>
+                  <div
+                    class="h-[240px] flex justify-center items-center flex-col space-y-3"
+                  >
+                    <div class="opacity-[60%]">ยังไม่มีรายการ</div>
+                  </div>
+                </template>
+                <template #bottom></template>
+              </v-data-table>
+            </v-card>
           </div>
         </div>
 
