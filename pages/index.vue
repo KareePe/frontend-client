@@ -1,63 +1,15 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: "auth-middleware",
-});
-import {
-  Chart as ChartJS,
-  Title,
-  LineElement,
-  LinearScale,
-  PointElement,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-} from "chart.js";
+// definePageMeta({
+//   middleware: "auth-middleware"
+// })
 
-import { Pie, Line } from "vue-chartjs";
 import { ref, onMounted, computed } from "vue";
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Legend
-);
 
 type tabType = 1 | 7 | 30 | 365;
 
 const tab = ref<tabType>(1);
 const showModal = ref<boolean>(false);
 const pageModal = ref(1);
-
-const chartData = ref({
-  labels: ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5"],
-  datasets: [
-    {
-      backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16", "#F7CF6B"],
-      data: [40, 20, 80, 10, 30],
-    },
-  ],
-});
-
-const chartOption = ref({
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    // legend: {
-    //   position: "right",
-    //   align: "center",
-    //   fullSize: false,
-    //   labels: {
-    //     useBorderRadius: true,
-    //     borderRadius: 500,
-    //   }
-    // }
-  },
-});
 
 const radioSizeValue = ref("A");
 
@@ -120,7 +72,6 @@ const flashIcon =
 const jAndTIcon = "https://i.ytimg.com/vi/mWi25JkVnAI/maxresdefault.jpg";
 const kerryIcon =
   "https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png";
-// bg-[url(https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png)]
 
 const selectedPackage = computed(() => {
   switch (radioPackage.value) {
@@ -140,35 +91,64 @@ const fnHandleCancelModal = () => {
   showModal.value === false;
 };
 
-const totalChartOption = ref({
-  scales: {
-    y: {
-      stacked: true,
+const options = ref({
+  chart: {
+    type: "area",
+    zoom: {
+      enabled: false,
     },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+  },
+  xaxis: {
+    type: "datetime",
+    labels: {
+      format: "d/MM",
+      showDuplicates: false,
+    },
+  },
+  tooltip: {
+    enable: "false",
+  },
+  yaxis: {
+    opposite: false,
+  },
+  legend: {
+    horizontalAlign: "left",
   },
 });
 
-const totalChartValue = ref({
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "My First Dataset",
-      data: [65, 59, 80, 81, 56, 55, 40],
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-      tension: 0.1,
-    },
-  ],
-  // datasets: [
-  //   {
-  //     label: "",
-  //     backgroundColor: "#f87979",
-  //     data: [
-  //       10000000, 9000000, 12000000, 17000000, 5000000, 20000000, 16000000,
-  //     ],
-  //   },
-  // ],
-});
+const series = ref([
+  {
+    name: "จำนวนเงิน",
+    data: [
+      {
+        x: new Date("2023-07-11").getTime(),
+        y: 14000000,
+      },
+      {
+        x: new Date("2023-08-12").getTime(),
+        y: 20000000,
+      },
+      {
+        x: new Date("2023-09-13").getTime(),
+        y: 1000000,
+      },
+      {
+        x: new Date("2023-10-14").getTime(),
+        y: 7000000,
+      },
+      {
+        x: new Date("2023-11-15").getTime(),
+        y: 15000000,
+      },
+    ],
+  },
+]);
 </script>
 
 <template>
@@ -445,76 +425,52 @@ const totalChartValue = ref({
 
       <!-- graph  -->
       <div class="mt-4">
-        <div
-          class="bg-[#D5E3FF] w-full h-[350px] rounded-lg flex justify-center items-center"
-        >
-          <div
-            class="leading-[40px] text-[34px] tracking-[0.136px] text-[#000]"
-          >
-            PUT YOUR DATA
-          </div>
+        <div class="w-full rounded-lg">
+          
+          <client-only placeholder="Loading..." fallback="Loading Chart...">
+            <apexchart
+              type="area"
+              height="400"
+              :options="options"
+              :series="series"
+            ></apexchart>
+          </client-only>
         </div>
       </div>
 
       <!-- pie chart -->
       <div class="grid grid-cols-2 gap-8">
         <div>
-          <div class="tracking-[-0.05px] leading-[22px] text-[#000]">
-            สินค้าที่ขายได้
-          </div>
           <div class="card mt-2">
             <div class="flex justify-between items-center">
-              <!-- <div>
+              <div
+                class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+              >
+                สินค้าที่ขายได้
+              </div>
+              <div>
                 <v-select
                   label="วันที่แสดง"
                   density="compact"
                   hide-details
                   class="w-[130px] labelSize"
                   :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
+                    '1 เดือน',
+                    '3 เดือน',
+                    '5 เดือน',
+                    '7 เดือน',
+                    '9 เดือน',
+                    '12 เดือน',
                   ]"
                   variant="outlined"
                 ></v-select>
               </div>
-
-              <div
-                class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
-              >
-                ดูเพิ่มเติม
-              </div> -->
+            </div>
+            
+            <div>
+              
             </div>
 
-            <!-- <div class="relative flex justify-center">
-              <div class="w-[250px] h-[250px]">
-                <Pie :data="chartData" :options="chartOption" />
-              </div>
-              <div
-                class="absolute top-1/2 right-5"
-                style="
-                  position: absolute;
-                  top: 50%;
-                  transform: translate(-50%, -50%);
-                "
-              >
-                <div
-                  v-for="(item, index) in chartData.datasets[0].backgroundColor"
-                  class="text-[12px] font-bold flex space-x-2 justify-center items-center legendSpace"
-                >
-                  <div
-                    class="w-5 h-5 rounded-full"
-                    :style="{
-                      backgroundColor: item,
-                    }"
-                  ></div>
-                  <div>{{ chartData.labels[index] }}</div>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
 
@@ -612,7 +568,6 @@ const totalChartValue = ref({
                 'เชื่อมต่อกับระบบจัดส่ง',
                 'ส่งก่อนจ่ายที่หลัง',
               ]"
-              :key="item"
               class="flex items-center space-x-2"
             >
               <v-icon size="20" color="#084F93">fa-solid fa-check</v-icon>
@@ -778,7 +733,6 @@ const totalChartValue = ref({
             <div class="grid grid-cols-6">
               <div
                 v-for="(item, index) in radioSize"
-                :key="index"
                 class="flex flex-col justify-center items-center cursor-pointer select-none"
                 @click="radioSizeValue = item.value"
               >
@@ -1108,7 +1062,6 @@ const totalChartValue = ref({
           <div
             class="rounded-lg p-3 pl-5 flex justify-between cursor-pointer select-none"
             v-for="item in paymentMethodData"
-            :key="item.name"
             :style="{
               border:
                 paymentMethod === item.value
@@ -1190,7 +1143,6 @@ const totalChartValue = ref({
           <div
             class="rounded-lg p-3 pl-5 flex justify-between cursor-pointer select-none"
             v-for="item in paymentMethodData"
-            :key="item"
             :style="{
               border:
                 paymentMethod === item.value

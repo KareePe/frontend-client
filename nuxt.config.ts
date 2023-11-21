@@ -34,6 +34,7 @@ export default {
     "@fortawesome/fontawesome-svg-core/styles.css",
     "vuetify/styles/main.sass",
   ],
+  plugins: [{ src: "~/plugins/apexcharts.ts", mode: "client" }],
   postcss: {
     plugins: {
       tailwindcss: {},
