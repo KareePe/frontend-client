@@ -1,14 +1,44 @@
-<script setup>
+<script setup lang="ts">
 // definePageMeta({
 //   middleware: "auth-middleware"
 // })
-import { ref, onMounted, computed } from "vue";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
+import { Pie } from "vue-chartjs"
+import { ref, onMounted, computed } from "vue"
+ChartJS.register(ArcElement, Tooltip)
 
-const tab = ref(1);
+type tabType = 1 | 7 | 30 | 365
 
-const fnChangeTab = (value) => {
-  tab.value = value;
-};
+const tab = ref<tabType>(1)
+const chartData = ref({
+  labels: ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5"],
+  datasets: [
+    {
+      backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16", "#F7CF6B"],
+      data: [40, 20, 80, 10, 30]
+    }
+  ]
+})
+
+const chartOption = ref({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    // legend: {
+    //   position: "right",
+    //   align: "center",
+    //   fullSize: false,
+    //   labels: {
+    //     useBorderRadius: true,
+    //     borderRadius: 500,
+    //   }
+    // }
+  }
+})
+
+const fnChangeTab = (value: tabType) => {
+  tab.value = value
+}
 </script>
 
 <template>
@@ -274,28 +304,64 @@ const fnChangeTab = (value) => {
         </div>
       </div>
 
+      <!-- pie chart -->
       <div class="grid grid-cols-2 gap-8">
         <div>
           <div class="tracking-[-0.05px] leading-[22px] text-[#000]">
             สินค้าที่ขายได้
           </div>
           <div class="card mt-2">
-            <div>
-              <v-select
-                label="วันที่แสดง"
-                density="compact"
-                hide-details
-                class="w-[130px] labelSize"
-                :items="[
-                  'California',
-                  'Colorado',
-                  'Florida',
-                  'Georgia',
-                  'Texas',
-                  'Wyoming',
-                ]"
-                variant="outlined"
-              ></v-select>
+            <div class="flex justify-between items-center">
+              <div>
+                <v-select
+                  label="วันที่แสดง"
+                  density="compact"
+                  hide-details
+                  class="w-[130px] labelSize"
+                  :items="[
+                    'California',
+                    'Colorado',
+                    'Florida',
+                    'Georgia',
+                    'Texas',
+                    'Wyoming'
+                  ]"
+                  variant="outlined"
+                ></v-select>
+              </div>
+
+              <div
+                class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
+              >
+                ดูเพิ่มเติม
+              </div>
+            </div>
+
+            <div class="relative flex justify-center">
+              <div class="w-[250px] h-[250px]">
+                <Pie :data="chartData" :options="chartOption" />
+              </div>
+              <div
+                class="absolute top-1/2 right-5"
+                style="
+                  position: absolute;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                "
+              >
+                <div
+                  v-for="(item, index) in chartData.datasets[0].backgroundColor"
+                  class="text-[12px] font-bold flex space-x-2 justify-center items-center legendSpace"
+                >
+                  <div
+                    class="w-5 h-5 rounded-full"
+                    :style="{
+                      backgroundColor: item
+                    }"
+                  ></div>
+                  <div>{{ chartData.labels[index] }}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -305,10 +371,64 @@ const fnChangeTab = (value) => {
             พนักงานที่ขายได้
           </div>
           <div class="card mt-2">
-            <div>table</div>
+            <div class="flex justify-between items-center">
+              <div>
+                <v-select
+                  label="วันที่แสดง"
+                  density="compact"
+                  hide-details
+                  class="w-[130px] labelSize"
+                  :items="[
+                    'California',
+                    'Colorado',
+                    'Florida',
+                    'Georgia',
+                    'Texas',
+                    'Wyoming'
+                  ]"
+                  variant="outlined"
+                ></v-select>
+              </div>
+
+              <div
+                class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
+              >
+                ดูเพิ่มเติม
+              </div>
+            </div>
+
+            <div class="relative flex justify-center">
+              <div class="w-[250px] h-[250px]">
+                <Pie :data="chartData" :options="chartOption" />
+              </div>
+              <div
+                class="absolute top-1/2 right-5"
+                style="
+                  position: absolute;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                "
+              >
+                <div
+                  v-for="(item, index) in chartData.datasets[0].backgroundColor"
+                  class="text-[12px] font-bold flex space-x-2 justify-center items-center legendSpace"
+                >
+                  <div
+                    class="w-5 h-5 rounded-full"
+                    :style="{
+                      backgroundColor: item
+                    }"
+                  ></div>
+                  <div>{{ chartData.labels[index] }}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
+
+
     </div>
   </div>
 </template>
@@ -330,6 +450,10 @@ const fnChangeTab = (value) => {
 
 .cardTab {
   @apply border border-[#EEEDF1] !rounded-[8px] p-2 flex space-x-2 justify-center items-center flex-row;
+}
+
+.legendSpace:not(:first-child) {
+  @apply mt-2;
 }
 </style>
 

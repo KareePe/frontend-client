@@ -3,10 +3,6 @@
 
   <Bar :data="chartData" :options="chartOptions" class="!h-[450px]" />
 
-  <font-awesome-icon icon="fa-brands fa-twitter-square" />
-  <font-awesome-icon icon="fa-brands fa-youtube-square" />
-  <font-awesome-icon icon="fa-brands fa-github-square" />
-
   <v-btn variant="outlined" :loading="true"> Button </v-btn>
 </template>
 
