@@ -5,3 +5,54 @@
 .containerLayout {
   @apply p-4 sm:ml-64;
 }
+
+@font-face {
+  font-family: "SFThonburi";
+  src: local("SFThonburi"),
+    url(/fonts/SF-Thonburi/SFThonburi-Regular.ttf) format("ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "SFThonburi";
+  src: local("SFThonburi"),
+    url(/fonts/LineSeed/SFThonburi-Semibold.ttf) format("ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "SFThonburi";
+  src: local("SFThonburi"),
+    url(/fonts/LineSeed/SFThonburi-Bold.ttf) format("ttf");
+  font-weight: bolder;
+}
+
+html,
+body {
+  font-family: "SFThonburi", sans-serif !important;
+}
+
+#app {
+  font-family: "SFThonburi", sans-serif;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre {
+  font-family: "SFThonburi", sans-serif !important;
+}
+
+.v-field__field,.v-field--variant-outlined .v-field__outline{
+  /* border : 1px solid #EEEDF1; */
+  border-radius: 8px !important;
+}
+
+.v-field__field{
+  border:none !important;
+}
+
+.v-field{
+  border: none !important;
+}

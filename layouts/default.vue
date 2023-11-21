@@ -1,8 +1,4 @@
 <template>
-  <div>
-    <p>Default</p>
-  </div>
-
   <slot />
 </template>
 
