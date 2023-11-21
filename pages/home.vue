@@ -2,26 +2,46 @@
 // definePageMeta({
 //   middleware: "auth-middleware"
 // })
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
-import { Pie } from "vue-chartjs"
-import { ref, onMounted, computed } from "vue"
-ChartJS.register(ArcElement, Tooltip)
+import {
+  Chart as ChartJS,
+  Title,
+  LineElement,
+  LinearScale,
+  PointElement,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+} from "chart.js";
 
-type tabType = 1 | 7 | 30 | 365
+import { Pie, Line } from "vue-chartjs";
+import { ref, onMounted, computed } from "vue";
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Legend
+);
 
-const tab = ref<tabType>(1)
-const showModal = ref<boolean>(true)
-const pageModal = ref(4)
+type tabType = 1 | 7 | 30 | 365;
+
+const tab = ref<tabType>(1);
+const showModal = ref<boolean>(false);
+const pageModal = ref(1);
 
 const chartData = ref({
   labels: ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5"],
   datasets: [
     {
       backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16", "#F7CF6B"],
-      data: [40, 20, 80, 10, 30]
-    }
-  ]
-})
+      data: [40, 20, 80, 10, 30],
+    },
+  ],
+});
 
 const chartOption = ref({
   responsive: true,
@@ -36,63 +56,119 @@ const chartOption = ref({
     //     borderRadius: 500,
     //   }
     // }
-  }
-})
+  },
+});
 
-const radioSizeValue = ref("A")
+const radioSizeValue = ref("A");
 
-const paymentMethod = ref("SalesX")
+const paymentMethod = ref("SalesX");
 
 const paymentMethodData = ref([
   {
     value: "SalesX",
-    name: "กระเป๋าเงิน SalesX"
+    name: "กระเป๋าเงิน SalesX",
   },
   {
     value: "term",
     name: "เครดิตเทอม",
-    title: "วงเงิน 100,000.00 บาท หรือทุกๆ 7 วัน"
-  }
-])
+    title: "วงเงิน 100,000.00 บาท หรือทุกๆ 7 วัน",
+  },
+]);
 
 const radioSize = ref([
   {
     name: "กล่อง A",
     title: "14+20+6 = 40 ซม",
-    value: "A"
+    value: "A",
   },
   {
     name: "กล่อง B",
     title: "17+25+9 = 51 ซม",
-    value: "B"
+    value: "B",
   },
   {
     name: "กล่อง C",
     title: "20+30+11 = 61 ซม",
-    value: "C"
+    value: "C",
   },
   {
     name: "กล่อง D",
     title: "22+35+14 = 71 ซม",
-    value: "D"
+    value: "D",
   },
   {
     name: "กล่อง E",
     title: "14+20+6 = 81 ซม",
-    value: "E"
+    value: "E",
   },
   {
     name: "ใหญ่กว่ากล่อง E",
     title: "ผลรวม > 81 ซม",
-    value: "E+"
-  }
-])
+    value: "E+",
+  },
+]);
 
-const radioPackage = ref('flash')
+const radioPackage = ref("flash");
 
 const fnChangeTab = (value: tabType) => {
-  tab.value = value
-}
+  tab.value = value;
+};
+
+const flashIcon =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU";
+
+const jAndTIcon = "https://i.ytimg.com/vi/mWi25JkVnAI/maxresdefault.jpg";
+const kerryIcon =
+  "https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png";
+// bg-[url(https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png)]
+
+const selectedPackage = computed(() => {
+  switch (radioPackage.value) {
+    case "flash":
+      return flashIcon;
+    case "kerry":
+      return kerryIcon;
+    default:
+      return jAndTIcon;
+  }
+});
+
+const fnHandleCancelModal = () => {
+  radioPackage.value === "flash";
+  paymentMethod.value === "SalesX";
+  radioSizeValue.value === "A";
+  showModal.value === false;
+};
+
+const totalChartOption = ref({
+  scales: {
+    y: {
+      stacked: true,
+    },
+  },
+});
+
+const totalChartValue = ref({
+  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  datasets: [
+    {
+      label: "My First Dataset",
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: "rgb(75, 192, 192)",
+      tension: 0.1,
+    },
+  ],
+  // datasets: [
+  //   {
+  //     label: "",
+  //     backgroundColor: "#f87979",
+  //     data: [
+  //       10000000, 9000000, 12000000, 17000000, 5000000, 20000000, 16000000,
+  //     ],
+  //   },
+  // ],
+});
 </script>
 
 <template>
@@ -110,7 +186,7 @@ const fnChangeTab = (value: tabType) => {
         variant="outlined"
         class="!w-[40px] !h-[40px] !min-w-fit !rounded-lg !px-4 !text-[14px] !absolute top-4 right-4"
         color="#084F93"
-        >ซ่อน</v-btn
+        >ปิด</v-btn
       >
 
       <div class="w-[800px] h-[300px]">
@@ -264,36 +340,34 @@ const fnChangeTab = (value: tabType) => {
 
     <div class="mt-4 flex justify-between">
       <div class="flex space-x-2">
-        <div class="flex justify-center items-center">
+        <!-- <div class="flex justify-center items-center">
           <v-icon color="#084F93" size="15">fa-solid fa-coins</v-icon>
-        </div>
+        </div> -->
         <div
-          class="text-[22px] text-[#084F93] leading-[26px] tracking-[-0.079px] flex justify-center items-center"
+          class="text-[24px] text-[#084F93] leading-[32px] flex justify-center items-center"
         >
-          รายได้
+          รายงานยอดขาย
         </div>
       </div>
-      <!-- <font-awesome-icon icon="fa-solid fa-plus" /> -->
-      <!-- <i class="fa-solid fa-coins"></i> -->
       <!-- btn group -->
       <div class="flex space-x-2">
         <!-- append-icon="fa-solid fa-coins" -->
         <v-btn
-          class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
+          class="!border-[#EEEDF1] !min-w-[150px] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg color-icon"
           variant="outlined"
           append-icon="fa-plus"
         >
           เชื่อมต่อช่องทาง
         </v-btn>
         <v-btn
-          class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
+          class="!border-[#EEEDF1] !px-3 !min-w-[150px] !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg color-icon"
           append-icon="fa-plus"
           variant="outlined"
         >
           นำเข้าคำสั่งซื้อ
         </v-btn>
         <v-btn
-          class="!border-[#EEEDF1] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg"
+          class="!border-[#EEEDF1] !px-3 !min-w-[150px] !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg color-icon"
           append-icon="fa-plus"
           variant="outlined"
         >
@@ -304,44 +378,68 @@ const fnChangeTab = (value: tabType) => {
 
     <div class="card mt-4">
       <!-- header -->
-      <div class="text-[rgba(0, 0, 0, 0.87)] leading-[22px] tracking-[-0.05px]">
-        รายงานการขาย
+      <div
+        class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+      >
+        รายได้รวม
       </div>
 
-      <div class="flex justify-between">
-        <!-- <v-icon color="#000">mdi-currency-thb</v-icon> -->
-        <div class="leading-[40px] text-[34px] font-bold text-[#000000]">
-          ฿ 40,206
+      <div class="flex justify-between items-center">
+        <div class="flex space-x-2">
+          <div
+            class="flex p-4 flex-col self-stretch rounded-lg border border-[#eeedf1]"
+          >
+            <div class="subTitle-leading-3">จำนวนเงิน</div>
+            <div
+              class="leading-[40px] font-bold text-transparent mt-1 text-[34px] bg-clip-text bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84]"
+            >
+              15,140,206.00 ฿
+            </div>
+          </div>
+
+          <div
+            class="flex p-4 flex-col self-stretch rounded-lg border border-[#eeedf1]"
+          >
+            <div class="subTitle-leading-3">เทียบกับช่วงก่อนหน้า</div>
+            <div
+              class="leading-[40px] font-bold text-[34px] mt-1 text-[#12B76A]"
+            >
+              +16.18%
+            </div>
+          </div>
         </div>
-        <div class="cardTab">
-          <v-btn
-            :color="tab === 1 ? '#084F93' : '#fff'"
-            @click="fnChangeTab(1)"
-            variant="flat"
-            class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-            >24 ชม</v-btn
-          >
-          <v-btn
-            @click="fnChangeTab(7)"
-            :color="tab === 7 ? '#084F93' : '#fff'"
-            variant="flat"
-            class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-            >7 วัน</v-btn
-          >
-          <v-btn
-            @click="fnChangeTab(30)"
-            :color="tab === 30 ? '#084F93' : '#fff'"
-            variant="flat"
-            class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-            >30 วัน</v-btn
-          >
-          <v-btn
-            @click="fnChangeTab(365)"
-            :color="tab === 365 ? '#084F93' : '#fff'"
-            variant="flat"
-            class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-            >12 เดือน</v-btn
-          >
+
+        <div>
+          <div class="cardTab">
+            <v-btn
+              :color="tab === 1 ? '#084F93' : '#fff'"
+              @click="fnChangeTab(1)"
+              variant="flat"
+              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
+              >24 ชม</v-btn
+            >
+            <v-btn
+              @click="fnChangeTab(7)"
+              :color="tab === 7 ? '#084F93' : '#fff'"
+              variant="flat"
+              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
+              >7 วัน</v-btn
+            >
+            <v-btn
+              @click="fnChangeTab(30)"
+              :color="tab === 30 ? '#084F93' : '#fff'"
+              variant="flat"
+              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
+              >30 วัน</v-btn
+            >
+            <v-btn
+              @click="fnChangeTab(365)"
+              :color="tab === 365 ? '#084F93' : '#fff'"
+              variant="flat"
+              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
+              >12 เดือน</v-btn
+            >
+          </div>
         </div>
       </div>
 
@@ -354,6 +452,7 @@ const fnChangeTab = (value: tabType) => {
             class="leading-[40px] text-[34px] tracking-[0.136px] text-[#000]"
           >
             PUT YOUR DATA
+            
           </div>
         </div>
       </div>
@@ -366,7 +465,7 @@ const fnChangeTab = (value: tabType) => {
           </div>
           <div class="card mt-2">
             <div class="flex justify-between items-center">
-              <div>
+              <!-- <div>
                 <v-select
                   label="วันที่แสดง"
                   density="compact"
@@ -378,7 +477,7 @@ const fnChangeTab = (value: tabType) => {
                     'Florida',
                     'Georgia',
                     'Texas',
-                    'Wyoming'
+                    'Wyoming',
                   ]"
                   variant="outlined"
                 ></v-select>
@@ -388,10 +487,10 @@ const fnChangeTab = (value: tabType) => {
                 class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
               >
                 ดูเพิ่มเติม
-              </div>
+              </div> -->
             </div>
 
-            <div class="relative flex justify-center">
+            <!-- <div class="relative flex justify-center">
               <div class="w-[250px] h-[250px]">
                 <Pie :data="chartData" :options="chartOption" />
               </div>
@@ -410,13 +509,13 @@ const fnChangeTab = (value: tabType) => {
                   <div
                     class="w-5 h-5 rounded-full"
                     :style="{
-                      backgroundColor: item
+                      backgroundColor: item,
                     }"
                   ></div>
                   <div>{{ chartData.labels[index] }}</div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -426,7 +525,7 @@ const fnChangeTab = (value: tabType) => {
           </div>
           <div class="card mt-2">
             <div class="flex justify-between items-center">
-              <div>
+              <!-- <div>
                 <v-select
                   label="วันที่แสดง"
                   density="compact"
@@ -438,7 +537,7 @@ const fnChangeTab = (value: tabType) => {
                     'Florida',
                     'Georgia',
                     'Texas',
-                    'Wyoming'
+                    'Wyoming',
                   ]"
                   variant="outlined"
                 ></v-select>
@@ -448,11 +547,11 @@ const fnChangeTab = (value: tabType) => {
                 class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
               >
                 ดูเพิ่มเติม
-              </div>
+              </div> -->
             </div>
 
             <div class="relative flex justify-center">
-              <div class="w-[250px] h-[250px]">
+              <!-- <div class="w-[250px] h-[250px]">
                 <Pie :data="chartData" :options="chartOption" />
               </div>
               <div
@@ -470,12 +569,12 @@ const fnChangeTab = (value: tabType) => {
                   <div
                     class="w-5 h-5 rounded-full"
                     :style="{
-                      backgroundColor: item
+                      backgroundColor: item,
                     }"
                   ></div>
                   <div>{{ chartData.labels[index] }}</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -490,7 +589,12 @@ const fnChangeTab = (value: tabType) => {
         <v-card-text class="flex items-center justify-center relative">
           <div class="w-[256px] h-[100px] bg-emerald-600 mx-4"></div>
           <div class="absolute top-2 right-5">
-            <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+            <v-btn
+              @click="fnHandleCancelModal"
+              icon="fa-solid fa-xmark"
+              variant="text"
+              size="30"
+            ></v-btn>
           </div>
         </v-card-text>
         <v-card-text class="flex flex-col space-y-2">
@@ -507,7 +611,7 @@ const fnChangeTab = (value: tabType) => {
                 'ลดขั้นตอนการทำงาน',
                 'ใช้งานแบบไร้รอยต่อ',
                 'เชื่อมต่อกับระบบจัดส่ง',
-                'ส่งก่อนจ่ายที่หลัง'
+                'ส่งก่อนจ่ายที่หลัง',
               ]"
               class="flex items-center space-x-2"
             >
@@ -532,13 +636,18 @@ const fnChangeTab = (value: tabType) => {
             variant="tonal"
             @click="
               () => {
-                pageModal = 2
+                pageModal = 2;
               }
             "
           >
             เปิดใช้งานส่งพัสดุผ่าน SalesX
           </v-btn>
-          <v-btn class="w-full !rounded-lg" variant="text" color="#084F93">
+          <v-btn
+            class="w-full !rounded-lg"
+            variant="text"
+            color="#084F93"
+            @click="fnHandleCancelModal"
+          >
             จัดส่งโดยร้านค้าเอง
           </v-btn>
         </v-card-text>
@@ -556,7 +665,12 @@ const fnChangeTab = (value: tabType) => {
               เพื่อช่วยให้แพลตฟอร์มเสนอบริการได้อย่างเหมาะสม
             </div>
           </div>
-          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+          <v-btn
+            @click="fnHandleCancelModal"
+            icon="fa-solid fa-xmark"
+            variant="text"
+            size="30"
+          ></v-btn>
         </v-card-text>
 
         <v-card-text class="grid grid-cols-2 gap-4 border-b border-b-[#EEEDF1]">
@@ -664,7 +778,8 @@ const fnChangeTab = (value: tabType) => {
             <div class="grid grid-cols-6">
               <div
                 v-for="(item, index) in radioSize"
-                class="flex flex-col justify-center items-center"
+                class="flex flex-col justify-center items-center cursor-pointer select-none"
+                @click="radioSizeValue = item.value"
               >
                 <div class="w-[60px] h-[60px] bg-emerald-600"></div>
                 <v-checkbox
@@ -704,7 +819,7 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 1
+                pageModal = 1;
               }
             "
           >
@@ -716,7 +831,7 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 3
+                pageModal = 3;
               }
             "
           >
@@ -731,7 +846,12 @@ const fnChangeTab = (value: tabType) => {
       >
         <v-card-text class="flex justify-between">
           <div class="title-leading-5">เลือกผู้ให้บริการจัดส่ง</div>
-          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+          <v-btn
+            @click="fnHandleCancelModal"
+            icon="fa-solid fa-xmark"
+            variant="text"
+            size="30"
+          ></v-btn>
         </v-card-text>
 
         <v-card-text class="grid grid-cols-4 gap-6">
@@ -752,13 +872,13 @@ const fnChangeTab = (value: tabType) => {
           </div>
 
           <div
-            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden cursor-pointer select-none"
             @click="radioPackage = 'flash'"
             :style="{
               border:
                 radioPackage === 'flash'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1'
+                  : '1px solid #EEEDF1',
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -773,8 +893,10 @@ const fnChangeTab = (value: tabType) => {
                 color="#084F93"
                 class="!flex-none disable-min-height"
               ></v-checkbox>
+              <!-- bg-[url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU)]  -->
               <div
-                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU)] h-[50px]"
+                class="w-full mb-2 rounded-lg bg-center bg-cover h-[50px]"
+                :style="{ backgroundImage: `url(${flashIcon})` }"
               ></div>
             </div>
             <div class="h-[7.69%] flex justify-center w-full border-b">
@@ -813,13 +935,13 @@ const fnChangeTab = (value: tabType) => {
           </div>
 
           <div
-            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
-            @click="radioPackage = 'jandt'"
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none cursor-pointer"
+            @click="radioPackage = 'jAndT'"
             :style="{
               border:
-                radioPackage === 'jandt'
+                radioPackage === 'jAndT'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1'
+                  : '1px solid #EEEDF1',
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -829,13 +951,14 @@ const fnChangeTab = (value: tabType) => {
                 true-icon="fa-solid fa-circle-check"
                 false-icon="fa-regular fa-circle"
                 :model-value="radioPackage"
-                true-value="jandt"
+                true-value="jAndT"
                 hide-details
                 color="#084F93"
                 class="!flex-none disable-min-height"
               ></v-checkbox>
               <div
-                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABLFBMVEXtHiT////pAAD8///tHijvHiTtGRjfSlD//v/sICLtHybsAADwHSTlAADrICT5///4z83uGh/lNzbgAAD12tfkSkfjJyPmIib+//vuABLxAADmMjj//P/xHCf///jrHynx0MrnVFDxABj0AA/lAArnJC389O7lFRj36+rxs6j/9/PqcHDmfHTjJibeOTbmSU7XVVnwuLPvq6fog4HoU0vxvbPolYbktLTqi4PrV2D53t7uxbrsjpHrm5jgJi/gOT775NvldnjqgHLroZDoRUXmY13mXFrzsbbeWmfwmZf45enxva/hfIDqpZ/VMjDxb2z07eD1++zibXfu0cLVWlD61NP0xcvyc3DuaV/rjpnjdGDzhoTjU1veZ2bqpKfpq5zcJwnek4/XSj7xzb4D8RA6AAAOBklEQVR4nO2aDXvaRraAJQ0aIyFpGBCgASRACEnmw1RQx8QGI1oblzTe4Oba7a5jtrv7///DPZKcNHV6m/Ym6/jZnTcxIOlIzNE5cz4GCQKHw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw3mqGIKWvBqqAW9K+u/di5IKGMY7YfW9o5m4/UUG/WeQbaOmyLJGqQxbuYfAPk3T5AyQ+0DgPfWfKLKtgXaUZvbCD6CqkFiZZiiUPhQAkaeuoyyPDkrAQaMnC3TvAWNFkI30eMpB5aHA3leN7N48YVgkAkh0SjI+EH+FJU6ooBeR+AEo2wevxZYif2kVfh8Fm9lgY0/A0wd6+LUc+xqh/Ac6kjDaj6Lo4nAS4CfupIJSs/KpuaK64EUPTPiMtcCEFso/1DB/NEt49nVBMbQnbkP8HDVTe02ZIB0ng0f5vHUyX5hgQi+HB1beEh9omHecvpXQPrVl4YkrKHjzVMO8uKSGFKbjJ9aq4HYLC3Lr2V77Aw/Nk7ASVKvV0elBz33qLgpIxdRCyC9rNficBBGyqCtKL1jGFAcr8TfiTDovkdju0aceZQRVEzw/n2p4Ism17qWYzyNy1Qls8L7GN4IaxO/Fnfx7URR4LWDVfuo2zOVoxcnG/K0rG7QCnxFyzqiaM7Qa5MLWWWVcyTgzrST6oJP77U6N1r70+D+OVsO3KLPNOZWNXKGISJOglVsTDC2JkQoULVoKHTmZ9WbdbAemmvalx/9xNIPtp3kb8n0gaDauOE1iETPQFCEtxlRVNZQUfH7vnBWa7VBy6lMvZoAclcwsdJhYUzRVK8xJEll3egsMaFDDtlUb1ATR7iT1ZtQvJ91EuuupR5kElZb8zDKRZ4NG7HmcKAjpoptUrFq5C76bKaK3s6x4oqtfeNB/Cpmu0/goilOvJRts5eRJalPrjgmCO9vu3tQKiYaK1rufhs/cLz3oP0WObUiqoTWmORsPrftyDSHrrmt4F3AkjDxQUGWD+2nYeZvk7Rq0zrZiwEwVDBWmtKLIGjTNsgxRSlVoanuqyknRA8knp+Tg4KPP3JwUZcnbDwTZ7ThpZiSZlqu6FOYJQrEEtlYLi0zBsKclXgqx1BDsXE6xQTMNZquhCXKu1WolV5VtNafCAYjGBvg+3CBqaDmqCJr66B5ulP3U95J8r9Rikm6cfOekWm/eoDzJo4glU9K7zjQsSjaMUq7VaoF9SmvUUDFtjTQP13oBw5Sy1mkPB4ZNR3YAQrZBaaPRo1ARGo0G5J7H1pD20lSB0IJp3mVWt+w8fQUT0SEobCKoWQcwKkp7YVbXbLq2rCpeCLyIG9+Hf2feItwuh3EYxpMRDU7gg7lR6KgNO8KwUhiavh++ZPri2OqHe4+eQdkqSwHimgq1RAcCsVKWpcs0Z6Qq+SP6S0RqEhBUcvgMsoaT3wYzKGcbTTLXD5G1JWKbeRYKfSIu9DMrvUR5apF+n7wpTETRbzrVx9dwklXSzqmW6ZBHa4iV1DvJJqPYtC5ZKrjIYq5fkyG+sKkY/+W0UeqOLFSJyInrxeJUWkG5Nxadqh6hF94r4i9PG6f4BTr0vJ9wA5F5ufcG5x5BqSS0qWmxAhuQ71Mbmp6GB1ldvYdl2cCj43sTXjWSNTgo57KjryHsaEphgk70Qp2q0B4XLb+BT0NrLZWItRyKsSddIrNwidrlQgGfbsVIh+m5RmRaoDZ+hEgjGy0qFd5S9dOilOx7Ns2qMnLoYcVW6qf3CzH/YImGmpeFWbQrQHiyJdMK222zpOEfoMa7C9w3yD+tHpJteYLalVnTGkhFFLaL7YoeEdEcYwpRTDwsJUt3//5CqCVNzV/IZ937FNtG6SrJEQRFy4IeDIr3NtwVkqlDx1kTKX6VBEM1yAqhIOe9QsiUbPDa5os+IWup3SQiCddSkPgAcpZur02QM3DxXkjELTTZ/3b9oFCp+uRth5ek+rTsHuOWKmWLNE3RieP+27UnC/p8OAk/y8SdZGFcFs4cZzXugGlGIbLQkur70FT6UYfVQnJ4kkdn3qkj/jBedxTBDaY+VPKUthaEHBYeI+N7GwRt7luyDj6kiqrRik8s2E78FtIEZEKo4Ijo7IGPFbKiFJksMQIeoJDVPY16h2LURhsmwYuuexiazX6pbKJF/Q0Sy5LX1YIAFzYorOqUlYvi6/ojKEiDbdMSH9CWVJge7t2WQBEDqlhW0utnqxVkG0AvFWYRaZIEVhUCa/w/63VHXxGr9wzFesFHd1hLVBfDQCqKE2kuxuvz9U/eZtoYm6hduByM1j7ZsUfwUvYtIg8VFJ956c8yzFj4KK1rUFKtPZteiYls2w7W2eIFGrCkdWLtNCYVl02ySRLfdz1RXFItzSltvbAvFvUI7gjEGA/OQ2Q7PocNguIGfQQvZYfFdvEB1x3okZLqUZbo+aJ4bV4XJy8rHpOmxZvk+ICtrzPJBk40pPvJNa6n316fGBRfXN92rqMWVNgC25hzxqbXkT5Jr7vxFtfHZlRhpX14X0DxpjxCLPWkD6HvjsqUSV7gecxN9uE0pcBhmp3lJY0DFKk43cTU8wRN9rxA8bxs4IGH4RKwG6fiGA7WAkYFmXlGgJ9Mx2wnqzD3nx8OSpZ/eb0XkO9/fEu2kvOS7VQCeilBSa6WJFRZkx+rsVB/g18L2LbxK9Xkdydq96oZRnoWFHDJjl9Fj1RVuWakKzyJZopsQGdlQPf4iJ1T0pRmNz1zuj/gPfK7l/ev8tEzfuP9P4Qvos5n/lIZIhGmH5ejf0DmM6BCtewxQNCyiQ8zSFNbWvKQAvwZOSWZVzBoVcAMtzCjrWTeGak/CyBn2FpNY5Lu0Vqy05Bp6cde8OPXVJahMFcguAgw2WjA6pJLW2mYgi+wVYP+tNbSqS8nzzvAhFANo6Z+zMP/H8gajo6OjqKRkT1YYai1mp2ryRq81Vq24VKILxD4VDyfeNQ4mnftlgo3IxmTlshBlAkWprkzaDqFa3Qu9nriXzFcThVsW1GSu0Xvjm6OVp6WaCwnsUWjo2bkgX62rVI5yYXJalWWFT9z3FFxhVwfHe0ophrGlFHmqipOtxjTVBd71KaBS2tsisZSZI27AUgYgQGFpZbIqUY1RvsXV21JCSh2bT3aer1XpeRBBQqxEt7AiF5EjkwyxxTKPKxpjGGl9bcz6tIgsFUBrigY8HUKnI+Vz2RFO0sG4B54hRqFQvd8PvIGm9HtV5fPGJ29WQzLq2hTY+fR7pV0Ptl9R2nQn3wN/frzyeXaLc1LbPWjN3tzOaDezukUpDk6KMHmPOcd39TXt+zVYHV0R+vj3aTjqoIeFwvl8EIfDPByUxotLuZqZU7Xg7v9IcWni/1zV5lfzHvqJpqX3o7t05IkTAOFUprcZnZprVYDvCdOV+KmQrZFtCqLV9vB350TMhmjYnv/DLVfHzLZi8LtTfnOMWNfHopVqT/RQW7IemEkae4AjQdo2yYzo7+RijF0wq9fOLl1v236I01oOTeDydVd3Y+g8q62/ZN4NOlLRyQ20dlpPy6Sxkk+is8Om1Hc0ZT7J1jopxhTzi0bGbRgNrfWjcd2fn9XX4mDcnNSIhtpT5xXmtEQDcvSivwNqjKB7pFmVYpv9DHZm/j6AVqNyUzCeC1+5QrS3KrtN/e8/GYsdiR/X3JupCkaXR+fXpBWFT8nfkja3aUzKxzGOjr0JL1dlI7j8nPUuQj/shAPXphVSQ9No0yV+5Ete5/SFdPkN/gE0+v5k2pvZHvnyNTZpK8H4ubWKXlzciW2S0ZbjE9/vkFxD2ZT7uqyviTT+lqstIuFIWpMnYaSoz+KZzgnmTGMuV4R11NkHJBvltZAn4Qjq+n4EGDcGWoE36G7c/FAj4+kGfGHZeev8L8+twJolZszb+jDbR32rzZUuk5HZqEfPumHcqNWTTHoWLyTpACPfVPs1K9vpA06uHihewvyc1k3qPRPccX0PfElVjFIdtfiQGqHwXYiRX45ij0IOHtkLkkL8Q43d4WXTu8wlF6h0UunVDdvquI/9LKhKuUoLAc7VJmL5aU4xVL5Og7EAdwOuITuR3oZG1L5CBrI8tFWFar31IRPWWHUNJr+uKm5QzE8Dm96/nU5Nn9+4bTJpBye1GvjfFx8HZj/Ou7/07wxnYqruDNrGQRh2EYr3ey30UL3T7ojOxfciMehuCisrUE9CvV/odlC1Pd9VoZ911eH8Yrl2BbFfn5XH4qvQ/90Y5443w7F5czqsTAqR6RozgbxifX94PimHzFb0e75pKB6/1ShYdDO9HZ2e3c+U+h4doYWk5eBNu2wFl1fXKyE+cVk3J1eXJyxKqXnUzBkY3exdmljt78S8AzCJG3h4Jv9XYflzmbVYDDE4914PfReDWn12RnrbaJFg8rqcHa7KumUDi92yy5cecg6t8F6aNSmHRzM9hels0k0xZXL72c13Lv3zT9UFf/fvC2xofKAWoVRlwk5Wl9ZB3WmqIwqds4t6C5lhS413HqXytTQIH3ZyYKja9iY6UyWXarIigrZm0lJaIbiwMU2pFSKIbNpcFhQWLJ2CskO6iaqqopbl2SDFrquQSH7QRqB3EqhoqK0W4DA7rpusi4kv+25Pnc9CdVNaPyW66sfbP5Oqvpzo/r9a31ujNxyjz7G4voXQ82Bo/xHa8jhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDj/Ffwv2Aag9iezmiQAAAAASUVORK5CYII=)] h-[50px]"
+                class="w-full mb-2 rounded-lg bg-center bg-cover h-[50px]"
+                :style="{ backgroundImage: `url(${jAndTIcon})` }"
               ></div>
             </div>
             <div class="h-[7.69%] flex justify-center w-full border-b">
@@ -874,13 +997,13 @@ const fnChangeTab = (value: tabType) => {
           </div>
 
           <div
-            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none"
+            class="w-full h-[680px] rounded-lg px-2 relative overflow-hidden select-none cursor-pointer"
             @click="radioPackage = 'kerry'"
             :style="{
               border:
                 radioPackage === 'kerry'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1'
+                  : '1px solid #EEEDF1',
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -896,7 +1019,8 @@ const fnChangeTab = (value: tabType) => {
                 class="!flex-none disable-min-height"
               ></v-checkbox>
               <div
-                class="w-full mb-2 rounded-lg bg-center bg-cover bg-[url(https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png)] h-[50px]"
+                class="w-full mb-2 rounded-lg bg-center bg-cover h-[50px]"
+                :style="{ backgroundImage: `url(${kerryIcon})` }"
               ></div>
             </div>
             <div class="h-[7.69%] flex justify-center w-full border-b">
@@ -943,7 +1067,7 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 2
+                pageModal = 2;
               }
             "
           >
@@ -955,7 +1079,7 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 4
+                pageModal = 4;
               }
             "
           >
@@ -971,7 +1095,12 @@ const fnChangeTab = (value: tabType) => {
         <v-card-text class="flex justify-between relative">
           <div class="title-leading-5">รูปแบบการชำระเงิน</div>
 
-          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+          <v-btn
+            @click="fnHandleCancelModal"
+            icon="fa-solid fa-xmark"
+            variant="text"
+            size="30"
+          ></v-btn>
         </v-card-text>
 
         <v-card-text class="space-y-3">
@@ -982,7 +1111,7 @@ const fnChangeTab = (value: tabType) => {
               border:
                 paymentMethod === item.value
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1'
+                  : '1px solid #EEEDF1',
             }"
             @click="paymentMethod = item.value"
           >
@@ -1019,7 +1148,7 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 3
+                pageModal = 3;
               }
             "
           >
@@ -1031,11 +1160,150 @@ const fnChangeTab = (value: tabType) => {
             size="large"
             @click="
               () => {
-                pageModal = 5
+                pageModal = 5;
               }
             "
           >
             ต่อไป
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
+      <v-card
+        v-else-if="pageModal === 4"
+        class="rounded-lg min-w-[560px] px-4 pt-2"
+      >
+        <v-card-text class="flex justify-between relative">
+          <div class="title-leading-5">รูปแบบการชำระเงิน</div>
+
+          <v-btn
+            @click="fnHandleCancelModal"
+            icon="fa-solid fa-xmark"
+            variant="text"
+            size="30"
+          ></v-btn>
+        </v-card-text>
+
+        <v-card-text class="space-y-3">
+          <div
+            class="rounded-lg p-3 pl-5 flex justify-between cursor-pointer select-none"
+            v-for="item in paymentMethodData"
+            :style="{
+              border:
+                paymentMethod === item.value
+                  ? '1px solid #084f93'
+                  : '1px solid #EEEDF1',
+            }"
+            @click="paymentMethod = item.value"
+          >
+            <div class="flex space-x-4 justify-center items-center">
+              <v-icon color="#084F93">fa-solid fa-wallet</v-icon>
+              <div class="leading-[22px] tracking-[-0.05px]">
+                {{ item.name }}
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="leading-[22px] tracking-[-0.05px] max-w-[200px]">
+                {{ item.title }}
+              </div>
+              <v-checkbox
+                true-icon="fa-solid fa-circle-check"
+                false-icon="fa-regular fa-circle"
+                :model-value="paymentMethod"
+                :true-value="item.value"
+                hide-details
+                color="#084F93"
+                readonly
+                class="!flex-none disable-min-height"
+              ></v-checkbox>
+            </div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-x-2 flex mb-2">
+          <v-btn
+            class="w-1/2 !rounded-lg"
+            variant="outlined"
+            color="#084F93"
+            size="large"
+            @click="
+              () => {
+                pageModal = 3;
+              }
+            "
+          >
+            ย้อนกลับ
+          </v-btn>
+          <v-btn
+            class="w-1/2 !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            size="large"
+            @click="
+              () => {
+                pageModal = 5;
+              }
+            "
+          >
+            ต่อไป
+          </v-btn>
+        </v-card-text>
+      </v-card>
+
+      <v-card v-else-if="pageModal === 5" class="rounded-lg min-w-[560px] pt-2">
+        <v-card-text class="flex justify-between relative">
+          <div>
+            <div class="title-leading-5">พร้อมเริ่มต้นใช้งาน</div>
+            <div
+              class="text-[16px] tracking-[-0.032px] leading-[20px] opacity-[0.6] mt-1"
+            >
+              คุณได้ทำการตั้งค่าระบบขนส่งเรียบร้อยแล้ว
+              สามารถเริ่มใช้งานระบบได้ทันที
+            </div>
+          </div>
+
+          <v-btn icon="fa-solid fa-xmark" variant="text" size="30"></v-btn>
+        </v-card-text>
+
+        <v-card-text
+          class="space-y-5 items-center flex justify-center flex-col"
+        >
+          <div class="w-[360px] h-[160px] bg-emerald-500"></div>
+
+          <div class="flex space-x-5 flex-row">
+            <!-- <font-awesome-icon icon="fa-solid fa-repeat" /> -->
+            <div
+              class="text-[#084F93] flex items-center justify-center font-[600]"
+            >
+              เชื่อมต่อขนส่งสำเร็จ
+            </div>
+            <div class="flex items-center justify-center">
+              <v-icon color="#084F93">fa-solid fa-repeat</v-icon>
+            </div>
+            <div
+              class="rounded-lg bg-red-500 w-[140px] h-[50px] bg-center bg-cover"
+              :style="{ backgroundImage: `url(${selectedPackage})` }"
+            ></div>
+          </div>
+        </v-card-text>
+
+        <v-card-text class="space-x-2 flex mb-2">
+          <v-btn
+            class="w-1/2 !rounded-lg !bg-[#084F93] text-white"
+            variant="tonal"
+            size="large"
+            @click="showModal = false"
+          >
+            เริ่มสร้างคำสัั่งซื้อแรก
+          </v-btn>
+          <v-btn
+            class="w-1/2 !rounded-lg"
+            variant="outlined"
+            color="#084F93"
+            size="large"
+            @click="showModal = false"
+          >
+            สำรวจด้วยตัวเอง
           </v-btn>
         </v-card-text>
       </v-card>
@@ -1104,6 +1372,12 @@ const fnChangeTab = (value: tabType) => {
 .labelSize div div div label {
   font-size: 14px;
 }
+
+.color-icon .v-btn__append {
+  color: #084f93;
+  font-size: 16px;
+}
+
 .label-radio div div div label {
   /* background-color: red; */
   font-size: 14px;
