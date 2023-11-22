@@ -2,36 +2,38 @@
   <div class="flex justify-between p-4 md:ml-64 pt-[15px] items-center">
     <h1
       class="text-[16px] font-bold text-[#084F93]"
-      v-if="Breadcrumb.length <= 1"
+      v-if="breadcrump.length <= 1"
     >
-      <span v-for="(item, index) in Breadcrumb" :key="index">{{ item }}</span>
+      <span v-for="(item, index) in breadcrump" :key="index">{{
+        item.text
+      }}</span>
     </h1>
 
     <div class="flex" v-else>
       <nav
         class="flex"
         aria-label="Breadcrumb"
-        v-for="(item, index) in Breadcrumb"
+        v-for="(item, index) in breadcrump"
         :key="index"
       >
         <ol
           class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse"
         >
-          <li class="inline-flex items-center">
+          <li class="inline-flex items-center cursor-pointer">
             <a
-              href="/"
+              @click="item.callback"
               :class="`inline-flex items-center text-[16px] ${
-                index === Breadcrumb.length - 1
+                index === breadcrump.length - 1
                   ? 'font-bold text-[#084F93]'
                   : 'text-[#C4C6CF]'
               }`"
             >
-              {{ item }}
+              {{ item.text }}
             </a>
           </li>
           <span
             class="mx-2 text-gray-400"
-            v-if="index !== Breadcrumb.length - 1"
+            v-if="index !== breadcrump.length - 1"
             >/</span
           >
         </ol>
@@ -140,7 +142,16 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-const { Breadcrumb } = defineProps(["Breadcrumb"]);
+// const { Breadcrumb } = defineProps(["Breadcrumb"]);
+
+const props = defineProps({
+  breadcrump: {
+    type: Array,
+    default: [],
+  },
+});
+
+const { breadcrump } = props;
 </script>
 
 <style></style>
