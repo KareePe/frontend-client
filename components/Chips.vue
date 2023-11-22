@@ -8,5 +8,4 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 const { text } = defineProps(["text"]);
-console.log(text);
 </script>

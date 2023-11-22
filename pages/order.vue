@@ -25,42 +25,43 @@ const headersTable: headerTableType[] = [
   {
     title: "ชื่อลูกค้า",
     align: "center",
-    key: "name"
+    key: "name",
+    sortable: false
   },
   {
     title: "หมายเลขคำสั่งซื้อ",
     align: "center",
-    key: "no"
+    key: "no",
+    sortable: false
   },
   {
     title: "เลขติดตามสถานะ",
     align: "center",
-    key: "no_status"
+    key: "no_status",
+    sortable: false
   },
   {
     title: "ราคา",
     align: "center",
-    key: "price"
+    key: "price",
+    sortable: false
   },
   {
     title: "วันที่สร้าง",
     align: "center",
-    key: "create_date"
+    key: "create_date",
+    sortable: false
   },
   {
     title: "ปริ้นท์",
     align: "center",
-    key: "print"
+    key: "print",
+    sortable: false
   },
   {
     title: "สถานะ",
     align: "center",
-    key: "status"
-  },
-  {
-    title: "",
-    align: "center",
-    key: "",
+    key: "status",
     sortable: false
   }
 ]
@@ -73,7 +74,7 @@ const tableItem: tableItemType[] = [
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "waiting"
   },
   {
     no: "SX1234567890",
@@ -83,10 +84,28 @@ const tableItem: tableItemType[] = [
     price: "100.00",
     status: "เสร็จสิ้น",
     print: "success"
-  }
+  },
+  {
+    no: "asdasdvvvv",
+    create_date: "13/01/2556 21:00",
+    name: "นายทดสอบ นามสกุลไม่ยาว",
+    no_status: "TH1283629CH82",
+    price: "100.00",
+    status: "เสร็จสิ้น",
+    print: "success"
+  },
+  {
+    no: "ddddddddd",
+    create_date: "13/01/2556 21:00",
+    name: "นายทดสอบ นามสกุลไม่ยาว",
+    no_status: "TH1283629CH82",
+    price: "100.00",
+    status: "เสร็จสิ้น",
+    print: "success"
+  },
 ]
 
-const selectedTask = ref()
+const selectedTask = ref([])
 </script>
 
 <template>
@@ -191,7 +210,7 @@ const selectedTask = ref()
       <div
         class="p-5 text-[#084F93] bg-[#E9E7EB] text-[14px] leading-5 !rounded-t-[8px] border-x border-t border-[#E9E7EB]"
       >
-        ข้อมูลคำสั่งซื้อทั้งหมด {{ tableItem.length }} รายการ
+         เลือก {{ selectedTask.length }} จาก ข้อมูลทั้งหมด {{ tableItem.length }} รายการ
       </div>
       <div class="bg-[#E9E7EB] p-2 border border-[#E9E7EB]">
         <v-text-field
@@ -211,136 +230,191 @@ const selectedTask = ref()
       >
         <v-data-table
           v-if="tableItem.length > 0"
-          :items="tableItem"
-          :headers="headersTable"
-          item-key="no"
-          show-select
-          :single-select="false"
-          show-expand
-          id="table-info"
-          no-data-text="ไม่มีข้อมูล"
-          items-per-page-text="จำนวนแสดงผล"
-          class="!rounded-[0]"
           v-model="selectedTask"
+          :items="tableItem"
+          item-value="no"
+          :headers="headersTable"
+          show-select
+          show-expand
         >
-          <template
-            v-slot:item="{
-              item,
-              toggleExpand,
-              isExpanded,
-              internalItem,
-              toggleSelect,
-              isSelected
-            }"
-          >
-            <tr>
-              <td class="text-[16px] leading-5 tracking-[-0.23%]">
-                <v-checkbox
-                  :model-value="
-                    isSelected({
-                      selectable: false,
-                      value: item
-                    })
-                  "
-                  @click="
-                    toggleSelect({
-                      selectable: true,
-                      value: item
-                    })
-                  "
-                  hideDetails
-                ></v-checkbox>
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
+          <template #item.name="{ value, isSelected }">
+            <div
+              class="text-[16px] leading-5 tracking-[-0.23%] text-center text-black opacity-[0.87]"
+            >
+              {{ value }}
+            </div>
+          </template>
+          <template #item.no="{ value }">
+            <div class="flex items-center justify-center space-x-1">
+              <div
+                class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93]"
               >
-                {{ item.name }}
-                {{ selectedTask }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
+                {{ value }}
+              </div>
+              <v-btn
+                class="mb-1 cursor-pointer [&>span]:!text-[12px] !w-[40px] h-[15px]"
+                variant="text"
+                icon="fa-regular fa-copy"
+                color="#74777F"
               >
-                {{ item.no }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
+              </v-btn>
+            </div>
+          </template>
+          <template #item.no_status="{ value }">
+            <div
+              class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93]"
+            >
+              {{ value }}
+            </div>
+          </template>
+          <template #item.print="{ value }">
+            <div class="flex items-center justify-center space-x-2">
+              <div
+                v-if="value === 'success'"
+                class="bg-[#F79009] w-4 h-4 rounded-full"
+              ></div>
+              <div v-else class="bg-[#C4C6CF] w-4 h-4 rounded-full"></div>
+              <div
+                class="text-[16px] leading-5 tracking-[-0.23%] text-center text-black opacity-[0.87]"
               >
-                {{ item.no_status }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
-              >
-                {{ item.price }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
-              >
-                {{ item.create_date }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
-              >
-                {{ item.print }}
-              </td>
-              <td
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center !pr-10"
-              >
-                {{ item.status }}
-              </td>
-            </tr>
+                {{ value === "success" ? "ปริ้นแล้ว" : "รอปริ้น" }}
+              </div>
+            </div>
           </template>
           <template v-slot:expanded-row="{ columns, item }">
-            <td :colspan="columns.length">
-              <div
-                class="2xl:w-[35%] xl:w-[45%] lg:w-[60%] md:w-[65%] sm:w-[50%] w-[45%] p-2"
-              >
-                <div class="flex pl-14 flex-col">
-                  <div class="containerItemDetail">
-                    <div class="flex items-center">
-                      <img
-                        class="w-10 h-10 rounded-full mr-3"
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                        alt="user photo"
-                      />
-                      <!-- <div class="title">{{ item.buyer }}</div> -->
-                    </div>
-                    <div class="leading-5 text-[14px] font-bold">
-                      {{ item.status }}
-                    </div>
+            <td class="border-b border-b-[#EEEDF1]">
+              <div></div>
+            </td>
+            <td class="align-top border-b border-b-[#EEEDF1]">
+              <div>
+                <div class="box-border flex flex-col items-start p-4">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    ช่องทางการขาย-แพลตฟอร์ม
                   </div>
-
-                  <div class="containerItemDetail text-normal mt-2 space-y-1">
-                    <div class="flex items-center">
-                      <div>หมายเลขคำสั่งซื้อ</div>
-                    </div>
-                    <div class="font-bold opacity-[0.6]">2 รายการ</div>
+                  <div class="leading-5 text-[14px] text-black">
+                    Social media - Facebook
                   </div>
-                  <div class="containerItemDetail text-normal space-y-2">
-                    <div class="flex items-center w-[70%] justify-between">
-                      <div>สายชาร์จไอโฟน</div>
-                      <div>x8</div>
-                    </div>
-                    <div>฿6,320</div>
+                </div>
+                <div class="box-border flex flex-col items-start p-4 pt-0">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    สิ้นค้า
                   </div>
-                  <div class="containerItemDetail text-normal space-y-2">
-                    <div class="flex items-center w-[70%] justify-between">
-                      <div>โรบอทดูดฝุ่น</div>
-                      <div>x1</div>
-                    </div>
-                    <div>฿15,000</div>
+                  <div class="leading-5 text-[14px] text-black">
+                    รองเท้าแตะ x1
                   </div>
-                  <div class="containerItemDetail text-normal mt-2">
-                    <div class="flex items-center w-full justify-between">
-                      <div class="text-[#084F93]">9 ชิ้น</div>
-                      <div>
-                        <span class="mr-3">ยอดรวมการสั่งซื้อ</span> ฿21,230
-                      </div>
-                    </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    ปาท่องโก๋ x3
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    ลิปสติก x1
+                    <span class="text-[#084F93] cursor-pointer"
+                      >ดูเพื่มเติม</span
+                    >
                   </div>
                 </div>
               </div>
             </td>
+            <td class="align-top border-b border-b-[#EEEDF1]">
+              <div>
+                <div class="box-border flex flex-col items-start p-4">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    ช่องทางการชำระเงิน
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">COD</div>
+                </div>
+                <div class="box-border flex flex-col items-start p-4 pt-0">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    เบอร์โทร
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    091-234-5678
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="align-top border-b border-b-[#EEEDF1]">
+              <div>
+                <div class="box-border flex flex-col items-start p-4">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    น้ำหนัก
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    1.0 กิโลกรัม
+                  </div>
+                </div>
+                <div class="box-border flex flex-col items-start p-4 pt-0">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    ผู้สร้างคำสั่งซื้อ
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">Admin 1</div>
+                </div>
+              </div>
+            </td>
+            <td class="align-top border-b border-b-[#EEEDF1]">
+              <div>
+                <div class="box-border flex flex-col items-start p-4">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    ขนส่ง
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    Flash Express
+                  </div>
+                </div>
+                <div class="box-border flex flex-col items-start p-4 pt-0">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    วิธีจัดส่ง
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">
+                    ส่งผ่าน SalesX
+                  </div>
+                </div>
+                <div class="box-border flex flex-col items-start p-4 pt-0">
+                  <div
+                    class="text-black opacity-[0.6] text-[14px] leading-5 tracking-[-0.032px]"
+                  >
+                    วันที่เข้ารับ
+                  </div>
+                  <div class="leading-5 text-[14px] text-black">-</div>
+                </div>
+              </div>
+            </td>
+            <td
+              :colspan="4"
+              class="align-top pr-4 pt-4 border-b border-b-[#EEEDF1]"
+            >
+              <div class="flex justify-end items-center space-x-7">
+                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                  >fa-regular fa-pen-to-square</v-icon
+                >
+                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                  >fa-solid fa-print</v-icon
+                >
+                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                  >fa-solid fa-arrows-turn-to-dots</v-icon
+                >
+                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                  >fa-solid fa-file-invoice</v-icon
+                >
+              </div>
+            </td>
           </template>
+
           <template #bottom></template>
         </v-data-table>
         <div v-else class="h-[260px] flex justify-center items-center">
