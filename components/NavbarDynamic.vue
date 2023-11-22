@@ -40,26 +40,30 @@
 
     <div>
       <div class="flex items-center ms-3">
-        <div class="flex ml-[15px]">
+        <div class="flex space-x-10 mr-10">
+          <!-- [&>div]:bg-[#D1FADF] -->
           <v-btn
+            variant="flat"
+            class="[&>span>i]:text-[20px] [&>span>i]:text-[#084F93]"
+            icon="fa-solid fa-wallet"
             density="compact"
-            class="!w-[24px] h-[24px]"
-            prepend-icon="mdi-comment"
-            flat
           >
-            <template v-slot:prepend>
-              <v-icon color="#DAD9DD"></v-icon>
-            </template>
           </v-btn>
           <v-btn
+            variant="flat"
+            class="[&>span>i]:text-[20px] [&>span>i]:text-[#DAD9DD]"
+            icon="fa-solid fa-comment"
             density="compact"
-            class="!w-[24px] h-[24px]"
-            prepend-icon="mdi-bell"
-            flat
           >
-            <template v-slot:prepend>
-              <v-icon color="#084F93"></v-icon>
-            </template>
+          </v-btn>
+
+          <v-btn
+            variant="flat"
+            class="!w-[24px] h-[24px]"
+            icon=""
+            density="compact"
+          >
+            <div class="w-6 h-6 bg-red-400 rounded-full"></div>
           </v-btn>
         </div>
         <div>
@@ -135,8 +139,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
-const { Breadcrumb } = defineProps(["Breadcrumb"]);
+import { ref, onMounted, watch } from "vue"
+const { Breadcrumb } = defineProps(["Breadcrumb"])
 </script>
 
 <style></style>
