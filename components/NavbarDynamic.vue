@@ -5,7 +5,7 @@
       v-if="breadcrump.length <= 1"
     >
       <span v-for="(item, index) in breadcrump" :key="index">{{
-        item.name
+        item.text
       }}</span>
     </h1>
 
@@ -28,7 +28,7 @@
                   : 'text-[#C4C6CF]'
               }`"
             >
-              {{ item.name }}
+              {{ item.text }}
             </a>
           </li>
           <span
