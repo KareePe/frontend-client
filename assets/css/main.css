@@ -44,15 +44,20 @@ pre {
   font-family: "SFThonburi", sans-serif !important;
 }
 
-.v-field__field,.v-field--variant-outlined .v-field__outline{
+.v-field__field,
+.v-field--variant-outlined .v-field__outline {
   /* border : 1px solid #EEEDF1; */
   border-radius: 8px !important;
 }
 
-.v-field__field{
-  border:none !important;
+.v-field__field {
+  border: none !important;
 }
 
-.v-field{
+.v-field {
   border: none !important;
+}
+
+.card-border {
+  @apply border border-[#EEEDF1] p-2 rounded-lg;
 }
