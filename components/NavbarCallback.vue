@@ -21,7 +21,15 @@
         >
           <li class="inline-flex items-center cursor-pointer">
             <a
-              @click="item.callback()"
+              @click="
+                () => {
+                  if (breadcrump[breadcrump.length - 1].text === item.text) {
+                    console.log('ตัวสุดท้าย');
+                  } else {
+                    item.callback();
+                  }
+                }
+              "
               :class="`inline-flex items-center text-[16px] ${
                 index === breadcrump.length - 1
                   ? 'font-bold text-[#084F93]'
