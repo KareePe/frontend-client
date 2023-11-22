@@ -1,125 +1,125 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue"
 definePageMeta({
-  middleware: "auth-middleware",
-});
+  middleware: "auth-middleware"
+})
 
-type tabType = 1 | 7 | 30 | 365;
+type tabType = 1 | 7 | 30 | 365
 
-const tab = ref<tabType>(1);
-const showModal = ref<boolean>(false);
-const pageModal = ref(1);
+const tab = ref<tabType>(1)
+const showModal = ref<boolean>(false)
+const pageModal = ref(1)
 
-const radioSizeValue = ref("A");
+const radioSizeValue = ref("A")
 
-const paymentMethod = ref("SalesX");
+const paymentMethod = ref("SalesX")
 
 const paymentMethodData = ref([
   {
     value: "SalesX",
-    name: "กระเป๋าเงิน SalesX",
+    name: "กระเป๋าเงิน SalesX"
   },
   {
     value: "term",
     name: "เครดิตเทอม",
-    title: "วงเงิน 100,000.00 บาท หรือทุกๆ 7 วัน",
-  },
-]);
+    title: "วงเงิน 100,000.00 บาท หรือทุกๆ 7 วัน"
+  }
+])
 
 const radioSize = ref([
   {
     name: "กล่อง A",
     title: "14+20+6 = 40 ซม",
-    value: "A",
+    value: "A"
   },
   {
     name: "กล่อง B",
     title: "17+25+9 = 51 ซม",
-    value: "B",
+    value: "B"
   },
   {
     name: "กล่อง C",
     title: "20+30+11 = 61 ซม",
-    value: "C",
+    value: "C"
   },
   {
     name: "กล่อง D",
     title: "22+35+14 = 71 ซม",
-    value: "D",
+    value: "D"
   },
   {
     name: "กล่อง E",
     title: "14+20+6 = 81 ซม",
-    value: "E",
+    value: "E"
   },
   {
     name: "ใหญ่กว่ากล่อง E",
     title: "ผลรวม > 81 ซม",
-    value: "E+",
-  },
-]);
+    value: "E+"
+  }
+])
 
-const radioPackage = ref("flash");
+const radioPackage = ref("flash")
 
 const fnChangeTab = (value: tabType) => {
-  tab.value = value;
-};
+  tab.value = value
+}
 
 const flashIcon =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU";
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRysTmgrZal8QIIwXojSAkmz_hgwKVYR_lt4AOHrLRsDIma-7hE2JNKtix8FWk-SHT-A7M&usqp=CAU"
 
-const jAndTIcon = "https://i.ytimg.com/vi/mWi25JkVnAI/maxresdefault.jpg";
+const jAndTIcon = "https://i.ytimg.com/vi/mWi25JkVnAI/maxresdefault.jpg"
 const kerryIcon =
-  "https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png";
+  "https://www.gadgetzone.in.th/wp-content/uploads/2015/01/icon-kerry-express.png"
 
 const selectedPackage = computed(() => {
   switch (radioPackage.value) {
     case "flash":
-      return flashIcon;
+      return flashIcon
     case "kerry":
-      return kerryIcon;
+      return kerryIcon
     default:
-      return jAndTIcon;
+      return jAndTIcon
   }
-});
+})
 
 const fnHandleCancelModal = () => {
-  radioPackage.value === "flash";
-  paymentMethod.value === "SalesX";
-  radioSizeValue.value === "A";
-  showModal.value === false;
-};
+  radioPackage.value === "flash"
+  paymentMethod.value === "SalesX"
+  radioSizeValue.value === "A"
+  showModal.value === false
+}
 
 const options = ref({
   chart: {
     type: "area",
     zoom: {
-      enabled: false,
-    },
+      enabled: false
+    }
   },
   dataLabels: {
-    enabled: false,
+    enabled: false
   },
   stroke: {
-    curve: "smooth",
+    curve: "smooth"
   },
   xaxis: {
     type: "datetime",
     labels: {
       format: "d/MM",
-      showDuplicates: false,
-    },
+      showDuplicates: false
+    }
   },
   tooltip: {
-    enable: "false",
+    enable: "false"
   },
   yaxis: {
-    opposite: false,
+    opposite: false
   },
   legend: {
-    horizontalAlign: "left",
-  },
-});
+    horizontalAlign: "left"
+  }
+})
 
 const series = ref([
   {
@@ -127,27 +127,29 @@ const series = ref([
     data: [
       {
         x: new Date("2023-07-11").getTime(),
-        y: 14000000,
+        y: 14000000
       },
       {
         x: new Date("2023-08-12").getTime(),
-        y: 20000000,
+        y: 20000000
       },
       {
         x: new Date("2023-09-13").getTime(),
-        y: 1000000,
+        y: 1000000
       },
       {
         x: new Date("2023-10-14").getTime(),
-        y: 7000000,
+        y: 7000000
       },
       {
         x: new Date("2023-11-15").getTime(),
-        y: 15000000,
-      },
-    ],
-  },
-]);
+        y: 15000000
+      }
+    ]
+  }
+])
+
+const tableItemTotals = ref({})
 </script>
 
 <template>
@@ -441,10 +443,15 @@ const series = ref([
         <div>
           <div class="card mt-2">
             <div class="flex justify-between items-center">
-              <div
-                class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
-              >
-                สินค้าที่ขายได้
+              <div class="flex space-x-2 items-center">
+                <div
+                  class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+                >
+                  สินค้าที่ขายได้
+                </div>
+                <v-icon size="15"
+                  >fa-solid fa-arrow-up-right-from-square</v-icon
+                >
               </div>
               <div>
                 <v-select
@@ -458,7 +465,7 @@ const series = ref([
                     '5 เดือน',
                     '7 เดือน',
                     '9 เดือน',
-                    '12 เดือน',
+                    '12 เดือน'
                   ]"
                   variant="outlined"
                 ></v-select>
@@ -469,16 +476,16 @@ const series = ref([
               variant="flat"
               class="border border-[#EEEDF1] rounded-[8px] pb-[15px]"
             >
+              <!-- :headers="[]" -->
+              <!-- :items="[]" -->
               <v-data-table
-                :items="tableItem"
-                :headers="headersTable"
                 item-key="id"
                 no-data-text="ไม่มีข้อมูล"
                 items-per-page-text="จำนวนแสดงผล"
-                :items-per-page="itemsPerPage"
-                :page="page"
-                :search="search"
               >
+                <!-- :items-per-page="10" -->
+                <!-- :page="1" -->
+                <!-- :search="search" -->
                 <template
                   v-slot:item="{ item, toggleExpand, isExpanded, internalItem }"
                 >
@@ -494,13 +501,6 @@ const series = ref([
                     </td>
                     <td class="text-table">
                       {{ item.choice }}
-                    </td>
-
-                    <td class="text-table">
-                      <!-- <v-icon @click="fnSelectItem(item)" class="cursor-pointer"
-                >mdi-pencil</v-icon
-              > -->
-                      <v-btn icon="mdi-pencil" variant="text"></v-btn>
                     </td>
                   </tr>
                 </template>
@@ -609,7 +609,7 @@ const series = ref([
                 'ลดขั้นตอนการทำงาน',
                 'ใช้งานแบบไร้รอยต่อ',
                 'เชื่อมต่อกับระบบจัดส่ง',
-                'ส่งก่อนจ่ายที่หลัง',
+                'ส่งก่อนจ่ายที่หลัง'
               ]"
               class="flex items-center space-x-2"
             >
@@ -634,7 +634,7 @@ const series = ref([
             variant="tonal"
             @click="
               () => {
-                pageModal = 2;
+                pageModal = 2
               }
             "
           >
@@ -817,7 +817,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 1;
+                pageModal = 1
               }
             "
           >
@@ -829,7 +829,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 3;
+                pageModal = 3
               }
             "
           >
@@ -876,7 +876,7 @@ const series = ref([
               border:
                 radioPackage === 'flash'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1',
+                  : '1px solid #EEEDF1'
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -939,7 +939,7 @@ const series = ref([
               border:
                 radioPackage === 'jAndT'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1',
+                  : '1px solid #EEEDF1'
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -1001,7 +1001,7 @@ const series = ref([
               border:
                 radioPackage === 'kerry'
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1',
+                  : '1px solid #EEEDF1'
             }"
           >
             <!-- <div class="h-[7.69%] flex justify-center w-full"></div> -->
@@ -1065,7 +1065,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 2;
+                pageModal = 2
               }
             "
           >
@@ -1077,7 +1077,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 4;
+                pageModal = 4
               }
             "
           >
@@ -1109,7 +1109,7 @@ const series = ref([
               border:
                 paymentMethod === item.value
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1',
+                  : '1px solid #EEEDF1'
             }"
             @click="paymentMethod = item.value"
           >
@@ -1146,7 +1146,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 3;
+                pageModal = 3
               }
             "
           >
@@ -1158,7 +1158,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 5;
+                pageModal = 5
               }
             "
           >
@@ -1190,7 +1190,7 @@ const series = ref([
               border:
                 paymentMethod === item.value
                   ? '1px solid #084f93'
-                  : '1px solid #EEEDF1',
+                  : '1px solid #EEEDF1'
             }"
             @click="paymentMethod = item.value"
           >
@@ -1227,7 +1227,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 3;
+                pageModal = 3
               }
             "
           >
@@ -1239,7 +1239,7 @@ const series = ref([
             size="large"
             @click="
               () => {
-                pageModal = 5;
+                pageModal = 5
               }
             "
           >
