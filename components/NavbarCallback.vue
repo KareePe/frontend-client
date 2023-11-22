@@ -21,7 +21,7 @@
         >
           <li class="inline-flex items-center cursor-pointer">
             <a
-              @click="item.callback"
+              @click="item.callback()"
               :class="`inline-flex items-center text-[16px] ${
                 index === breadcrump.length - 1
                   ? 'font-bold text-[#084F93]'
@@ -151,6 +151,10 @@ const props = defineProps({
   },
 });
 
+// const emits = defineEmits(["navClick"]);
+// const fnEmitCall = () => {
+//   emits("navClick");
+// };
 const { breadcrump } = props;
 </script>
 
