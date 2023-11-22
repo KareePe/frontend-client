@@ -1,116 +1,139 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, watch, computed } from "vue";
+import SelectedItem from "@/components/Order/SelectedItem.vue";
 
 type headerTableType = {
-  title: string
-  key: keyof tableItemType | ""
-  sortable?: boolean
-  align?: "start" | "center" | "end"
-}
+  title: string;
+  key: keyof tableItemType | "";
+  sortable?: boolean;
+  align?: "start" | "center" | "end";
+};
 
 type tableItemType = {
-  name: string
-  no: string
-  no_status: string
-  price: string
-  create_date: string
-  print: "success" | "waiting"
-  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง"
-}
+  name: string;
+  no: string;
+  no_status: string;
+  price: string;
+  create_date: string;
+  print: "success" | "waiting";
+  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง";
+};
 
-const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"]
-const tab = ref("all")
+const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"];
+const tab = ref("all");
 
 const headersTable: headerTableType[] = [
   {
     title: "ชื่อลูกค้า",
     align: "center",
     key: "name",
-    sortable: false
+    sortable: false,
   },
   {
     title: "หมายเลขคำสั่งซื้อ",
     align: "center",
     key: "no",
-    sortable: false
+    sortable: false,
   },
   {
     title: "เลขติดตามสถานะ",
     align: "center",
     key: "no_status",
-    sortable: false
+    sortable: false,
   },
   {
     title: "ราคา",
     align: "center",
     key: "price",
-    sortable: false
+    sortable: false,
   },
   {
     title: "วันที่สร้าง",
     align: "center",
     key: "create_date",
-    sortable: false
+    sortable: false,
   },
   {
     title: "ปริ้นท์",
     align: "center",
     key: "print",
-    sortable: false
+    sortable: false,
   },
   {
     title: "สถานะ",
     align: "center",
     key: "status",
-    sortable: false
-  }
-]
+    sortable: false,
+  },
+];
 
 const tableItem: tableItemType[] = [
   {
     no: "SX1434567890",
     create_date: "13/01/2556 21:00",
-    name: "นายทดสอบ นามสกุลไม่ยาว",
+    name: "นายทดสอบ นามสกุลไม่ยาว1",
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "waiting"
+    print: "waiting",
   },
   {
     no: "SX1234567890",
     create_date: "13/01/2556 21:00",
-    name: "นายทดสอบ นามสกุลไม่ยาว",
+    name: "นายทดสอบ นามสกุลไม่ยาว2",
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "asdasdvvvv",
     create_date: "13/01/2556 21:00",
-    name: "นายทดสอบ นามสกุลไม่ยาว",
+    name: "นายทดสอบ นามสกุลไม่ยาว3",
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "ddddddddd",
     create_date: "13/01/2556 21:00",
-    name: "นายทดสอบ นามสกุลไม่ยาว",
+    name: "นายทดสอบ นามสกุลไม่ยาว4",
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
-]
+];
 
-const selectedTask = ref([])
+const selectedTask = ref([]);
+const navBarNew = ref([
+  {
+    text: "คำสั่งซื้อ",
+    callback: () => {},
+  },
+  {
+    text: "รายการคำสั่งซื้อ",
+    callback: () => fnHandleNavbarback(2, () => (itemSelected.value = null)),
+  },
+]);
+
+const itemSelected = ref<null | tableItemType>(null);
+
+const fnHandleNavbarback = (index: number, callback?: () => void) => {
+  let num = navBarNew.value.length - index;
+  for (let i = 1; i <= num; i++) {
+    navBarNew.value.pop();
+  }
+  if (callback) {
+    callback();
+  }
+};
 </script>
 
 <template>
-  <NavbarDynamic :Breadcrumb="['คำสั่งซื้อ', 'รายการคำสั่งซื้อ']" />
-  <div class="containerLayout h-[200vh]">
+  <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
+  <div class="containerLayout h-[200vh]" v-if="itemSelected === null">
     <!-- header  -->
     <div class="flex justify-between">
       <div class="min-w-[300px]">
@@ -208,10 +231,43 @@ const selectedTask = ref([])
 
     <div class="mt-4">
       <div
-        class="p-5 text-[#084F93] bg-[#E9E7EB] text-[14px] leading-5 !rounded-t-[8px] border-x border-t border-[#E9E7EB]"
+        class="flex bg-[#E9E7EB] !rounded-t-[8px] border-x border-t border-[#E9E7EB] justify-between items-center"
       >
-         เลือก {{ selectedTask.length }} จาก ข้อมูลทั้งหมด {{ tableItem.length }} รายการ
+        <div class="p-5 text-[#084F93] leading-5 text-[14px]">
+          เลือก {{ selectedTask.length }} จาก ข้อมูลทั้งหมด
+          {{ tableItem.length }} รายการ
+        </div>
+
+        <div class="flex space-x-2">
+          <v-btn
+            prependIcon="fa-solid fa-chevron-down"
+            variant="flat"
+            size="large"
+            class="rounded-lg !min-h-[45px] !bg-white mr-2 [&>span>i]:!text-[16px] !text-[#084F93] !border-[#084F93] !border"
+          >
+            สร้างเลขพัสดุ
+          </v-btn>
+          <v-btn
+            prependIcon="fa-solid fa-print"
+            variant="flat"
+            size="large"
+            color="#fff"
+            class="rounded-lg !bg-white !min-h-[45px] mr-2 px-12 [&>span>i]:!text-[16px] !text-[#084F93] !border-[#084F93] !border"
+          >
+            สั่งพิมพ์
+          </v-btn>
+          <v-btn
+            prependIcon="fa-solid fa-arrows-turn-to-dots"
+            variant="flat"
+            color="#084F93"
+            size="large"
+            class="rounded-lg !min-h-[45px] mr-2 [&>span>i]:!text-[16px]"
+          >
+            เปลี่ยนสถานะ
+          </v-btn>
+        </div>
       </div>
+
       <div class="bg-[#E9E7EB] p-2 border border-[#E9E7EB]">
         <v-text-field
           placeholder="เพิ่มตัวกรอง"
@@ -244,15 +300,24 @@ const selectedTask = ref([])
               {{ value }}
             </div>
           </template>
-          <template #item.no="{ value }">
+          <template #item.no="{ value, item, index }">
             <div class="flex items-center justify-center space-x-1">
               <div
-                class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93]"
+                class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93] cursor-pointer"
+                @click="
+                  () => {
+                    itemSelected = item;
+                    navBarNew.push({
+                      text: value,
+                      callback: () => {},
+                    });
+                  }
+                "
               >
                 {{ value }}
               </div>
               <v-btn
-                class="mb-1 cursor-pointer [&>span]:!text-[12px] !w-[40px] h-[15px]"
+                class="mb-1 cursor-pointer [&>span]:!text-[12px] !w-[40px] h-[15px] cursor-pointer"
                 variant="text"
                 icon="fa-regular fa-copy"
                 color="#74777F"
@@ -422,6 +487,9 @@ const selectedTask = ref([])
         </div>
       </v-card>
     </div>
+  </div>
+  <div class="containerLayout h-[200vh]" v-else>
+    <SelectedItem :data="itemSelected" />
   </div>
 </template>
 

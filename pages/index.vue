@@ -7,7 +7,7 @@ definePageMeta({
 type tabType = 1 | 7 | 30 | 365
 
 const tab = ref<tabType>(1)
-const showModal = ref<boolean>(false)
+const showModal = ref<boolean>(true)
 const pageModal = ref(1)
 
 const radioSizeValue = ref("A")
