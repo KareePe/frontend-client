@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between p-4 md:ml-64 pt-[15px] items-center">
+  <div class="flex justify-between p-4 lg:ml-80 pt-[15px] items-center">
     <h1
       class="text-[16px] font-bold text-[#084F93]"
       v-if="Breadcrumb.length <= 1"
