@@ -580,7 +580,7 @@ const tableItemTotals = ref({})
     </div>
   </div>
 
-  <v-dialog v-model="showModal" width="auto">
+  <v-dialog v-model="showModal" width="auto" persistent>
     <!-- 32px, 16px, 24px, 16px -->
     <v-fade-transition leave-absolute hide-on-leave>
       <v-card v-if="pageModal === 1" class="rounded-lg min-w-[435px] pt-2">
