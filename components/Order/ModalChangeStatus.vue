@@ -21,8 +21,8 @@ const { open, onsubmit, onclose } = defineProps({
 </script>
 
 <template>
-  <v-dialog :model-value="open" width="auto" persistent>
-    <v-card class="min-w-[380px] rounded-lg">
+  <v-dialog :model-value="open" width="380px" persistent>
+    <v-card class="rounded-lg">
       <v-card-text>
         <div class="flex justify-center items-center">
           <v-scroll-x-transition hide-on-leave>
