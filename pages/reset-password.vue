@@ -1,13 +1,13 @@
 <template>
-    <div class="bg-white w-full h-full flex justify-center items-center">
+    <div class="bg-white w-full h-full flex justify-center lg:items-center items-start">
       <div
-        class="border border-[#EEEDF1] rounded-[8px] w-[390px] h-auto p-[16px]"
+        class="lg:border border-0 border-[#EEEDF1] rounded-[8px] w-[390px] h-auto p-[16px]"
         v-if="step === 1"
       >
         <div class="text-center mb-[15px]">
           <img
             src="/images/SALESX_TECHNOLOGIES_LOGO_FINAL_PRIMARY_VERSION-01.png"
-            class="max-w-[100px] mb-[15px] ml-[50%] -translate-x-[50%]"
+            class="max-w-[100px] lg:mb-[15px] ml-[50%] lg:mt-0 my-[30px] -translate-x-[50%]"
             alt=""
           />
           <p class="font-bold text-[22px]">ยินดีต้อนรับ</p>
@@ -45,13 +45,13 @@
         </div>
       </div>
       <div
-        class="border border-[#EEEDF1] rounded-[8px] w-[390px] h-auto p-[16px]"
+        class="lg:border border-0 border-[#EEEDF1] rounded-[8px] w-[390px] h-auto p-[16px]"
         v-if="step === 2"
       >
         <div class="text-center mb-[15px]">
           <img
             src="/images/SALESX_TECHNOLOGIES_LOGO_FINAL_PRIMARY_VERSION-01.png"
-            class="max-w-[100px] mb-[15px] ml-[50%] -translate-x-[50%]"
+            class="max-w-[100px] lg:mb-[15px] ml-[50%] lg:mt-0 my-[30px] -translate-x-[50%]"
             alt=""
           />
           <p class="font-bold text-[22px]">รีเซ็ตรหัสผ่าน</p>
