@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .containerLayout {
-  @apply p-4 sm:ml-64;
+  @apply p-4 lg:ml-80;
 }
 
 @font-face {

@@ -135,6 +135,7 @@ const openModalConfirmCreate = ref(false)
 </script>
 
 <template>
+  <Toolbars />
   <div class="max-sm:hidden">
     <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
   </div>

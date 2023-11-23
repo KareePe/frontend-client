@@ -7,7 +7,7 @@ definePageMeta({
 type tabType = 1 | 7 | 30 | 365
 
 const tab = ref<tabType>(1)
-const showModal = ref<boolean>(true)
+const showModal = ref<boolean>(false)
 const pageModal = ref(1)
 
 const radioSizeValue = ref("A")
@@ -153,7 +153,7 @@ const tableItemTotals = ref({})
 </script>
 
 <template>
-  <!-- <Toolbars />-->
+  <Toolbars />
   <NavbarDynamic :Breadcrumb="['หน้าแรก']" />
   <div class="containerLayout h-[200vh]">
     <div class="card items-center relative">
