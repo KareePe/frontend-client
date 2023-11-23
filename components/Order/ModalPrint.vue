@@ -68,7 +68,7 @@ const RequireDocument = [
 
 <template>
   <v-dialog :model-value="open" width="auto" persistent>
-    <v-card class="min-w-[650px] rounded-lg">
+    <v-card class="w-full rounded-lg">
       <v-card-text>
         <div class="flex justify-between items-center">
           <div
@@ -154,7 +154,7 @@ const RequireDocument = [
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <div
-            class="rounded-lg border border-[#EEEDF1] pl-2 py-1 flex w-[calc(50%-16px)] cursor-pointer box-border select-none"
+            class="rounded-lg border border-[#EEEDF1] pl-2 py-1 flex max-[500px]:w-full w-[calc(50%-16px)] cursor-pointer box-border select-none"
             v-for="item in RequireDocument"
             @click="
               () => {

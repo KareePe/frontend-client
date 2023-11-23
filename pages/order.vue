@@ -135,6 +135,7 @@ const fnHandleNavbarback = (index: number, callback?: () => void) => {
 const openModalStatusNumber = ref(false);
 const openModalConfirmCreate = ref(false);
 const openModalChangeStatus = ref(false);
+const openModalPrint = ref(false);
 </script>
 
 <template>
@@ -511,7 +512,11 @@ const openModalChangeStatus = ref(false);
                 <v-icon color="#74777F" class="cursor-pointer" size="20"
                   >fa-regular fa-pen-to-square</v-icon
                 >
-                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                <v-icon
+                  color="#74777F"
+                  class="cursor-pointer"
+                  size="20"
+                  @click="openModalPrint = true"
                   >fa-solid fa-print</v-icon
                 >
                 <v-icon
@@ -570,7 +575,14 @@ const openModalChangeStatus = ref(false);
     "
   />
 
-  <ModalPrint/>
+  <ModalPrint
+    :open="openModalPrint"
+    :onclose="
+      () => {
+        openModalPrint = false;
+      }
+    "
+  />
 </template>
 
 <style scoped>
