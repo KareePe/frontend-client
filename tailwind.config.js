@@ -18,7 +18,9 @@ export default {
       primary: "#084F93",
       secondary: "#0BA5EC",
       "main-gray": "#C4C6CF",
-      "text-detail": "#1A1C1E"
+      "text-detail": "#1A1C1E",
+      header: "#084F93",
+      title: "#084F93"
     },
     fontSize: {
       header: "18px",
@@ -32,7 +34,9 @@ export default {
     },
     letterSpacing: {
       23: "-0.032px",
-      29: "0.075px"
+      29: "0.075px",
+      header: "-0.081px",
+      31: "-0.05px"
     }
   },
   plugins: [require("flowbite/plugin")]
