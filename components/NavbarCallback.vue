@@ -24,7 +24,7 @@
               @click="
                 () => {
                   if (breadcrump[breadcrump.length - 1].text === item.text) {
-                    console.log('ตัวสุดท้าย');
+                    
                   } else {
                     item.callback();
                   }

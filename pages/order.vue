@@ -1,72 +1,74 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, mergeProps } from "vue"
-import SelectedItem from "@/components/Order/SelectedItem.vue"
-import ModalNoStatus from "@/components/Order/ModalNoStatus.vue"
-import ModalConfirmCreateMaterial from "@/components/Order/ModalConfirmCreateMaterial.vue"
+import { ref, onMounted, watch, computed, mergeProps } from "vue";
+import SelectedItem from "@/components/Order/SelectedItem.vue";
+import ModalChangeStatus from "@/components/Order/ModalChangeStatus.vue";
+import ModalNoStatus from "@/components/Order/ModalNoStatus.vue";
+import ModalPrint from "@/components/Order/ModalPrint.vue";
+import ModalConfirmCreateMaterial from "@/components/Order/ModalConfirmCreateMaterial.vue";
 type headerTableType = {
-  title: string
-  key: keyof tableItemType | ""
-  sortable?: boolean
-  align?: "start" | "center" | "end"
-}
+  title: string;
+  key: keyof tableItemType | "";
+  sortable?: boolean;
+  align?: "start" | "center" | "end";
+};
 
 type tableItemType = {
-  name: string
-  no: string
-  no_status: string
-  price: string
-  create_date: string
-  print: "success" | "waiting"
-  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง"
-}
+  name: string;
+  no: string;
+  no_status: string;
+  price: string;
+  create_date: string;
+  print: "success" | "waiting";
+  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง";
+};
 
-const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"]
-const tab = ref("all")
+const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"];
+const tab = ref("all");
 
 const headersTable: headerTableType[] = [
   {
     title: "ชื่อลูกค้า",
     align: "center",
     key: "name",
-    sortable: false
+    sortable: false,
   },
   {
     title: "หมายเลขคำสั่งซื้อ",
     align: "center",
     key: "no",
-    sortable: false
+    sortable: false,
   },
   {
     title: "เลขติดตามสถานะ",
     align: "center",
     key: "no_status",
-    sortable: false
+    sortable: false,
   },
   {
     title: "ราคา",
     align: "center",
     key: "price",
-    sortable: false
+    sortable: false,
   },
   {
     title: "วันที่สร้าง",
     align: "center",
     key: "create_date",
-    sortable: false
+    sortable: false,
   },
   {
     title: "ปริ้นท์",
     align: "center",
     key: "print",
-    sortable: false
+    sortable: false,
   },
   {
     title: "สถานะ",
     align: "center",
     key: "status",
-    sortable: false
-  }
-]
+    sortable: false,
+  },
+];
 
 const tableItem: tableItemType[] = [
   {
@@ -76,7 +78,7 @@ const tableItem: tableItemType[] = [
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "waiting"
+    print: "waiting",
   },
   {
     no: "SX1234567890",
@@ -85,7 +87,7 @@ const tableItem: tableItemType[] = [
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "asdasdvvvv",
@@ -94,7 +96,7 @@ const tableItem: tableItemType[] = [
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "ddddddddd",
@@ -103,42 +105,42 @@ const tableItem: tableItemType[] = [
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
-  }
-]
+    print: "success",
+  },
+];
 
-const selectedTask = ref([])
+const selectedTask = ref([]);
 const navBarNew = ref([
   {
     text: "คำสั่งซื้อ",
-    callback: () => {}
+    callback: () => {},
   },
   {
     text: "รายการคำสั่งซื้อ",
-    callback: () => fnHandleNavbarback(2, () => (itemSelected.value = null))
-  }
-])
+    callback: () => fnHandleNavbarback(2, () => (itemSelected.value = null)),
+  },
+]);
 
-const itemSelected = ref<null | tableItemType>(null)
+const itemSelected = ref<null | tableItemType>(null);
 
 const fnHandleNavbarback = (index: number, callback?: () => void) => {
-  let num = navBarNew.value.length - index
+  let num = navBarNew.value.length - index;
   for (let i = 1; i <= num; i++) {
-    navBarNew.value.pop()
+    navBarNew.value.pop();
   }
   if (callback) {
-    callback()
+    callback();
   }
-}
-const openModalStatusNumber = ref(false)
-const openModalConfirmCreate = ref(false)
+};
+const openModalStatusNumber = ref(false);
+const openModalConfirmCreate = ref(false);
+const openModalChangeStatus = ref(false);
 </script>
 
 <template>
   <div class="max-sm:hidden">
     <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
   </div>
-  <!-- <img src="~/assets/images/order-modal.svg" alt="Discover Nuxt 3" /> -->
   <div class="containerLayout" v-if="itemSelected === null">
     <!-- header  -->
     <div class="flex justify-between">
@@ -158,14 +160,14 @@ const openModalConfirmCreate = ref(false)
     </div>
 
     <div
-      class="flex lg:space-x-10 lg:justify-between max-[1280px]:flex-col lg:space-y-0 space-y-4"
+      class="flex lg:space-x-10 lg:justify-between max-[1110px]:flex-col lg:space-y-0 space-y-4"
     >
       <div class="card-border space-x-2 flex scrollresponsive">
         <v-btn
           :variant="tab === 'all' ? 'flat' : 'text'"
           :color="tab === 'all' ? '#084F93' : '#000'"
           @click="tab = 'all'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           ทั้งหมด (926)
         </v-btn>
@@ -173,7 +175,7 @@ const openModalConfirmCreate = ref(false)
           :variant="tab === 'unfunded' ? 'flat' : 'text'"
           :color="tab === 'unfunded' ? '#084F93' : '#000'"
           @click="tab = 'unfunded'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           ยังไม่ชำระ (421)
         </v-btn>
@@ -181,7 +183,7 @@ const openModalConfirmCreate = ref(false)
           :variant="tab === 'beShipped' ? 'flat' : 'text'"
           :color="tab === 'beShipped' ? '#084F93' : '#000'"
           @click="tab = 'beShipped'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           ที่ต้องจัดส่ง (310)
         </v-btn>
@@ -189,7 +191,7 @@ const openModalConfirmCreate = ref(false)
           :variant="tab === 'sending' ? 'flat' : 'text'"
           :color="tab === 'sending' ? '#084F93' : '#000'"
           @click="tab = 'sending'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           กำลังจัดส่ง (14)
         </v-btn>
@@ -197,7 +199,7 @@ const openModalConfirmCreate = ref(false)
           :variant="tab === 'complete' ? 'flat' : 'text'"
           :color="tab === 'complete' ? '#084F93' : '#000'"
           @click="tab = 'complete'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           เสร็จสิ้น (181)
         </v-btn>
@@ -205,22 +207,26 @@ const openModalConfirmCreate = ref(false)
           :variant="tab === 'cancel' ? 'flat' : 'text'"
           :color="tab === 'cancel' ? '#084F93' : '#000'"
           @click="tab = 'cancel'"
-          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !min-h-[55px]"
+          class="rounded-lg text-[14px] [&>span]:leading-[20px] tracking-[-0.032px] !p-2"
         >
           ยกเลิก (181)
         </v-btn>
       </div>
 
-      <div class="flex space-x-4 items-center">
+      <div
+        class="flex max-[1110px]:!mt-4 max-[1110px]:!ml-0 justify-end space-x-4 items-center"
+      >
         <v-btn
           color="#084F93"
           icon="fa-solid fa-download"
+          density="compact"
           variant="outlined"
           class="!border !rounded-lg !min-w-[55px] !min-h-[55px]"
         ></v-btn>
         <v-btn
           color="#084F93"
           class="!border !rounded-lg !min-w-[55px] !min-h-[55px]"
+          density="compact"
           icon="fa-solid fa-upload"
           variant="outlined"
         ></v-btn>
@@ -229,7 +235,7 @@ const openModalConfirmCreate = ref(false)
           variant="flat"
           color="#084F93"
           size="large"
-          class="rounded-lg !min-h-[55px]"
+          class="rounded-lg !min-h-[55px] !p-2 icon-prepend"
           @click="openModalStatusNumber = true"
         >
           สร้างคำสั่งซื้อใหม่
@@ -247,7 +253,7 @@ const openModalConfirmCreate = ref(false)
         </div>
 
         <div class="flex space-x-2">
-          <v-menu>
+          <v-menu class="menu-bar">
             <template v-slot:activator="{ props: menu }">
               <v-btn
                 prependIcon="fa-solid fa-chevron-down"
@@ -260,20 +266,25 @@ const openModalConfirmCreate = ref(false)
               </v-btn>
             </template>
             <v-list>
-              <v-list-item>
+              <v-list-item class="!p-0">
                 <v-list-item-title
                   class="text-[#084F93] text-[16px] cursor-pointer"
                   @click="openModalConfirmCreate = true"
                 >
-                  เฉพาะรายการที่เลือก ({{ selectedTask.length }})
+                  <v-btn class="w-full" variant="text">
+                    เฉพาะรายการที่เลือก ({{ selectedTask.length }})</v-btn
+                  >
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item>
+
+              <v-list-item class="!p-0">
                 <v-list-item-title
                   class="text-[#084F93] text-[16px] cursor-pointer"
                   @click="openModalConfirmCreate = true"
                 >
-                  ทุกรายการที่ไม่มี
+                  <v-btn class="w-full !justify-start" variant="text">
+                    ทุกรายการที่ไม่มี</v-btn
+                  >
                 </v-list-item-title>
               </v-list-item>
             </v-list>
@@ -338,11 +349,11 @@ const openModalConfirmCreate = ref(false)
                 class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93] cursor-pointer"
                 @click="
                   () => {
-                    itemSelected = item
+                    itemSelected = item;
                     navBarNew.push({
                       text: value,
-                      callback: () => {}
-                    })
+                      callback: () => {},
+                    });
                   }
                 "
               >
@@ -502,7 +513,11 @@ const openModalConfirmCreate = ref(false)
                 <v-icon color="#74777F" class="cursor-pointer" size="20"
                   >fa-solid fa-print</v-icon
                 >
-                <v-icon color="#74777F" class="cursor-pointer" size="20"
+                <v-icon
+                  color="#74777F"
+                  class="cursor-pointer"
+                  size="20"
+                  @click="openModalChangeStatus = true"
                   >fa-solid fa-arrows-turn-to-dots</v-icon
                 >
                 <v-icon color="#74777F" class="cursor-pointer" size="20"
@@ -527,13 +542,11 @@ const openModalConfirmCreate = ref(false)
   <ModalNoStatus
     :open="openModalStatusNumber"
     :onsubmit="
-      (value:string) => {
-        console.log('hello', value)
-      }
+      (value:string) => {}
     "
     :onclose="
       () => {
-        openModalStatusNumber = false
+        openModalStatusNumber = false;
       }
     "
   />
@@ -542,13 +555,25 @@ const openModalConfirmCreate = ref(false)
     :open="openModalConfirmCreate"
     :onclose="
       () => {
-        openModalConfirmCreate = false
+        openModalConfirmCreate = false;
       }
     "
   />
+
+  <ModalChangeStatus
+    :open="openModalChangeStatus"
+    :onclose="
+      () => {
+        openModalChangeStatus = false;
+      }
+    "
+  />
+
+  <ModalPrint/>
 </template>
+
 <style scoped>
-@media (max-width: 1150px) {
+@media (max-width: 1435px) {
   .scrollresponsive {
     overflow-x: scroll;
   }
@@ -558,5 +583,13 @@ const openModalConfirmCreate = ref(false)
 <style>
 #table-info div table thead tr th:last-child {
   display: none;
+}
+
+.icon-prepend > .v-btn__prepend {
+  @apply ms-0 me-0;
+}
+
+.icon-prepend > .v-btn__prepend > i {
+  @apply !mx-2;
 }
 </style>

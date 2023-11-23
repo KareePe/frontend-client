@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from "vue"
-
-const route = useRoute()
-const router = useRouter()
-// onMounted(() => {
-//   if (!route.query.id) {
-//     router.replace("/order")
-//   }
-// })
+import { ref, onMounted, watch, computed } from "vue";
 </script>
 
 <template>
@@ -30,8 +22,20 @@ const router = useRouter()
         class="h-[24px] w-full bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84] absolute top-0 left-0"
       ></div>
 
-      <div class="text-header mt-4 font-[600] leading-[22px] tracking-header">
-        รายละเอียดคำสั่งซื้อ
+      <div class="flex justify-between">
+        <div
+          class="text-header mt-4 font-[600] leading-[22px] tracking-[-0.081px]"
+        >
+          รายละเอียดคำสั่งซื้อ
+        </div>
+        <v-btn
+          class="mt-2 !rounded-lg"
+          variant="text"
+          color="#084F93"
+          prepend-icon="fa-solid fa-share-nodes"
+        >
+          แชร์
+        </v-btn>
       </div>
 
       <div class="mt-3 flex space-x-4">
@@ -181,7 +185,7 @@ const router = useRouter()
                   0 ฿
                 </div>
               </div>
-              <div class="flex border-t border-t-main-gray pt-3">
+              <div class="flex border-t border-t-gray-300 pt-3">
                 <div
                   class="w-[40%] text-black font-bold text-title tracking-[-0.032px] leading-4 opacity-[0.87] min-w-[136px]"
                 >
@@ -193,7 +197,7 @@ const router = useRouter()
                   :
                 </div>
                 <div
-                  class="text-[14px] text-primary font-[600] tracking-23 leading-4 text-right w-full"
+                  class="text-[14px] text-[#084F93] font-[600] tracking-23 leading-4 text-right w-full"
                 >
                   6,027 ฿
                 </div>

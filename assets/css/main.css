@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .containerLayout {
-  @apply p-4 sm:ml-64;
+  @apply p-4 md:ml-64
 }
 
 @font-face {
@@ -61,4 +61,3 @@ pre {
 .card-border {
   @apply border border-[#EEEDF1] p-2 rounded-lg;
 }
-
