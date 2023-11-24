@@ -1,69 +1,70 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-const value = ref("");
+import { ref, onMounted, watch } from "vue"
+const value = ref("")
 const { open, onsubmit, onclose } = defineProps({
   open: {
     type: Boolean,
-    default: true,
+    default: true
   },
   onsubmit: {
     type: Function,
-    default: () => {},
+    default: () => {}
   },
   onclose: {
     type: Function,
-    default: () => {},
-  },
-});
-const activePrint = ref("A4");
-const RequireDocCheck = ref([]);
+    default: () => {}
+  }
+})
+const activePrint = ref("A4")
+const RequireDocCheck = ref([])
+const paperNum = ref("")
 const selectPrint = [
   {
     name: "A4",
     value: "A4",
     subtitle: "เหมาะสำหรับ เครื่องพิมพ์ต่อคอมพิวเตอร์",
-    icon: "fa-regular fa-file-lines",
+    icon: "fa-regular fa-file-lines"
   },
   {
     name: "4*4",
     value: "4*4",
     subtitle: "เหมาะสำหรับ เครื่องพิมพ์ TSC",
-    icon: "fa-regular fa-file-lines",
+    icon: "fa-regular fa-file-lines"
   },
   {
     name: "4*6",
     value: "4*6",
     subtitle: "เครื่องพิมพ์ต่อคอมพิวเตอร์",
-    icon: "fa-regular fa-file-lines",
+    icon: "fa-regular fa-file-lines"
   },
   {
     name: "มือถือ",
     value: "mobile",
     subtitle: "เหมาะสำหรับ เครื่องพิมพ์ต่อคอมพิวเตอร์",
-    icon: "fa-solid fa-mobile",
-  },
-];
+    icon: "fa-solid fa-mobile"
+  }
+]
 
 const RequireDocument = [
   {
     name: "Shipping Label",
     subtitle: "ใบปะหน้าพัสดุ",
     include: ["A4", "4*4", "4*6", "mobile"],
-    value: "ShippingLabel",
+    value: "ShippingLabel"
   },
   {
     name: "Stock Checklist",
     subtitle: "ใบสต็อคสินค้า",
     include: ["A4"],
-    value: "StockChecklist",
+    value: "StockChecklist"
   },
   {
     name: "Shipping Label + Stock Checklist",
     subtitle: "ใบปะหน้าพัสดุ",
     include: ["A4"],
-    value: "both",
-  },
-];
+    value: "both"
+  }
+]
 </script>
 
 <template>
@@ -80,8 +81,8 @@ const RequireDocument = [
             size="20"
             @click="
               () => {
-                onclose();
-                value = '';
+                onclose()
+                value = ''
               }
             "
             class="cursor-pointer hover:text-[#084F93] transition-all"
@@ -98,7 +99,12 @@ const RequireDocument = [
         <div class="flex mt-4 space-x-4">
           <div
             v-for="items in selectPrint"
-            @click="activePrint = items.value"
+            @click="
+              () => {
+                activePrint = items.value
+                RequireDocCheck = []
+              }
+            "
             :class="
               activePrint === items.value
                 ? 'h-[170px] w-[120px] rounded-lg bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84] p-[2px]  cursor-pointer select-none'
@@ -140,11 +146,53 @@ const RequireDocument = [
           จำนวนคำสั่งต่อกระดาษ
         </div>
 
-        <div
-          class="mt-2 border-[#EEEDF1] border flex justify-center items-center flex-col space-y-2 h-[170px] w-[120px] rounded-lg p-[2px] cursor-pointer select-none"
-        >
-          <div class="w-[60px] h-[64px] bg-[#084F9361] opacity-detail"></div>
-          <div>1</div>
+        <div class="flex gap-3">
+          <div
+            @click="paperNum = '1'"
+            class="mt-2 border-[#EEEDF1] border flex justify-center items-center flex-col space-y-2 h-[170px] w-[120px] rounded-lg p-[2px] cursor-pointer select-none"
+          >
+            <div
+              :style="{
+                backgroundColor: paperNum === '1' ? '#084F9361' : '#000',
+                opacity: paperNum === '1' ? 1 : 0.4
+              }"
+              class="w-[60px] h-[64px] opacity-detail"
+            ></div>
+            <div>1</div>
+          </div>
+          <div
+            @click="paperNum = '4'"
+            class="mt-2 border-[#EEEDF1] border flex justify-center items-center flex-col space-y-2 h-[170px] w-[120px] rounded-lg p-[2px] cursor-pointer select-none"
+          >
+            <div class="flex w-[60px] h-[64px] gap-[2px] flex-wrap">
+              <div
+                v-for="item in ['', '', '', '']"
+                class="w-[calc(50%-2px)] h-[calc(50%-2px)] opacity-detail"
+                :style="{
+                  backgroundColor: paperNum === '4' ? '#084F9361' : '#000',
+                  opacity: paperNum === '4' ? 1 : 0.4
+                }"
+              ></div>
+            </div>
+            <div>4</div>
+          </div>
+
+          <div
+            @click="paperNum = '8'"
+            class="mt-2 border-[#EEEDF1] border items-center flex justify-center flex-col space-y-2 h-[170px] w-[120px] rounded-lg p-[2px] cursor-pointer select-none"
+          >
+            <div class="flex w-[90px] h-[64px] gap-[2px] flex-wrap">
+              <div
+                v-for="item in ['', '', '', '', '', '', '', '']"
+                :style="{
+                  backgroundColor: paperNum === '8' ? '#084F9361' : '#000',
+                  opacity: paperNum === '8' ? 1 : 0.4
+                }"
+                class="w-[calc(25%-2px)] h-[calc(50%-2px)] bg-[#084F9361] opacity-detail"
+              ></div>
+            </div>
+            <div>8</div>
+          </div>
         </div>
 
         <div
@@ -160,15 +208,15 @@ const RequireDocument = [
               () => {
                 if (item.include.includes(activePrint)) {
                   const found = RequireDocCheck.find((items) => {
-                    return items === item.value;
-                  });
+                    return items === item.value
+                  })
                   if (!!found) {
                     const filter = RequireDocCheck.filter(
                       (items) => items !== item.value
-                    );
-                    RequireDocCheck = filter;
+                    )
+                    RequireDocCheck = filter
                   } else {
-                    RequireDocCheck.push(item.value);
+                    RequireDocCheck.push(item.value)
                   }
                 }
               }
