@@ -740,4 +740,5 @@ const headerTable: headerTableType = [
   letter-spacing: -0.032px;
   font-size: 14px;
 }
+
 </style>
