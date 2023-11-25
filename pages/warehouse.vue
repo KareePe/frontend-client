@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import Details from "~/components/Warehouse/Details.vue";
 import ModalAppend from "~/components/Warehouse/ModalAppend.vue";
+import ModalUpdateStock from "~/components/Warehouse/ModalUpdateStock.vue";
+import DetailsProduct from "~/components/Warehouse/DetailsProduct.vue";
+import HistoryStock from "~/components/Warehouse/HistoryStock.vue";
+import AddPOPage from "@/components/Warehouse/AddPOPage.vue";
 type headerTableType = {
   title: string;
   key: keyof tableItemType | "";
@@ -17,7 +21,18 @@ type tableItemType = {
   status: "ใช้งาน" | "ระงับ";
   icon?: string;
 };
+type productSelectType = {
+  image: string;
+  name: string;
+  category: string;
+  sub_product: number;
+  stock: number;
+  amount: number;
+};
+
 const selectedWarehouse = ref<tableItemType | null>(null);
+const selectedProduct = ref<any | null>(null);
+
 const navBarNew = ref([
   {
     text: "คลังและสินค้า",
@@ -26,7 +41,12 @@ const navBarNew = ref([
   {
     text: "คลังสินค้า",
     callback: () =>
-      fnHandleNavbarback(2, () => (selectedWarehouse.value = null)),
+      fnHandleNavbarback(2, () => {
+        selectedWarehouse.value = null;
+        selectedProduct.value = null;
+        historyPage.value = false;
+        createPOPage.value = false;
+      }),
   },
 ]);
 
@@ -200,11 +220,17 @@ const fnHandleAppendNav = (item: string) => {
         }
       );
       fnHandleNavbarback(target + 1);
+      selectedProduct.value = null;
+      historyPage.value = false;
+      createPOPage.value = false;
     },
   });
 };
 
-const modalAppendOpen = ref(false)
+const modalAppendOpen = ref(false);
+const modalUpdateStockOpen = ref(false);
+const historyPage = ref(false);
+const createPOPage = ref(false);
 </script>
 
 <template>
@@ -213,7 +239,14 @@ const modalAppendOpen = ref(false)
 
   <div class="lg:ml-64 p-4">
     <v-slide-x-transition hide-on-leave>
-      <div v-if="!selectedWarehouse">
+      <div
+        v-if="
+          !selectedWarehouse &&
+          !selectedProduct &&
+          !historyPage &&
+          !createPOPage
+        "
+      >
         <div class="flex justify-between items-center">
           <v-text-field
             variant="outlined"
@@ -335,9 +368,6 @@ const modalAppendOpen = ref(false)
             </template>
             <template #bottom></template>
           </v-data-table>
-          <!-- <div v-else class="h-[260px] flex justify-center items-center">
-        <p>ยังไม่มีรายการ</p>
-      </div> -->
         </v-card>
         <div class="text-center pt-2 flex justify-center items-center relative">
           <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -357,13 +387,76 @@ const modalAppendOpen = ref(false)
         </div>
       </div>
 
-      <div v-else>
-        <Details :data="selectedWarehouse"  ></Details>
+      <div
+        v-if="
+          selectedWarehouse && !selectedProduct && !historyPage && !createPOPage
+        "
+      >
+        <Details
+          :data="selectedWarehouse"
+          @see-product="(event:productSelectType) => {
+            selectedProduct = event
+            navBarNew.push({
+              text: event.name,
+              callback: ()=> {}
+            })
+          }"
+          @history-click="
+            {
+              navBarNew.push({
+                text: 'ประวัติการจัดสต๊อค',
+                callback: () => {
+                  fnHandleNavbarback(4);
+                  historyPage = true;
+                  createPOPage = false;
+                },
+              });
+              historyPage = true;
+              createPOPage = false;
+            }
+          "
+        ></Details>
+      </div>
+
+      <div v-if="selectedProduct">
+        <DetailsProduct
+          :data="selectedProduct"
+          @update-stock="
+            (e) => {
+              modalUpdateStockOpen = true;
+            }
+          "
+        />
+      </div>
+
+      <div v-if="historyPage && !createPOPage">
+        <HistoryStock
+          @add-no-po="
+            () => {
+              createPOPage = true;
+              navBarNew.push({
+                text: 'เพิ่มใบ',
+                callback: () => {
+                  // fnHandleNavbarback(4);
+                },
+              });
+            }
+          "
+        />
+      </div>
+
+      <div v-if="createPOPage">
+        <AddPOPage />
       </div>
     </v-slide-x-transition>
   </div>
 
   <ModalAppend :open="modalAppendOpen" />
+  <ModalUpdateStock
+    :open="modalUpdateStockOpen"
+    :onclose="() => (modalUpdateStockOpen = false)"
+    :warehousename="selectedWarehouse?.name"
+  />
 </template>
 
 <style scoped>

@@ -17,6 +17,7 @@
         prepend-icon="fa-solid fa-clock-rotate-left"
         variant="flat"
         size="large"
+        @click="fnHandleHistoryClick"
         >ประวัติการจัดการสต๊อค</v-btn
       >
     </div>
@@ -138,6 +139,7 @@
                 variant="text"
                 size="30"
                 class="text-[12px]"
+                @click="fnHandleSeeProduct(item)"
               ></v-btn>
             </div>
           </td>
@@ -197,6 +199,17 @@ const { data } = defineProps({
     },
   },
 });
+const emit = defineEmits(["see-product", "history-click"]);
+
+const fnHandleHistoryClick = () => {
+  emit("history-click");
+};
+
+const fnHandleSeeProduct = (data: tableItemType) => {
+  {
+    emit("see-product", data);
+  }
+};
 
 const headersTable = ref<headerTableType[]>([
   {
