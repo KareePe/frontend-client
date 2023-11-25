@@ -148,8 +148,7 @@ const fnChangeRowPerPages = (e: number) => {
   console.log(e);
 };
 
-const filterTable = []
-
+const filterTable = [];
 </script>
 
 <template>
@@ -175,13 +174,15 @@ const filterTable = []
     </div>
   </div>
 
-  <div class="bg-[#E9E7EB] p-2 border-t border-t-[#E9E7EB] rounded-t-lg mt-2">
+  <div
+    class="bg-[#E9E7EB] p-2 border-t border-t-[#E9E7EB] rounded-t-lg mt-2"
+  >
     <v-text-field
       placeholder="เพิ่มตัวกรอง"
       variant="outlined"
       hide-details
       density="compact"
-      class="bg-white prepend-chip"
+      class="bg-white prepend-chip rounded-lg"
     >
       <template v-slot:prepend-inner>
         <div class="p-2 w-fit">
