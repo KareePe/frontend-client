@@ -20,7 +20,6 @@ const fnHandleAddPO = () => {
   emit("add-no-po");
 };
 
-
 type TableColumn = {
   align: "center" | "start" | "end";
   title: string;
@@ -148,6 +147,9 @@ const fnChangeRowPerPages = (e: number) => {
   itemsPerPage.value = e;
   console.log(e);
 };
+
+const filterTable = []
+
 </script>
 
 <template>
@@ -179,7 +181,14 @@ const fnChangeRowPerPages = (e: number) => {
       variant="outlined"
       hide-details
       density="compact"
-    ></v-text-field>
+      class="bg-white prepend-chip"
+    >
+      <template v-slot:prepend-inner>
+        <div class="p-2 w-fit">
+          <Chips text="เบอร์โทร:091-234-5678" />
+        </div>
+      </template>
+    </v-text-field>
     <div class="pt-2">
       <Chips v-for="(item, index) in chipData" :text="item" />
     </div>
@@ -200,7 +209,11 @@ const fnChangeRowPerPages = (e: number) => {
           <td v-if="item.po_no">
             {{ item.po_no }}
           </td>
-          <td v-else class="text-[#0BA5EC] cursor-pointer" @click="fnHandleAddPO">
+          <td
+            v-else
+            class="text-[#0BA5EC] cursor-pointer"
+            @click="fnHandleAddPO"
+          >
             เพิ่มใบ PO.
           </td>
           <td>
@@ -257,5 +270,3 @@ const fnChangeRowPerPages = (e: number) => {
     </div>
   </div>
 </template>
-
-<style></style>
