@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import Details from "~/components/Warehouse/Details.vue";
+import ModalAppend from "~/components/Warehouse/ModalAppend.vue";
 type headerTableType = {
   title: string;
   key: keyof tableItemType | "";
@@ -15,7 +17,7 @@ type tableItemType = {
   status: "ใช้งาน" | "ระงับ";
   icon?: string;
 };
-const alertOpen = ref(false);
+const selectedWarehouse = ref<tableItemType | null>(null);
 const navBarNew = ref([
   {
     text: "คลังและสินค้า",
@@ -23,7 +25,8 @@ const navBarNew = ref([
   },
   {
     text: "คลังสินค้า",
-    callback: () => {},
+    callback: () =>
+      fnHandleNavbarback(2, () => (selectedWarehouse.value = null)),
   },
 ]);
 
@@ -174,6 +177,34 @@ const fnChangeRowPerPages = (e: number) => {
   itemsPerPage.value = e;
   console.log(e);
 };
+
+const fnHandleNavbarback = (index: number, callback?: () => void) => {
+  let num = navBarNew.value.length - index;
+  for (let i = 1; i <= num; i++) {
+    navBarNew.value.pop();
+  }
+  if (callback) {
+    callback();
+  }
+};
+
+const fnHandleAppendNav = (item: string) => {
+  navBarNew.value.push({
+    text: item,
+    callback: () => {
+      const target = navBarNew.value.findIndex(
+        (value: { text: string }, index) => {
+          if (value.text === item) {
+            return index;
+          }
+        }
+      );
+      fnHandleNavbarback(target + 1);
+    },
+  });
+};
+
+const modalAppendOpen = ref(false)
 </script>
 
 <template>
@@ -181,145 +212,158 @@ const fnChangeRowPerPages = (e: number) => {
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
 
   <div class="lg:ml-64 p-4">
-    <div class="flex justify-between items-center">
-      <v-text-field
-        variant="outlined"
-        density="compact"
-        hide-details
-        class="max-w-[460px] preinner-center"
-        prepend-inner-icon="fa-solid fa-magnifying-glass"
-      ></v-text-field>
-      <v-btn
-        class="rounded-lg"
-        color="#084F93"
-        prepend-icon="fa-solid fa-plus"
-        variant="flat"
-        size="large"
-        >เพิ่มคลังสินค้า</v-btn
-      >
-    </div>
+    <v-slide-x-transition hide-on-leave>
+      <div v-if="!selectedWarehouse">
+        <div class="flex justify-between items-center">
+          <v-text-field
+            variant="outlined"
+            density="compact"
+            hide-details
+            class="max-w-[460px] preinner-center"
+            prepend-inner-icon="fa-solid fa-magnifying-glass"
+          ></v-text-field>
+          <v-btn
+            class="rounded-lg"
+            color="#084F93"
+            prepend-icon="fa-solid fa-plus"
+            variant="flat"
+            size="large"
+            >เพิ่มคลังสินค้า</v-btn
+          >
+        </div>
 
-    <v-card
-      variant="flat"
-      class="border border-[#EEEDF1] !rounded-b-[8px] pb-[15px] mt-4"
-    >
-      <v-data-table
-        :items="tableItem"
-        item-value="no"
-        id="table-header-black"
-        :headers="headersTable"
-        :items-per-page="itemsPerPage"
-        :page="page"
-        class="table-row-text"
-      >
-        <template v-slot:item="{ item }">
-          <tr>
-            <td>
-              {{ item.no_warehouse || "-" }}
-            </td>
-            <td>
-              <div class="flex justify-center items-center gap-2">
-                {{ item.name || "-" }}
-                <div>
-                  <v-icon
-                    v-if="item.name === 'คลังชั่วคราว'"
-                    class="text-[#74777F] cursor-pointer"
-                    size="16"
-                    >fa-solid fa-circle-info</v-icon
-                  >
-                  <v-tooltip
-                    activator="parent"
-                    location="end"
-                  >
-                    <div class="w-[230px]">
-                      <div
-                        class="text-[#F5F5F5] leading-5 tracking-23 font-[600] text-subTitle"
+        <v-card
+          variant="flat"
+          class="border border-[#EEEDF1] !rounded-b-[8px] pb-[15px] mt-4"
+        >
+          <v-data-table
+            :items="tableItem"
+            item-value="no"
+            id="table-header-black"
+            :headers="headersTable"
+            :items-per-page="itemsPerPage"
+            :page="page"
+            class="table-row-text"
+          >
+            <template v-slot:item="{ item }">
+              <tr>
+                <td>
+                  {{ item.no_warehouse || "-" }}
+                </td>
+                <td>
+                  <div class="flex justify-center items-center gap-2">
+                    {{ item.name || "-" }}
+                    <div>
+                      <v-icon
+                        v-if="item.name === 'คลังชั่วคราว'"
+                        class="text-[#74777F] cursor-pointer"
+                        size="16"
+                        >fa-solid fa-circle-info</v-icon
                       >
-                        คลังสินค้าชั่วคราว คืออะไร ?
-                      </div>
-                      <div class="text-[#FFFFFF] leading-4 text-[12px]">
-                        คลังสินค้าชั่วคราวจะถูกสร้างขึ้นเพื่อใช้
-                        เก็บจำนวนสินค้าเพื่อบันทึกออเดอร์ที่ได้
-                        รับคำสั่งซื้อเข้ามาอย่างรวดเร็ว
-                      </div>
+                      <v-tooltip activator="parent" location="end">
+                        <div class="w-[230px]">
+                          <div
+                            class="text-[#F5F5F5] leading-5 tracking-23 font-[600] text-subTitle"
+                          >
+                            คลังสินค้าชั่วคราว คืออะไร ?
+                          </div>
+                          <div class="text-[#FFFFFF] leading-4 text-[12px]">
+                            คลังสินค้าชั่วคราวจะถูกสร้างขึ้นเพื่อใช้
+                            เก็บจำนวนสินค้าเพื่อบันทึกออเดอร์ที่ได้
+                            รับคำสั่งซื้อเข้ามาอย่างรวดเร็ว
+                          </div>
+                        </div>
+                      </v-tooltip>
                     </div>
-                  </v-tooltip>
-                </div>
+                  </div>
+                </td>
+                <td>
+                  {{ item.province || "-" }}
+                </td>
+                <td>
+                  {{ item.district || "-" }}
+                </td>
+                <td>
+                  {{ item.tel || "-" }}
+                </td>
+                <td>
+                  <div
+                    :style="{
+                      color: item.status === 'ใช้งาน' ? '#12B76A' : '#BA1A1A',
+                    }"
+                  >
+                    {{ item.status }}
+                  </div>
+                </td>
+                <td>
+                  <div class="flex justify-center gap-5">
+                    <v-btn
+                      color="#1A1C1E"
+                      icon="fa-solid fa-trash"
+                      variant="text"
+                      size="30"
+                      class="text-[12px]"
+                    ></v-btn>
+                    <v-btn
+                      color="#1A1C1E"
+                      icon="fa-solid fa-pen-to-square"
+                      variant="text"
+                      size="30"
+                      class="text-[12px]"
+                    ></v-btn>
+                    <v-btn
+                      color="#1A1C1E"
+                      icon="fa-solid fa-play"
+                      variant="text"
+                      size="30"
+                      class="text-[12px]"
+                      @click="
+                        {
+                          fnHandleAppendNav(item.name);
+                          selectedWarehouse = item;
+                        }
+                      "
+                    ></v-btn>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <template v-slot:no-data>
+              <div class="h-[260px] flex justify-center items-center">
+                <p>ยังไม่มีรายการ</p>
               </div>
-            </td>
-            <td>
-              {{ item.province || "-" }}
-            </td>
-            <td>
-              {{ item.district || "-" }}
-            </td>
-            <td>
-              {{ item.tel || "-" }}
-            </td>
-            <td>
-              <div
-                :style="{
-                  color: item.status === 'ใช้งาน' ? '#12B76A' : '#BA1A1A',
-                }"
-              >
-                {{ item.status }}
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-center gap-5">
-                <v-btn
-                  color="#1A1C1E"
-                  icon="fa-solid fa-trash"
-                  variant="text"
-                  size="30"
-                  class="text-[12px]"
-                ></v-btn>
-                <v-btn
-                  color="#1A1C1E"
-                  icon="fa-solid fa-pen-to-square"
-                  variant="text"
-                  size="30"
-                  class="text-[12px]"
-                ></v-btn>
-                <v-btn
-                  color="#1A1C1E"
-                  icon="fa-solid fa-play"
-                  variant="text"
-                  size="30"
-                  class="text-[12px]"
-                ></v-btn>
-              </div>
-            </td>
-          </tr>
-        </template>
-        <template v-slot:no-data>
-          <div class="h-[260px] flex justify-center items-center">
-            <p>ยังไม่มีรายการ</p>
-          </div>
-        </template>
-        <template #bottom></template>
-      </v-data-table>
-      <!-- <div v-else class="h-[260px] flex justify-center items-center">
+            </template>
+            <template #bottom></template>
+          </v-data-table>
+          <!-- <div v-else class="h-[260px] flex justify-center items-center">
         <p>ยังไม่มีรายการ</p>
       </div> -->
-    </v-card>
-    <div class="text-center pt-2 flex justify-center items-center relative">
-      <v-pagination v-model="page" :length="pageCount"></v-pagination>
-      <div class="w-[140px] absolute right-0 mr-4">
-        <v-select
-          label="จำนวนแสดงผล"
-          variant="outlined"
-          :items="[5, 10, 15, 20, 25, 30]"
-          :item-title="(item) => item + ' รายการ'"
-          :item-value="(item) => item"
-          :model-value="itemsPerPage"
-          density="compact"
-          hide-details="auto"
-          @update:modelValue="fnChangeRowPerPages"
-        ></v-select>
+        </v-card>
+        <div class="text-center pt-2 flex justify-center items-center relative">
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
+          <div class="w-[140px] absolute right-0 mr-4">
+            <v-select
+              label="จำนวนแสดงผล"
+              variant="outlined"
+              :items="[5, 10, 15, 20, 25, 30]"
+              :item-title="(item) => item + ' รายการ'"
+              :item-value="(item) => item"
+              :model-value="itemsPerPage"
+              density="compact"
+              hide-details="auto"
+              @update:modelValue="fnChangeRowPerPages"
+            ></v-select>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div v-else>
+        <Details :data="selectedWarehouse"  ></Details>
+      </div>
+    </v-slide-x-transition>
   </div>
+
+  <ModalAppend :open="modalAppendOpen" />
 </template>
 
 <style scoped>
@@ -350,7 +394,7 @@ const fnChangeRowPerPages = (e: number) => {
 
 <style>
 .preinner-center div div .v-field__prepend-inner {
-  @apply text-[12px];
+  @apply text-[12px] mb-[2px];
 }
 .text-table {
   @apply text-[14px] leading-5 tracking-[-0.23%] text-center !pr-10;
