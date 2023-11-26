@@ -105,7 +105,7 @@ const rules = [
               ]"
               class="table-row-text !max-h-[300px]"
             >
-              <template v-slot:header.weight="{ getSortIcon }">
+              <template v-slot:[`header.weight`]="{}">
                 <div class="flex justify-center relative">
                   <div
                     class="text-black opacity-title text-subTitle tracking-23"
@@ -119,7 +119,7 @@ const rules = [
                   >
                 </div>
               </template>
-              <template v-slot:item="{ item, index }">
+              <template v-slot:item="{ index }">
                 <tr>
                   <td>
                     <div class="p-2 flex">
