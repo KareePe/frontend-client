@@ -269,7 +269,7 @@ const menu_list = [
       },
       {
         subtitle: "สินค้า",
-        path: "/",
+        path: "/product",
         disable: false,
       },
       {
