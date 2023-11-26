@@ -12,14 +12,14 @@ const { open, data, productname } = defineProps({
     type: String,
   },
 });
-const emit = defineEmits(["onSubmit", "onClose"]);
+const emit = defineEmits(["onsubmit", "onclose"]);
 
 const fnHandleSubmit = (value) => {
-  emit("onSubmit");
+  emit("onsubmit");
 };
 
 const fnHandleClose = () => {
-  emit("onClose");
+  emit("onclose");
 };
 
 const formValue = ref([
@@ -28,7 +28,6 @@ const formValue = ref([
     amount: "",
   },
 ]);
-
 </script>
 
 <template>

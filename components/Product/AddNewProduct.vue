@@ -43,8 +43,8 @@ const fnHandleUploadFile = (e) => {
   }
 };
 
-const stockData = ref([])
-
+const stockData = ref([]);
+const updateStockModal = ref(false);
 </script>
 
 <template>
@@ -63,6 +63,7 @@ const stockData = ref([])
           variant="outlined"
           v-model="formValue.name"
           hide-details
+          density="compact"
           placeholder="ระบุชื่อสินค้า*"
         ></v-text-field>
       </div>
@@ -76,6 +77,7 @@ const stockData = ref([])
         <v-text-field
           variant="outlined"
           hide-details
+          density="compact"
           placeholder="เลือกหมวดหมู่*"
           v-model="formValue.category"
           readonly
@@ -178,6 +180,7 @@ const stockData = ref([])
         <v-text-field
           variant="outlined"
           hide-details
+          density="compact"
           placeholder="รหัสสินค้า (ถ้ามี)"
         ></v-text-field>
       </div>
@@ -190,6 +193,7 @@ const stockData = ref([])
         <v-text-field
           variant="outlined"
           hide-details
+          density="compact"
           placeholder="ระบุหน่วยนับ"
         ></v-text-field>
       </div>
@@ -202,6 +206,7 @@ const stockData = ref([])
         <v-text-field
           variant="outlined"
           hide-details
+          density="compact"
           placeholder="ระบุหน่วยนับ"
         ></v-text-field>
       </div>
@@ -214,6 +219,7 @@ const stockData = ref([])
         <v-text-field
           variant="outlined"
           hide-details
+          density="compact"
           placeholder="ระบุน้ำหนัก (กิโลกรัม)"
         ></v-text-field>
       </div>
@@ -232,6 +238,7 @@ const stockData = ref([])
       </div>
       <div
         class="w-1/2 text-subTitle font-[600] leading-[18px] tracking-[-0.021px] text-[#0BA5EC] cursor-pointer"
+        @click="updateStockModal = true"
       >
         + เพิ่มสต๊อค
       </div>
@@ -253,7 +260,12 @@ const stockData = ref([])
     >
   </div>
 
-  <ProductModalUpdateStock productname="ทดสอบ" data="" />
+  <ProductModalUpdateStock
+    :open="updateStockModal"
+    @onclose="updateStockModal = false"
+    productname="ทดสอบ"
+    :data="stockData"
+  />
 </template>
 
 <style>
