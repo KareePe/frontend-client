@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Details from "~/components/Warehouse/Details.vue";
-import ModalAppend from "~/components/Warehouse/ModalAppend.vue";
-import ModalUpdateStock from "~/components/Warehouse/ModalUpdateStock.vue";
-import DetailsProduct from "~/components/Warehouse/DetailsProduct.vue";
-import HistoryStock from "~/components/Warehouse/HistoryStock.vue";
-import AddPOPage from "@/components/Warehouse/AddPOPage.vue";
+// import Details from "~/components/Warehouse/Details.vue";
+// import ModalAppend from "~/components/Warehouse/ModalAppend.vue";
+// import ModalUpdateStock from "~/components/Warehouse/ModalUpdateStock.vue";
+// import DetailsProduct from "~/components/Warehouse/DetailsProduct.vue";
+// import HistoryStock from "~/components/Warehouse/HistoryStock.vue";
+// import AddPOPage from "@/components/Warehouse/AddPOPage.vue";
 type headerTableType = {
   title: string;
   key: keyof tableItemType | "";
@@ -391,9 +391,9 @@ const createPOPage = ref(false);
           selectedWarehouse && !selectedProduct && !historyPage && !createPOPage
         "
       >
-        <Details
+        <WarehouseDetails
           :data="selectedWarehouse"
-          @see-product="(event:productSelectType) => {
+          @see-product="(event) => {
             selectedProduct = event
             navBarNew.push({
               text: event.name,
@@ -414,11 +414,11 @@ const createPOPage = ref(false);
               createPOPage = false;
             }
           "
-        ></Details>
+        ></WarehouseDetails>
       </div>
 
       <div v-if="selectedProduct">
-        <DetailsProduct
+        <WarehouseDetailsProduct
           :data="selectedProduct"
           @update-stock="
             (e) => {
@@ -429,7 +429,7 @@ const createPOPage = ref(false);
       </div>
 
       <div v-if="historyPage && !createPOPage">
-        <HistoryStock
+        <WarehouseHistoryStock
           @add-no-po="
             () => {
               createPOPage = true;
@@ -445,13 +445,13 @@ const createPOPage = ref(false);
       </div>
 
       <div v-if="createPOPage">
-        <AddPOPage />
+        <WarehouseAddPoPage />
       </div>
     </v-slide-x-transition>
   </div>
 
-  <ModalAppend :open="modalAppendOpen" />
-  <ModalUpdateStock
+  <WarehouseModalAppend :open="modalAppendOpen" />
+  <WarehouseModalUpdateStock
     :open="modalUpdateStockOpen"
     :onclose="() => (modalUpdateStockOpen = false)"
     :warehousename="selectedWarehouse?.name"
