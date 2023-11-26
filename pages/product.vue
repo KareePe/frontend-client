@@ -27,6 +27,7 @@ const navBarNew = ref([
       fnHandleNavbarback(2, () => {
         AddNewProdctState.value = false;
         selectDetail.value = null;
+        ShowDetailMode.value = "show";
       }),
   },
 ]);
@@ -310,6 +311,7 @@ const fnHandleAppendNav = (item: string) => {
               ShowDetailMode = 'edit';
             }
           "
+          @cancel="ShowDetailMode = 'show'"
         />
       </div>
 
