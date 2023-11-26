@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-const { open, data, productname } = defineProps({
+const { open, data, productname, canAdd } = defineProps({
   open: {
     type: Boolean,
     default: false,
@@ -10,6 +10,10 @@ const { open, data, productname } = defineProps({
   },
   data: {
     type: String,
+  },
+  canAdd: {
+    type: Boolean,
+    default: true
   },
 });
 const emit = defineEmits(["onsubmit", "onclose"]);
@@ -28,6 +32,7 @@ const formValue = ref([
     amount: "",
   },
 ]);
+
 </script>
 
 <template>
@@ -99,6 +104,7 @@ const formValue = ref([
             </div>
           </div>
           <v-btn
+            v-if="canAdd"
             class="mt-2"
             variant="text"
             color="#74777F"

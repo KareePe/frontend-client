@@ -176,6 +176,9 @@ const tableItemStock: TableRowStock[] = [
     amount: "110",
   },
 ];
+
+const stockUpdateData = ref<any | null>(null);
+const stockUpdateModal = ref(false);
 </script>
 
 <template>
@@ -471,6 +474,12 @@ const tableItemStock: TableRowStock[] = [
                 variant="text"
                 size="30"
                 class="text-[12px]"
+                @click="
+                  {
+                    stockUpdateData = item;
+                    stockUpdateModal = true;
+                  }
+                "
               ></v-btn>
             </td>
           </tr>
@@ -484,6 +493,13 @@ const tableItemStock: TableRowStock[] = [
       </v-data-table>
     </v-card>
   </div>
+
+  <ProductModalUpdateStock
+    :open="stockUpdateModal"
+    @onclose="stockUpdateModal = false"
+    :can-add="false"
+    :data="stockUpdateData"
+  />
 
   <div
     v-if="mode === 'edit'"
