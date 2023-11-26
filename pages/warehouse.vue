@@ -228,8 +228,10 @@ const modalAppendOpen = ref(false);
 const modalUpdateStockOpen = ref(false);
 const historyPage = ref(false);
 const createPOPage = ref(false);
-const createWareHouse = ref(false);
+const createWareHouse = ref<any | null>(null);
 const editWareHouse = ref<any | null>(null);
+const openDialogConfirmDelete = ref(false);
+const confirmDeleteField = ref("");
 </script>
 
 <template>
@@ -341,6 +343,7 @@ const editWareHouse = ref<any | null>(null);
                       variant="text"
                       size="30"
                       class="text-[12px]"
+                      @click="openDialogConfirmDelete = true"
                     ></v-btn>
                     <v-btn
                       color="#1A1C1E"
@@ -350,8 +353,9 @@ const editWareHouse = ref<any | null>(null);
                       class="text-[12px]"
                       @click="
                         {
+                          fnHandleAppendNav(item.no_warehouse);
                           fnHandleAppendNav('แก้ไขคลังสินค้า');
-                          editWareHouse = item;
+                          createWareHouse = item.no_warehouse;
                         }
                       "
                     ></v-btn>
@@ -468,10 +472,10 @@ const editWareHouse = ref<any | null>(null);
 
       <div v-if="createWareHouse">
         <WarehouseCreateWareHouse
+          :id="createWareHouse"
           @cancle-click="
             (event) => {
               createWareHouse = false;
-              console.log(event);
               navBarNew.pop();
             }
           "
@@ -490,6 +494,68 @@ const editWareHouse = ref<any | null>(null);
     :onclose="() => (modalUpdateStockOpen = false)"
     :warehousename="selectedWarehouse?.name"
   />
+
+  <v-dialog v-model="openDialogConfirmDelete" class="w-full">
+    <v-card class="rounded-lg self-center w-[354px]">
+      <v-card-text class="flex justify-center items-center flex-col">
+        <div class="flex flex-col justify-center items-center">
+          <div
+            class="bg-[#BA1A1A] w-[48px] h-[48px] flex justify-center items-center rounded-full"
+          >
+            <i class="fa-solid fa-info mb-1 text-white"></i>
+          </div>
+
+          <div class="text-base font-bold mt-1" style="letter-spacing: 0px">
+            ต้องการลบคลัง Bangkok001
+          </div>
+          <div class="text-xs mt-2 mb-0 opacity-[0.7] text-center">
+            การลบคลังสินค้าจะส่งผลต่อข้อมูลสินค้า ภายในคลัง
+            ทำให้ข้อมูลถูกลบไปด้วย กรุณาพิมพ์คำว่า “ต้องการลบ” ในช่องด้านล่าง
+          </div>
+        </div>
+        <div class="absolute right-5 cursor-pointer top-3">
+          <v-icon @click="() => (openDialogConfirmDelete = false)"
+            >mdi-close</v-icon
+          >
+        </div>
+      </v-card-text>
+      <v-card-text class="flex flex-col items-center w-full space-y-4 pt-0">
+        <v-form class="w-full !m-0 space-y-1">
+          <v-text-field
+            class="w-full"
+            v-model="confirmDeleteField"
+            placeholder="พิมพ์คำว่า 'ต้องการลบ'"
+            variant="outlined"
+            rounded="lg"
+          ></v-text-field>
+
+          <div class="flex justify-center space-x-2 mb-2 w-full mt-1">
+            <v-btn
+              color="#BA1A1A"
+              variant="flat"
+              size="x-large"
+              class="w-1/2"
+              rounded="lg"
+              type="submit"
+              :disabled="confirmDeleteField !== 'ต้องการลบ'"
+            >
+              ยืนยัน
+            </v-btn>
+            <v-btn
+              color="#BA1A1A"
+              variant="outlined"
+              size="x-large"
+              class="w-1/2"
+              rounded="lg"
+              @click="() => (openDialogConfirmDelete = false)"
+            >
+              ยกเลิก
+            </v-btn>
+          </div>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

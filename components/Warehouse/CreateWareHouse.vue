@@ -164,9 +164,17 @@
 import { ref, onMounted, watch } from "vue";
 const emit = defineEmits(["cancle-click"]);
 
+const id = defineProps({
+    id: String
+})
+
 const fn_back = () => {
     emit("cancle-click",true);
 };
+
+onMounted(() => {
+    console.log(id)
+})
 </script>
 
 <style></style>
