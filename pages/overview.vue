@@ -2,7 +2,7 @@
   <Toolbars />
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
 
-  <div class="lg:ml-64 p-4">
+  <div class="lg:ml-72 p-4">
     <div class="lg:flex block justify-between">
       <div
         class="border border-[#EEEDF1] !h-[55px] !rounded-[8px] p-[8px] w-[fit-content]"

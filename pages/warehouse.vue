@@ -238,7 +238,7 @@ const confirmDeleteField = ref("");
   <Toolbars />
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
 
-  <div class="lg:ml-64 p-4">
+  <div class="lg:ml-72 p-4">
     <v-slide-x-transition hide-on-leave>
       <div
         v-if="

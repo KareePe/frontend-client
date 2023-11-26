@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, mergeProps } from "vue";
-import SelectedItem from "@/components/Order/SelectedItem.vue";
-import ModalChangeStatus from "@/components/Order/ModalChangeStatus.vue";
-import ModalNoStatus from "@/components/Order/ModalNoStatus.vue";
-import ModalUploadFile from "@/components/Order/ModalUploadFile.vue";
-import ModalPrint from "@/components/Order/ModalPrint.vue";
-import ModalDownload from "@/components/Order/ModalDownload.vue";
-import ModalConfirmCreateMaterial from "@/components/Order/ModalConfirmCreateMaterial.vue";
+
 type headerTableType = {
   title: string;
   key: keyof tableItemType | "";
@@ -584,10 +578,10 @@ const openModalDownload = ref(false);
       </div>
     </div>
     <div class="containerLayout" v-else>
-      <SelectedItem :data="itemSelected" />
+      <OrderSelectedItem :data="itemSelected" />
     </div>
   </v-slide-x-transition>
-  <ModalNoStatus
+  <OrderModalNoStatus
     :open="openModalStatusNumber"
     :onsubmit="
       (value:string) => {}
@@ -599,7 +593,7 @@ const openModalDownload = ref(false);
     "
   />
 
-  <ModalConfirmCreateMaterial
+  <OrderModalConfirmCreateMaterial
     :open="openModalConfirmCreate"
     :onclose="
       () => {
@@ -608,7 +602,7 @@ const openModalDownload = ref(false);
     "
   />
 
-  <ModalChangeStatus
+  <OrderModalChangeStatus
     :open="openModalChangeStatus"
     :onclose="
       () => {
@@ -617,7 +611,7 @@ const openModalDownload = ref(false);
     "
   />
 
-  <ModalPrint
+  <OrderModalPrint
     :open="openModalPrint"
     :onclose="
       () => {
@@ -626,7 +620,7 @@ const openModalDownload = ref(false);
     "
   />
 
-  <ModalUploadFile
+  <OrderModalUploadFile
     :open="openModalUploadFile"
     :onclose="
       () => {
@@ -647,7 +641,7 @@ const openModalDownload = ref(false);
     errorText=" เกิดข้อพลาดระหว่างอัพโหลดไฟล์ข้อมูล โปรดลองอีกครั้ง"
   />
 
-  <ModalDownload
+  <OrderModalDownload
     :open="openModalDownload"
     :onclose="() => (openModalDownload = false)"
   />

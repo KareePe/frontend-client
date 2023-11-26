@@ -26,7 +26,7 @@
   <div class="flex">
     <aside
       id="default-sidebar"
-      :class="`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+      :class="`fixed top-0 left-0 z-40 w-[284px] h-screen transition-transform ${
         shownav === true ? 'translate-none' : '-translate-x-full'
       } lg:translate-x-0`"
       aria-label="Sidenav"
@@ -66,145 +66,77 @@
         </div>
       </div>
       <div
-        class="h-full bg-white border-r border-gray-200 overflow-y-auto py-5 ml-[62px]"
+        class="h-full bg-white border-r border-gray-200 overflow-hidden pb-5 ml-[62px]"
       >
-        <div
-          class="flex justify-between items-center mb-[15px] border-b border-[#000] pb-[20px] px-[10px]"
-        >
-          <div>
-            <p class="text-[#084f93] text-[16px] font-bold">Business name</p>
-            <p class="text-[#000]/[0.6] text-[12px]">Package name</p>
-          </div>
-          <i class="fa-solid fa-chevron-down"></i>
-        </div>
+        <!-- <v-card class="mx-auto !border-0" variant="outlined" width="auto"> -->
+        <v-layout class="px-[15px]">
+          <v-navigation-drawer>
+            <v-list>
+              <v-list-item>
+                <template v-slot:title>
+                  <p class="text-[#084f93] text-[16px] font-bold">
+                    Business name
+                  </p>
+                </template>
+                <template v-slot:subtitle>
+                  <p class="text-[#000]/[0.6] text-[12px]">Package name</p>
+                </template>
+                <template v-slot:append>
+                  <v-btn size="small" variant="text">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </v-btn>
+                </template>
+              </v-list-item>
+            </v-list>
 
-        <ul class="space-y-2">
-          <div v-for="(item, index) in menu_list" :key="index">
-            <li class="h-[48px]" v-if="item.haveSubMenu === false">
-              <NuxtLink
-                :to="item.path"
-                class="flex items-center p-2 text-base font-normal !text-[#43474E] rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <i :class="item.icon" class="!text-[#43474E]"></i>
-                <span class="ml-3 !text-[#43474E]">{{ item.title }}</span>
-              </NuxtLink>
-            </li>
-            <li class="min-h-[48px]" v-else>
-            <button
-              @click="showSubmenu(index)"
-              type="button"
-              class="flex items-center p-2 w-full text-base font-normal !text-[#43474E] rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-            >
-            <i :class="item.icon" class="!text-[#43474E]"></i>
-              <span
-                class="flex-1 ml-3 !text-[#43474E] text-left whitespace-nowrap"
-                >{{ item.title }}</span
-              >
-              <svg
-                aria-hidden="true"
-                class="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-            <ul
-              :id="`dropdown-${index}`"
-              :class="
-                submenu === index ? 'py-2 space-y-2' : 'hidden py-2 space-y-2'
-              "
-            >
-              <li v-for="(itemSub, indexSub) in item.subMenu" :key="indexSub">
-                <NuxtLink
-                  :to="itemSub.path"
-                  class="flex items-center p-2 pl-11 w-full text-base font-normal !text-[#43474E] rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >{{ itemSub.subtitle }}</NuxtLink
-                >
-              </li>
-            </ul>
-          </li>
-          </div>
-        </ul>
+            <v-divider></v-divider>
+
+            <v-list>
+              <div v-for="(item, index) in menu_list" :key="index">
+                <v-list v-if="item.haveSubMenu === false" class="pa-0">
+                  <v-list-item :disabled="item.disable" link :to="item.path">
+                    <v-list-item-title class="text-14">
+                      <div class="flex gap-[15px] items-center">
+                        <v-icon
+                          :class="item.icon"
+                          style="font-size: 14px"
+                        ></v-icon>
+                        <p class="text-[14px]">
+                          {{ item.title }}
+                        </p>
+                      </div>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+                <v-list-group v-else :value="item.title">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item :disabled="item.disable" v-bind="props">
+                      <div class="flex gap-[15px]">
+                        <i
+                          :class="item.icon"
+                          style="color: #43474e; font-size: 14px"
+                        ></i>
+                        <p style="color: #43474e; font-size: 14px">
+                          {{ item.title }}
+                        </p>
+                      </div>
+                    </v-list-item>
+                  </template>
+                  <div v-for="(item, index) in item.subMenu" :key="index">
+                    <v-list-item v-show="!item.disable" link :to="item.path">
+                      <v-list-item-subtitle class="pt-1 pb-1 pl-1 text-14">
+                        <span style="color: #43474e">{{ item.subtitle }} </span>
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                  </div>
+                </v-list-group>
+              </div>
+            </v-list>
+          </v-navigation-drawer>
+
+          <v-main style="height: 100vh"></v-main>
+        </v-layout>
       </div>
-
-      <!-- <div
-        class="overflow-y-auto py-5 px-4 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-      >
-        <div
-          class="flex justify-between items-center mb-[15px] border-b border-[#000] pb-[20px]"
-        >
-          <div>
-            <p class="text-[#084f93] text-[16px] font-bold">Business name</p>
-            <p class="text-[#000]/[0.6] text-[12px]">Package name</p>
-          </div>
-          <i class="fa-solid fa-chevron-down"></i>
-        </div>
-        <ul class="space-y-2">
-          <div v-for="(item, index) in menu_list" :key="index">
-            <li class="h-[48px]" v-if="item.haveSubMenu === false">
-              <NuxtLink
-                :to="item.path"
-                class="flex items-center p-2 text-base font-normal text-[#43474E] rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <v-icon
-                  :icon="item.icon"
-                  class="text-[#43474E] w-6 h-6"
-                ></v-icon>
-                <span class="ml-3 text-[#43474E]">{{ item.title }}</span>
-              </NuxtLink>
-            </li>
-            <li class="min-h-[48px]" v-else>
-              <button
-                @click="showSubmenu(index)"
-                type="button"
-                class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              >
-                <v-icon
-                  :icon="item.icon"
-                  class="w-6 h-6 text-[#43474E]"
-                ></v-icon>
-                <span
-                  class="flex-1 ml-3 text-[#43474E] text-left whitespace-nowrap"
-                  >{{ item.title }}</span
-                >
-                <svg
-                  aria-hidden="true"
-                  class="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-              <ul
-                :id="`dropdown-${index}`"
-                :class="
-                  submenu === index ? 'py-2 space-y-2' : 'hidden py-2 space-y-2'
-                "
-              >
-                <li v-for="(itemSub, indexSub) in item.subMenu" :key="indexSub">
-                  <NuxtLink
-                    :to="itemSub.path"
-                    class="flex items-center p-2 pl-11 w-full text-base font-normal text-[#43474E] rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                    >{{ itemSub.subtitle }}</NuxtLink
-                  >
-                </li>
-              </ul>
-            </li>
-          </div>
-        </ul>
-      </div> -->
     </aside>
   </div>
 </template>
@@ -220,6 +152,8 @@ const showSubmenu = (item) => {
   submenu.value = submenu.value === item ? null : item;
 };
 
+const open = ref(null);
+
 const menu_list = [
   {
     title: "หน้าแรก",
@@ -229,32 +163,27 @@ const menu_list = [
     path: "/",
   },
   {
-    title: "ช่องทางการขาย",
+    title: "คำสั่งซื้อ",
     openExpand: false,
     haveSubMenu: true,
     subMenu: [
       {
-        subtitle: "บัญชีผู้ใช้งาน",
-        path: "/",
+        subtitle: "รายการคำสั่งซื้อ",
+        path: "/order",
         disable: false,
       },
       {
-        subtitle: "บัญชีธุรกิจ",
+        subtitle: "จัดการงานจัดส่ง",
         path: "/",
-        disable: false,
+        disable: true,
       },
       {
-        subtitle: "ยืนยันตัวตน",
+        subtitle: "คืนสินค้าและเคลม",
         path: "/",
-        disable: false,
-      },
-      {
-        subtitle: "สนับสนุนการขาย",
-        path: "/",
-        disable: false,
+        disable: true,
       },
     ],
-    icon: "fa-solid fa-dollar-sign",
+    icon: "fa-solid fa-list",
     disable: false,
   },
   {
@@ -280,7 +209,7 @@ const menu_list = [
     ],
     icon: "fa-solid fa-boxes-stacked",
     disable: false,
-  }
+  },
 ];
 </script>
 
@@ -292,6 +221,26 @@ const menu_list = [
 .router-link-active i,
 .router-link-exact-active i {
   color: #084f93;
+}
+
+.v-list-item--active,
+.v-list-item--active .v-list-item__content div p,
+.v-list-item--active .v-list-item__content div i,
+.v-list-item--active .v-list-item-subtitle span,
+.v-list-item--active .v-list-item__content {
+  color: #084f93 !important;
+}
+
+.v-list-item--active .v-list-item__overlay {
+  background-color: white;
+}
+
+.v-list-item__append i {
+  font-size: 14px !important;
+}
+
+.v-navigation-drawer--left {
+  border: none !important;
 }
 
 @media screen and (max-width: 1024px) {

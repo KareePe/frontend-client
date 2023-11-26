@@ -90,7 +90,7 @@ const tableItem: TableRow[] = [
     manager: "Charlie Davis",
   },
 ];
-const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"];
+const chipData = ["SKU", "ชื่อสินค้า", "Action","ดำเนินการโดย"];
 
 const tableHeader: TableColumn[] = [
   {
@@ -149,20 +149,37 @@ const fnChangeRowPerPages = (e: number) => {
 };
 
 const filterTable = [];
+
+const fn_filterCheck = () => {
+
+}
 </script>
 
 <template>
   <div>
     <div class="flex justify-between items-center">
+      <!-- <v-menu ref="open">
+        <template v-slot:activator="{ props }">
+          <v-text-field
+            v-bind="props"
+            clearable
+            prepend-inner-icon="fa-solid fa-magnifying-glass"
+            label="วันที่"
+            class="auto-feild lg:!max-w-[238px] w-full !h-[48px] !rounded-[8px] mb-[15px]"
+            variant="outlined"
+          ></v-text-field>
+        </template>
+        <v-date-picker @input="open = false" locale="th"></v-date-picker>
+      </v-menu> -->
       <v-text-field
         variant="outlined"
-        density="compact"
         hide-details
+        prepend-inner-icon="fa-regular fa-calendar"
         label="วันที่"
-        class="max-w-[450px]"
+        class="auto-feild lg:!max-w-[238px] w-full !h-[48px] !rounded-[8px] mb-[15px]"
       ></v-text-field>
       <v-btn
-        class="rounded-lg !min-w-[200px] !text-[14px]"
+        class="!rounded-[8px] !min-w-[200px] !text-[14px] !h-[48px]"
         color="#084F93"
         variant="flat"
         size="large"
@@ -174,24 +191,23 @@ const filterTable = [];
     </div>
   </div>
 
-  <div
-    class="bg-[#E9E7EB] p-2 border-t border-t-[#E9E7EB] rounded-t-lg mt-2"
-  >
+  <div class="bg-[#E9E7EB] p-2 border-t border-t-[#E9E7EB] rounded-t-lg mt-2">
     <v-text-field
       placeholder="เพิ่มตัวกรอง"
       variant="outlined"
       hide-details
       density="compact"
       class="bg-white prepend-chip rounded-lg"
+      @click="fn_filterCheck"
     >
-      <template v-slot:prepend-inner>
+      <!-- <template v-slot:prepend-inner>
         <div class="p-2 w-fit">
           <Chips text="เบอร์โทร:091-234-5678" />
         </div>
-      </template>
+      </template> -->
     </v-text-field>
     <div class="pt-2">
-      <Chips v-for="(item, index) in chipData" :text="item" />
+      <Chips v-for="(item, index) in chipData" :text="item" :key="index" />
     </div>
   </div>
   <v-card
