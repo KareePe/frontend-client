@@ -133,7 +133,7 @@ const fnChangeRowPerPages = (e: number) => {
   itemsPerPage.value = e;
 };
 
-const AddNewProdctState = ref(true);
+const AddNewProdctState = ref(false);
 </script>
 
 <template>
