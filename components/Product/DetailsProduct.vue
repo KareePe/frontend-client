@@ -176,6 +176,32 @@ const tableItemStock: TableRowStock[] = [
     amount: "110",
   },
 ];
+let openDialogStockWareHouse = ref(false);
+let openDialogStock = ref(false);
+let openDialogConfirmDelete = ref(false);
+
+let warehouseId = ref("null");
+let productId = ref(null);
+
+const fn_openDialogStockWareHouse = (item: string) => {
+  warehouseId.value = item;
+  openDialogStockWareHouse.value = true;
+};
+const fn_openDialogStock = (item: any) => {
+  productId.value = item.id;
+  openDialogStock.value = true;
+};
+
+const fn_openDialogDelete = () => {
+  openDialogConfirmDelete.value = true;
+};
+
+const formValue = ref([
+  {
+    warehouse: null,
+    amount: "",
+  },
+]);
 </script>
 
 <template>
@@ -197,6 +223,7 @@ const tableItemStock: TableRowStock[] = [
       color="#BA1A1A"
       variant="outlined"
       size="large"
+      @click="fn_openDialogDelete"
       >ลบสินค้า
       <template v-slot:prepend>
         <v-icon size="16">fa-solid fa-trash</v-icon>
@@ -416,7 +443,7 @@ const tableItemStock: TableRowStock[] = [
                     <v-list-item class="!p-0">
                       <v-list-item-title>
                         <v-btn
-                          @click="() => fnHandleUpdateStock(item)"
+                          @click="() => fn_openDialogStock(item)"
                           class="w-full"
                           variant="text"
                           >อัพเดทสต๊อค</v-btn
@@ -471,6 +498,7 @@ const tableItemStock: TableRowStock[] = [
                 variant="text"
                 size="30"
                 class="text-[12px]"
+                @click="fn_openDialogStockWareHouse(item.warehouse)"
               ></v-btn>
             </td>
           </tr>
@@ -503,4 +531,215 @@ const tableItemStock: TableRowStock[] = [
       >บันทึก</v-btn
     >
   </div>
+
+  <v-dialog v-model="openDialogStock" width="673px" class="!rounded-[8px]">
+    <v-card class="rounded-lg">
+      <v-card-text>
+        <div class="flex justify-between items-center">
+          <div
+            class="text-[20px] font-[700] tracking-[-0.09px] leading-[24px] opacity-title text-black"
+          >
+            อัพเดทสต๊อค : {{ productId }}
+          </div>
+          <v-icon
+            size="20"
+            @click="fnHandleClose"
+            class="cursor-pointer hover:text-[#084F93] transition-all"
+          >
+            fa-solid fa-close
+          </v-icon>
+        </div>
+        <div class="text-subTitle opacity-detail leading-5 tracking-23 mt-1">
+          อัพเดทจำนวนสินค้าที่อยู่ในสต็อค
+        </div>
+        <v-form @submit.prevent="fnHandleSubmit">
+          <div class="max-h-[350px] overflow-y-auto">
+            <div v-for="(item, index) in formValue" :key="index">
+              <div class="flex gap-2 mt-4 items-center w-full">
+                <div
+                  class="w-32 text-subTitle leading-[22px] font-[600] text-black opacity-title tracking-31"
+                >
+                  คลัง
+                </div>
+                <div class="text-subTitle leading-5 tracking-23 w-full">
+                  <v-select
+                    label="เลือกคลัง"
+                    v-model="formValue[index].warehouse"
+                    :items="[
+                      'คลัง 1',
+                      'คลัง 2',
+                      'คลัง 3',
+                      'คลัง 4',
+                      'คลัง 5',
+                      'คลัง 6',
+                    ]"
+                    density="compact"
+                    hide-details
+                    variant="outlined"
+                    class="w-full preinner-center"
+                  ></v-select>
+                </div>
+              </div>
+
+              <div class="flex gap-2 mt-4 items-center w-full">
+                <div
+                  class="w-32 text-subTitle leading-[22px] font-[600] text-black opacity-title tracking-31"
+                >
+                  จำนวน
+                </div>
+                <div class="text-subTitle leading-5 tracking-23 w-full">
+                  <v-text-field
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    v-model="formValue[index].amount"
+                    class="w-full preinner-center"
+                  ></v-text-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <v-btn
+            class="mt-2"
+            variant="text"
+            color="#74777F"
+            @click="
+              formValue.push({
+                warehouse: null,
+                amount: '',
+              })
+            "
+          >
+            เพิ่มคลัง
+            <template v-slot:prepend>
+              <v-icon color="#74777F" size="16" class=""
+                >fa-solid fa-plus</v-icon
+              >
+            </template>
+          </v-btn>
+
+          <div class="flex gap-4 mt-4 justify-center items-center">
+            <v-btn
+              class="rounded-lg w-[calc(50%-16px)] !h-[48px]"
+              color="#084F93"
+              variant="outlined"
+              @click="openDialogStock = false"
+              >ยกเลิก</v-btn
+            >
+            <v-btn
+              class="rounded-lg w-1/2 !h-[48px]"
+              color="#084F93"
+              variant="flat"
+              type="submit"
+              @click="openDialogStock = false"
+              >บันทึก</v-btn
+            >
+          </div>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog
+    v-model="openDialogStockWareHouse"
+    width="343px"
+    class="!h-[300px] !rounded-[8px]"
+  >
+    <v-card variant="outlined" class="!border-0 !rounded-[8px] !bg-white">
+      <v-card-text>
+        <p class="text-[#000] text-[20px] font-bold">อัพเดทสต็อค</p>
+        <p class="text-[#000]/[0.38] text-[14px]">
+          อัพเดทจำนวนสินค้าที่อยู่ในสต็อค
+        </p>
+
+        <div class="flex gap-[15px] mt-[15px] items-center">
+          <p class="text-[#000]/[0.6] text-[14px] basis-3/12">คลัง</p>
+          <p class="text-[#000] text-[14px] basis-9/12">: {{ warehouseId }}</p>
+        </div>
+
+        <div class="flex gap-[15px] mt-[15px] items-center">
+          <p class="text-[#000] text-[16px] font-bold basis-3/12">จำนวน</p>
+          <v-text-field
+            variant="outlined"
+            hide-details
+            class="basis-9/12 !rounded-[8px] !border"
+            placeholder=""
+            density="compact"
+          ></v-text-field>
+        </div>
+
+        <div class="flex gap-[15px] my-[15px] relative">
+          <v-btn
+            flat
+            class="!border !border-[#084f93] !text-[#084f93] w-[144px] !h-[48px] !rounded-[8px]"
+            @click="openDialogStockWareHouse = false"
+            >ยกเลิก</v-btn
+          >
+          <v-btn
+            flat
+            class="!border-0 !bg-[#084f93] !text-white w-[144px] !h-[48px] !rounded-[8px]"
+            @click="openDialogStockWareHouse = false"
+            >บันทึก</v-btn
+          >
+        </div>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="openDialogConfirmDelete" class="w-full">
+    <v-card class="rounded-lg self-center w-[354px]">
+      <v-card-text class="flex justify-center items-center flex-col">
+        <div class="flex flex-col justify-center items-center">
+          <div
+            class="bg-[#BA1A1A] w-[48px] h-[48px] flex justify-center items-center rounded-full"
+          >
+            <i class="fa-solid fa-info mb-1 text-white"></i>
+          </div>
+
+          <div
+            class="text-base font-bold mt-[15px]"
+            style="letter-spacing: 0px"
+          >
+            คุณต้องการลบสินค้า ?
+          </div>
+          <div class="text-xs mt-2 mb-0 opacity-[0.7] text-center">
+            สินค้านี้จะถูกลบออกจากคลังที่เกี่ยวข้อง
+            รวมไปถึงรายงานยอดขายในอดีตระดับสต็อก
+            ข้อมูลทั้งหมดนี้จะถูกลบอย่างถาวร โปรดตรวจสอบให้แน่ใจก่อนกด “ตกลง”
+          </div>
+        </div>
+        <div class="absolute right-5 cursor-pointer top-3">
+          <v-icon @click="() => (openDialogConfirmDelete = false)"
+            >mdi-close</v-icon
+          >
+        </div>
+      </v-card-text>
+      <v-card-text class="flex flex-col items-center w-full space-y-4 pt-0">
+        <v-form class="w-full !m-0 space-y-1">
+
+          <div class="flex justify-center space-x-2 mb-2 w-full mt-1">
+            <v-btn
+              color="#BA1A1A"
+              variant="outlined"
+              size="x-large"
+              class="w-1/2"
+              rounded="lg"
+              @click="openDialogConfirmDelete = false"
+            >
+              ยกเลิก
+            </v-btn>
+            <v-btn
+              color="#BA1A1A"
+              variant="flat"
+              size="x-large"
+              class="w-1/2"
+              rounded="lg"
+              @click="openDialogConfirmDelete = false"
+            >
+              ยืนยัน
+            </v-btn>
+            
+          </div>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>

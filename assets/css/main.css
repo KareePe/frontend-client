@@ -61,3 +61,21 @@ pre {
 .card-border {
   @apply border border-[#EEEDF1] p-2 rounded-lg;
 }
+
+.v-pagination__next .v-btn,
+.v-pagination__prev .v-btn {
+  border: 1px solid #c2c2c2 !important;
+  border-radius: 8px !important;
+}
+.v-pagination__item--is-active .v-btn {
+  background-color: #084f93;
+  border-radius: 8px !important;
+  color: #fff;
+}
+.v-data-table-footer__pagination {
+  margin: 15px 0 !important;
+}
+.v-data-table-footer__info,
+.v-data-table-footer__pagination {
+  display: none !important;
+}

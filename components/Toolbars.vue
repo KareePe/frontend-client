@@ -91,7 +91,7 @@
 
             <v-divider></v-divider>
 
-            <v-list>
+            <v-list v-model:opened="open">
               <div v-for="(item, index) in menu_list" :key="index">
                 <v-list v-if="item.haveSubMenu === false" class="pa-0">
                   <v-list-item :disabled="item.disable" link :to="item.path">
