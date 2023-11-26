@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-// import Details from "~/components/Warehouse/Details.vue";
-// import ModalAppend from "~/components/Warehouse/ModalAppend.vue";
-// import ModalUpdateStock from "~/components/Warehouse/ModalUpdateStock.vue";
-// import DetailsProduct from "~/components/Warehouse/DetailsProduct.vue";
-// import HistoryStock from "~/components/Warehouse/HistoryStock.vue";
-// import AddPOPage from "@/components/Warehouse/AddPOPage.vue";
+
 type headerTableType = {
   title: string;
   key: keyof tableItemType | "";
@@ -46,6 +41,7 @@ const navBarNew = ref([
         selectedProduct.value = null;
         historyPage.value = false;
         createPOPage.value = false;
+        createWareHouse.value = false;
       }),
   },
 ]);
@@ -222,6 +218,8 @@ const fnHandleAppendNav = (item: string) => {
       selectedProduct.value = null;
       historyPage.value = false;
       createPOPage.value = false;
+      createWareHouse.value = false;
+      editWareHouse.value = false;
     },
   });
 };
@@ -230,6 +228,8 @@ const modalAppendOpen = ref(false);
 const modalUpdateStockOpen = ref(false);
 const historyPage = ref(false);
 const createPOPage = ref(false);
+const createWareHouse = ref(false);
+const editWareHouse = ref<any | null>(null);
 </script>
 
 <template>
@@ -243,7 +243,8 @@ const createPOPage = ref(false);
           !selectedWarehouse &&
           !selectedProduct &&
           !historyPage &&
-          !createPOPage
+          !createPOPage &&
+          !createWareHouse
         "
       >
         <div class="flex justify-between items-center">
@@ -253,14 +254,19 @@ const createPOPage = ref(false);
             hide-details
             class="max-w-[460px] preinner-center"
             prepend-inner-icon="fa-solid fa-magnifying-glass"
+            placeholder="ค้นหาคลัง โดย หมายเลขคลัง,ชื่อคลัง,ประเภทคลัง"
           ></v-text-field>
           <v-btn
-            class="rounded-lg"
-            color="#084F93"
-            prepend-icon="fa-solid fa-plus"
-            variant="flat"
-            size="large"
-            >เพิ่มคลังสินค้า</v-btn
+            class="!rounded-[8px] !text-white w-[200px] !h-[48px] !bg-[#084F93]"
+            flat
+            @click="
+              {
+                fnHandleAppendNav('เพิ่มคลังสินค้า');
+                createWareHouse = true;
+              }
+            "
+            ><i class="fa-solid fa-plus text-white mr-2"></i>
+            <p>เพิ่มคลังสินค้า</p></v-btn
           >
         </div>
 
@@ -342,6 +348,12 @@ const createPOPage = ref(false);
                       variant="text"
                       size="30"
                       class="text-[12px]"
+                      @click="
+                        {
+                          fnHandleAppendNav('แก้ไขคลังสินค้า');
+                          editWareHouse = item;
+                        }
+                      "
                     ></v-btn>
                     <v-btn
                       color="#1A1C1E"
@@ -388,18 +400,24 @@ const createPOPage = ref(false);
 
       <div
         v-if="
-          selectedWarehouse && !selectedProduct && !historyPage && !createPOPage
+          selectedWarehouse &&
+          !selectedProduct &&
+          !historyPage &&
+          !createPOPage &&
+          !createWareHouse
         "
       >
         <WarehouseDetails
           :data="selectedWarehouse"
-          @see-product="(event) => {
-            selectedProduct = event
-            navBarNew.push({
-              text: event.name,
-              callback: ()=> {}
-            })
-          }"
+          @see-product="
+            (event) => {
+              selectedProduct = event;
+              navBarNew.push({
+                text: event.name,
+                callback: () => {},
+              });
+            }
+          "
           @history-click="
             {
               navBarNew.push({
@@ -447,6 +465,22 @@ const createPOPage = ref(false);
       <div v-if="createPOPage">
         <WarehouseAddPoPage />
       </div>
+
+      <div v-if="createWareHouse">
+        <WarehouseCreateWareHouse
+          @cancle-click="
+            (event) => {
+              createWareHouse = false;
+              console.log(event);
+              navBarNew.pop();
+            }
+          "
+        />
+      </div>
+
+      <div v-if="editWareHouse">
+        <WarehouseEditWareHouse :data="editWareHouse" />
+      </div>
     </v-slide-x-transition>
   </div>
 
@@ -491,7 +525,23 @@ const createPOPage = ref(false);
 .text-table {
   @apply text-[14px] leading-5 tracking-[-0.23%] text-center !pr-10;
 }
-
+.v-pagination__next .v-btn,
+.v-pagination__prev .v-btn {
+  border: 1px solid #c2c2c2 !important;
+  border-radius: 8px !important;
+}
+.v-pagination__item--is-active .v-btn {
+  background-color: #084f93;
+  border-radius: 8px !important;
+  color: #fff;
+}
+.v-data-table-footer__pagination {
+  margin: 15px 0 !important;
+}
+.v-data-table-footer__info,
+.v-data-table-footer__pagination {
+  display: none !important;
+}
 tbody {
   @apply text-[14px] leading-5 tracking-[-0.23%] text-center !pr-10;
 }

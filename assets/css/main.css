@@ -15,13 +15,13 @@
 @font-face {
   font-family: "SFThonburi";
   src: local("SFThonburi"),
-    url(/fonts/LineSeed/SFThonburi-Semibold.ttf) format("ttf");
+    url(/fonts/SF-Thonburi/SFThonburi-Semibold.ttf) format("ttf");
   font-weight: bold;
 }
 @font-face {
   font-family: "SFThonburi";
   src: local("SFThonburi"),
-    url(/fonts/LineSeed/SFThonburi-Bold.ttf) format("ttf");
+    url(/fonts/SF-Thonburi/SFThonburi-Bold.ttf) format("ttf");
   font-weight: bolder;
 }
 
