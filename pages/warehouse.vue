@@ -195,7 +195,6 @@ const pageCount = computed(() => {
 
 const fnChangeRowPerPages = (e: number) => {
   itemsPerPage.value = e;
-  console.log(e);
 };
 
 const fnHandleNavbarback = (index: number, callback?: () => void) => {
