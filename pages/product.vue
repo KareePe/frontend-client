@@ -319,7 +319,6 @@ const fnHandleAppendNav = (item: string) => {
         <ProductAddNewProduct />
       </div>
     </v-slide-x-transition>
-    <ProductModalSelectCategory />
   </div>
 </template>
 

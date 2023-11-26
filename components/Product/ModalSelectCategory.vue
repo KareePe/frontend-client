@@ -5,6 +5,13 @@ const { open } = defineProps({
     type: Boolean,
   },
 });
+
+const emit = defineEmits(['onClose'])
+
+const fnHandleClose = () => {
+  emit('onClose') 
+}
+
 </script>
 
 <template>
@@ -205,6 +212,7 @@ const { open } = defineProps({
             variant="outlined"
             color="#084F93"
             class="!rounded-lg w-[calc(50%-4px)] mt-4 mb-2 min-h-[45px]"
+            @click="fnHandleClose"
             >ยกเลิก</v-btn
           >
           <v-btn

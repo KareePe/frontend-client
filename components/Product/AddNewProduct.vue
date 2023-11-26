@@ -45,9 +45,14 @@ const fnHandleUploadFile = (e) => {
 
 const stockData = ref([]);
 const updateStockModal = ref(false);
+const selectCategoryModal = ref(false);
 </script>
 
 <template>
+  <ProductModalSelectCategory
+    :open="selectCategoryModal"
+    @on-close="selectCategoryModal = false"
+  />
   <div class="flex border border-[#EEEDF1] rounded-lg p-4 flex-col mt-4">
     <div
       class="text-[20px] opacity-title leading-[24px] tracking-[-0.09px] text-black font-bold"
@@ -63,6 +68,7 @@ const updateStockModal = ref(false);
           variant="outlined"
           v-model="formValue.name"
           hide-details
+          class="w-1/2"
           density="compact"
           placeholder="ระบุชื่อสินค้า*"
         ></v-text-field>
@@ -79,6 +85,8 @@ const updateStockModal = ref(false);
           hide-details
           density="compact"
           placeholder="เลือกหมวดหมู่*"
+          class="w-1/2"
+          @click="selectCategoryModal = true"
           v-model="formValue.category"
           readonly
         ></v-text-field>
