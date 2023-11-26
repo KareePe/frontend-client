@@ -15,7 +15,6 @@ const { open, data, productname } = defineProps({
 const emit = defineEmits(["onSubmit", "onClose"]);
 
 const fnHandleSubmit = (value) => {
-  console.log(value.target);
   emit("onSubmit");
 };
 
@@ -33,7 +32,7 @@ const formValue = ref([
 </script>
 
 <template>
-  <v-dialog :model-value="true" persistent width="680px">
+  <v-dialog :model-value="open" persistent width="680px">
     <v-card class="rounded-lg">
       <v-card-text>
         <div class="flex justify-between items-center">
