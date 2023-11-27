@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, mergeProps } from "vue";
+import { ref, watch, computed, mergeProps } from "vue";
 
 type headerTableType = {
   title: string;
@@ -113,11 +113,15 @@ const navBarNew = ref([
   },
   {
     text: "รายการคำสั่งซื้อ",
-    callback: () => fnHandleNavbarback(2, () => (itemSelected.value = null)),
+    callback: () =>
+      fnHandleNavbarback(2, () => {
+        itemSelected.value = null;
+        createOrder.value = false;
+      }),
   },
 ]);
 
-const itemSelected = ref<null | tableItemType>(null);
+const itemSelected = ref<null | any>(null);
 
 const fnHandleNavbarback = (index: number, callback?: () => void) => {
   let num = navBarNew.value.length - index;
@@ -148,6 +152,17 @@ const openModalPrint = ref(false);
 const openModalAlert = ref(false);
 const openModalUploadFile = ref(false);
 const openModalDownload = ref(false);
+const openModalSelectPlatform = ref(false);
+const openModalSelectOrderSystem = ref(false);
+const createOrder = ref(false);
+
+const fnHandleClickCreateOrder = () => {
+  createOrder.value = true;
+  navBarNew.value.push({
+    text: "สร้างคำสั่งซื้อใหม่",
+    callback: () => {},
+  });
+};
 </script>
 
 <template>
@@ -157,7 +172,7 @@ const openModalDownload = ref(false);
   </div>
 
   <v-slide-x-transition hide-on-leave leave-absolute>
-    <div class="containerLayout" v-if="itemSelected === null">
+    <div class="containerLayout" v-if="itemSelected === null && !createOrder">
       <!-- header  -->
       <div class="flex justify-between">
         <div class="min-w-[300px] max-sm:hidden">
@@ -254,6 +269,7 @@ const openModalDownload = ref(false);
             color="#084F93"
             size="large"
             class="rounded-lg !min-h-[55px] !p-2 icon-prepend"
+            @click="fnHandleClickCreateOrder"
           >
             สร้างคำสั่งซื้อใหม่
           </v-btn>
@@ -579,15 +595,34 @@ const openModalDownload = ref(false);
         </div>
       </div>
     </div>
-    <div class="containerLayout" v-else>
+    <div class="containerLayout" v-if="itemSelected">
       <OrderSelectedItem :data="itemSelected" />
     </div>
+    <div class="containerLayout" v-if="createOrder">
+      <OrderCreateOrderPage
+        @select-platform-click="openModalSelectPlatform = true"
+        @select-data-system="openModalSelectOrderSystem = true"
+      />
+    </div>
   </v-slide-x-transition>
+
+  <OrderModalSelectPlatform
+    :open="openModalSelectPlatform"
+    @on-close="
+      (event) => {
+        openModalSelectPlatform = false;
+        console.log(event);
+      }
+    "
+  />
+
+  <OrderModalSelectOrderFormSystem
+    :open="openModalSelectOrderSystem"
+    @on-close="openModalSelectOrderSystem = false"
+  />
+
   <OrderModalNoStatus
     :open="openModalStatusNumber"
-    :onsubmit="
-      (value:string) => {}
-    "
     :onclose="
       () => {
         openModalStatusNumber = false;

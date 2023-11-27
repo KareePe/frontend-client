@@ -142,17 +142,17 @@
 </template>
 
 <script setup>
-import { ref, mergeProps } from "vue";
+import { ref, mergeProps } from "vue"
 
-let drawer = ref(true);
-let submenu = ref(null);
-let shownav = ref(false);
+let drawer = ref(true)
+let submenu = ref(null)
+let shownav = ref(false)
 
 const showSubmenu = (item) => {
-  submenu.value = submenu.value === item ? null : item;
-};
+  submenu.value = submenu.value === item ? null : item
+}
 
-const open = ref(null);
+const open = ref(null)
 
 const menu_list = [
   {
@@ -160,7 +160,7 @@ const menu_list = [
     haveSubMenu: false,
     subMenu: [],
     icon: "fa-solid fa-house",
-    path: "/",
+    path: "/"
   },
   {
     title: "คำสั่งซื้อ",
@@ -170,21 +170,21 @@ const menu_list = [
       {
         subtitle: "รายการคำสั่งซื้อ",
         path: "/order",
-        disable: false,
+        disable: false
       },
       {
         subtitle: "จัดการงานจัดส่ง",
         path: "/",
-        disable: true,
+        disable: true
       },
       {
         subtitle: "คืนสินค้าและเคลม",
         path: "/",
-        disable: true,
-      },
+        disable: true
+      }
     ],
     icon: "fa-solid fa-list",
-    disable: false,
+    disable: false
   },
   {
     title: "คลังและสินค้า",
@@ -194,23 +194,23 @@ const menu_list = [
       {
         subtitle: "ภาพรวม",
         path: "/overview",
-        disable: false,
+        disable: false
       },
       {
         subtitle: "สินค้า",
         path: "/product",
-        disable: false,
+        disable: false
       },
       {
         subtitle: "คลังสินค้า",
         path: "/warehouse",
-        disable: false,
-      },
+        disable: false
+      }
     ],
     icon: "fa-solid fa-boxes-stacked",
-    disable: false,
-  },
-];
+    disable: false
+  }
+]
 </script>
 
 <style>
