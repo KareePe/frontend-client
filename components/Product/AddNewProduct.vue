@@ -139,7 +139,7 @@ const selectCategoryModal = ref(false);
           v-for="(item, index) in selectedImage"
           :key="index"
         >
-          <img :src="item" width="105" height="105" alt="Preview" />
+          <img :src="item" class="w-[105px] h-[105px] object-contain" alt="Preview" />
           <div
             class="absolute flex w-full justify-end cursor-pointer top-2 right-1"
           >

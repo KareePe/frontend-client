@@ -1,6 +1,16 @@
 <script setup>
 import { ref, onMounted, watch, mergeProps } from "vue"
-import moment from "moment"
+import moment from 'moment';
+
+// import 'moment/locale/pt-br';
+
+onMounted(() => {
+
+  let dd = moment.locale('th')
+  console.log(dd);
+  console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
+})
+ // en
 const { open, onsubmit, onclose } = defineProps({
   open: {
     type: Boolean,
@@ -23,7 +33,7 @@ const fnHandleClose = () => {
   submitValue.value = ""
   onclose()
 }
-moment.locale("th")
+// moment.locale("th")
 </script>
 
 <template>

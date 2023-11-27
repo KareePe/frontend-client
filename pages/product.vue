@@ -164,7 +164,7 @@ const fnHandleAppendNav = (item: string) => {
   <Toolbars />
   <NavbarCallback :breadcrump="navBarNew" />
 
-  <div class="lg:ml-64 p-4">
+  <div class="lg:ml-72 p-4">
     <v-slide-x-transition hide-on-leave>
       <div v-if="!AddNewProdctState && !selectDetail">
         <div class="flex justify-between items-center">
