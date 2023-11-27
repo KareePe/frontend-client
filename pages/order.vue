@@ -1,70 +1,70 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, mergeProps } from "vue";
+import { ref, watch, computed, mergeProps } from "vue"
 
 type headerTableType = {
-  title: string;
-  key: keyof tableItemType | "";
-  sortable?: boolean;
-  align?: "start" | "center" | "end";
-};
+  title: string
+  key: keyof tableItemType | ""
+  sortable?: boolean
+  align?: "start" | "center" | "end"
+}
 
 type tableItemType = {
-  name: string;
-  no: string;
-  no_status: string;
-  price: string;
-  create_date: string;
-  print: "success" | "waiting";
-  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง";
-};
+  name: string
+  no: string
+  no_status: string
+  price: string
+  create_date: string
+  print: "success" | "waiting"
+  status: "เสร็จสิ้น" | "ที่ต้องจัดส่ง"
+}
 
-const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"];
-const tab = ref("all");
+const chipData = ["ชื่อลุกค้า", "Order No.", "เบอร์โทร"]
+const tab = ref("all")
 
 const headersTable: headerTableType[] = [
   {
     title: "ชื่อลูกค้า",
     align: "center",
     key: "name",
-    sortable: false,
+    sortable: false
   },
   {
     title: "หมายเลขคำสั่งซื้อ",
     align: "center",
     key: "no",
-    sortable: false,
+    sortable: false
   },
   {
     title: "เลขติดตามสถานะ",
     align: "center",
     key: "no_status",
-    sortable: false,
+    sortable: false
   },
   {
     title: "ราคา",
     align: "center",
     key: "price",
-    sortable: false,
+    sortable: false
   },
   {
     title: "วันที่สร้าง",
     align: "center",
     key: "create_date",
-    sortable: false,
+    sortable: false
   },
   {
     title: "ปริ้นท์",
     align: "center",
     key: "print",
-    sortable: false,
+    sortable: false
   },
   {
     title: "สถานะ",
     align: "center",
     key: "status",
-    sortable: false,
-  },
-];
+    sortable: false
+  }
+]
 
 const tableItem = ref<tableItemType[]>([
   {
@@ -74,7 +74,7 @@ const tableItem = ref<tableItemType[]>([
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "waiting",
+    print: "waiting"
   },
   {
     no: "SX1234567890",
@@ -83,7 +83,7 @@ const tableItem = ref<tableItemType[]>([
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success",
+    print: "success"
   },
   {
     no: "asdasdvvvv",
@@ -92,7 +92,7 @@ const tableItem = ref<tableItemType[]>([
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success",
+    print: "success"
   },
   {
     no: "ddddddddd",
@@ -101,53 +101,67 @@ const tableItem = ref<tableItemType[]>([
     no_status: "TH1283629CH82",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success",
-  },
-]);
+    print: "success"
+  }
+])
 
-const selectedTask = ref([]);
+const selectedTask = ref([])
 const navBarNew = ref([
   {
     text: "คำสั่งซื้อ",
-    callback: () => {},
+    callback: () => {}
   },
   {
     text: "รายการคำสั่งซื้อ",
-    callback: () => fnHandleNavbarback(2, () => (itemSelected.value = null)),
-  },
-]);
+    callback: () =>
+      fnHandleNavbarback(2, () => {
+        itemSelected.value = null
+        createOrder.value = false
+      })
+  }
+])
 
-const itemSelected = ref<null | tableItemType>(null);
+const itemSelected = ref<null | any>(null)
 
 const fnHandleNavbarback = (index: number, callback?: () => void) => {
-  let num = navBarNew.value.length - index;
+  let num = navBarNew.value.length - index
   for (let i = 1; i <= num; i++) {
-    navBarNew.value.pop();
+    navBarNew.value.pop()
   }
   if (callback) {
-    callback();
+    callback()
   }
-};
+}
 
-const page = ref(1);
-const itemsPerPage = ref(10);
+const page = ref(1)
+const itemsPerPage = ref(10)
 
 const pageCount = computed(() => {
-  return Math.ceil(tableItem.value.length / itemsPerPage.value);
-});
+  return Math.ceil(tableItem.value.length / itemsPerPage.value)
+})
 
 const fnChangeRowPerPages = (e: number) => {
-  itemsPerPage.value = e;
-  console.log(e);
-};
+  itemsPerPage.value = e
+  console.log(e)
+}
 
-const openModalStatusNumber = ref(false);
-const openModalConfirmCreate = ref(false);
-const openModalChangeStatus = ref(false);
-const openModalPrint = ref(false);
-const openModalAlert = ref(false);
-const openModalUploadFile = ref(false);
-const openModalDownload = ref(false);
+const openModalStatusNumber = ref(false)
+const openModalConfirmCreate = ref(false)
+const openModalChangeStatus = ref(false)
+const openModalPrint = ref(false)
+const openModalAlert = ref(false)
+const openModalUploadFile = ref(false)
+const openModalDownload = ref(false)
+const openModalSelectPlatform = ref(false)
+const createOrder = ref(false)
+
+const fnHandleClickCreateOrder = () => {
+  createOrder.value = true
+  navBarNew.value.push({
+    text: "สร้างคำสั่งซื้อใหม่",
+    callback: () => {}
+  })
+}
 </script>
 
 <template>
@@ -157,7 +171,7 @@ const openModalDownload = ref(false);
   </div>
 
   <v-slide-x-transition hide-on-leave leave-absolute>
-    <div class="containerLayout" v-if="itemSelected === null">
+    <div class="containerLayout" v-if="itemSelected === null && !createOrder">
       <!-- header  -->
       <div class="flex justify-between">
         <div class="min-w-[300px] max-sm:hidden">
@@ -254,6 +268,7 @@ const openModalDownload = ref(false);
             color="#084F93"
             size="large"
             class="rounded-lg !min-h-[55px] !p-2 icon-prepend"
+            @click="fnHandleClickCreateOrder"
           >
             สร้างคำสั่งซื้อใหม่
           </v-btn>
@@ -368,11 +383,11 @@ const openModalDownload = ref(false);
                   class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93] cursor-pointer"
                   @click="
                     () => {
-                      itemSelected = item;
+                      itemSelected = item
                       navBarNew.push({
                         text: value,
-                        callback: () => {},
-                      });
+                        callback: () => {}
+                      })
                     }
                   "
                 >
@@ -577,18 +592,33 @@ const openModalDownload = ref(false);
         </div>
       </div>
     </div>
-    <div class="containerLayout" v-else>
+    <div class="containerLayout" v-if="itemSelected">
       <OrderSelectedItem :data="itemSelected" />
     </div>
+    <div class="containerLayout" v-if="createOrder">
+      <OrderCreateOrderPage
+        @select-platform-click="openModalSelectPlatform = true"
+      />
+    </div>
   </v-slide-x-transition>
+
+  <OrderModalSelectPlatform
+    :open="openModalSelectPlatform"
+    @on-close="
+      (event) => {
+        openModalSelectPlatform = false
+        console.log(event)
+      }
+    "
+  />
+
+  <OrderModalSelectOrderFormSystem/>
+
   <OrderModalNoStatus
     :open="openModalStatusNumber"
-    :onsubmit="
-      (value:string) => {}
-    "
     :onclose="
       () => {
-        openModalStatusNumber = false;
+        openModalStatusNumber = false
       }
     "
   />
@@ -597,7 +627,7 @@ const openModalDownload = ref(false);
     :open="openModalConfirmCreate"
     :onclose="
       () => {
-        openModalConfirmCreate = false;
+        openModalConfirmCreate = false
       }
     "
   />
@@ -606,7 +636,7 @@ const openModalDownload = ref(false);
     :open="openModalChangeStatus"
     :onclose="
       () => {
-        openModalChangeStatus = false;
+        openModalChangeStatus = false
       }
     "
   />
@@ -615,7 +645,7 @@ const openModalDownload = ref(false);
     :open="openModalPrint"
     :onclose="
       () => {
-        openModalPrint = false;
+        openModalPrint = false
       }
     "
   />
@@ -624,12 +654,12 @@ const openModalDownload = ref(false);
     :open="openModalUploadFile"
     :onclose="
       () => {
-        openModalUploadFile = false;
+        openModalUploadFile = false
       }
     "
     :onsubmit="
       () => {
-        openModalAlert = true;
+        openModalAlert = true
       }
     "
   />

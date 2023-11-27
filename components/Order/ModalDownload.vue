@@ -1,16 +1,15 @@
 <script setup>
 import { ref, onMounted, watch, mergeProps } from "vue"
-import moment from 'moment';
+import moment from "moment"
 
 // import 'moment/locale/pt-br';
 
 onMounted(() => {
-
-  let dd = moment.locale('th')
-  console.log(dd);
-  console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
+  let dd = moment.locale("th")
+  console.log(dd)
+  console.log(moment().format("MMMM Do YYYY, h:mm:ss a"))
 })
- // en
+// en
 const { open, onsubmit, onclose } = defineProps({
   open: {
     type: Boolean,
@@ -29,6 +28,7 @@ const { open, onsubmit, onclose } = defineProps({
 const startDates = ref()
 const endDates = ref()
 const submitValue = ref("")
+const checkboxValue = ref()
 const fnHandleClose = () => {
   submitValue.value = ""
   onclose()
@@ -140,10 +140,11 @@ const fnHandleClose = () => {
                   class="checkbox-change-status"
                   hide-details
                   label="คำสั่งซื้อ"
-                  true-value="fail"
+                  true-value="buy"
                   color="#084F93"
                   false-icon="fa-regular fa-circle"
                   true-icon="fa-regular fa-circle-dot"
+                  v-model="checkboxValue"
                 ></v-checkbox>
               </div>
               <div class="mt-2 rounded-lg border border-[#EEEDF1] pl-2 py-1">
@@ -151,7 +152,8 @@ const fnHandleClose = () => {
                   class="checkbox-change-status"
                   hide-details
                   label="รายการสินค้า"
-                  true-value="fail"
+                  v-model="checkboxValue"
+                  true-value="list"
                   color="#084F93"
                   false-icon="fa-regular fa-circle"
                   true-icon="fa-regular fa-circle-dot"
