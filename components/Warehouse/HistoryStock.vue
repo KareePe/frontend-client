@@ -38,7 +38,7 @@ type TableRow = {
   manager: string;
 };
 
-const tableItem: TableRow[] = [
+let tableItem = ref([
   {
     po_no: "",
     date: "2023-11-26",
@@ -89,8 +89,10 @@ const tableItem: TableRow[] = [
     amount: 1800,
     manager: "Charlie Davis",
   },
-];
-const chipData = ["SKU", "ชื่อสินค้า", "Action","ดำเนินการโดย"];
+]);
+
+let filterTableItem = ref([])
+const chipData = ["SKU", "ชื่อสินค้า", "Action", "ดำเนินการโดย"];
 
 const tableHeader: TableColumn[] = [
   {
@@ -148,11 +150,60 @@ const fnChangeRowPerPages = (e: number) => {
   console.log(e);
 };
 
-const filterTable = [];
+const filterTable: any = ref([]);
 
-const fn_filterCheck = () => {
+watch(filterTable, (item) => {
+  console.log(filterTable, "item");
+});
 
-}
+onMounted(() => {
+  filterTableItem.value = tableItem.value
+})
+
+const fn_filterCheck = (item) => {
+  if (filterInput.value !== "") {
+    filterTable.value.push({
+      type: item,
+      filter: filterInput.value,
+    });
+    filterInput.value = "";
+  }
+  fn_filter();
+};
+
+const fn_popFilter = (type) => {
+  const index = filterTable.value.findIndex((filter) => filter.type === type);
+
+  if (index !== -1) {
+    filterTable.value.splice(index, 1);
+  }
+
+  fn_filter();
+};
+
+const fn_filter = () => {
+  console.log(filterTable.value, "filterTable");
+
+  const filters = filterTable.value.map((item) => {
+    switch (item.type) {
+      case "SKU":
+        return tableItem.value.filter((table) => table.sku === item.filter);
+      case "ชื่อสินค้า":
+        return tableItem.value.filter((table) => table.product.includes(item.filter));
+      case "Action":
+        return tableItem.value.filter((table) => table.action.includes(item.filter));
+      case "ดำเนินการโดย":
+        return tableItem.value.filter((table) => table.manager.includes(item.filter));
+      default:
+        return [];
+    }
+  });
+
+  filterTableItem.value = filters.length > 0 ? filters[0] : tableItem.value;
+};
+
+let menu = ref(false);
+let filterInput = ref("");
 </script>
 
 <template>
@@ -197,17 +248,69 @@ const fn_filterCheck = () => {
       variant="outlined"
       hide-details
       density="compact"
-      class="bg-white prepend-chip rounded-lg"
-      @click="fn_filterCheck"
+      readonly
+      class="bg-white prepend-chip !rounded-[8px] !h-[48px] flex flex-nowrap"
     >
-      <!-- <template v-slot:prepend-inner>
-        <div class="p-2 w-fit">
-          <Chips text="เบอร์โทร:091-234-5678" />
+      <template v-slot:prepend-inner>
+        <div class="w-fit flex" v-if="filterTable.length > 0">
+          <div
+            v-for="(item, index) in filterTable"
+            :key="index"
+            class="!bg-[#EEEDF1] flex items-center gap-[10px] !text-[#0BA5EC] whitespace-nowrap text-sm font-medium me-2 py-[2px] px-[12px] !rounded-[20px] select-none cursor-pointer"
+          >
+            <p class="text-[#000]/[0.38]">
+              {{ item.type }} |
+              <span class="text-[#084F93]">{{ item.filter }}</span>
+            </p>
+            <i
+              class="fa-solid fa-xmark text-[#74777F] cursor-pointer"
+              @click="fn_popFilter(item.type)"
+            ></i>
+          </div>
         </div>
-      </template> -->
+      </template>
     </v-text-field>
     <div class="pt-2">
-      <Chips v-for="(item, index) in chipData" :text="item" :key="index" />
+      <v-dialog width="350px" v-for="(item, index) in chipData" :key="index">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            flat
+            v-bind="props"
+            :text="item"
+            class="!bg-[#EEEDF1] !text-[#0BA5EC] whitespace-nowrap text-sm font-medium me-2 py-[2px] px-[12px] !rounded-[20px] select-none cursor-pointer"
+          ></v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card>
+            <div
+              class="bg-[#084F93] w-full h-[48px] text-white px-[15px] flex items-center"
+            >
+              {{ item }}
+            </div>
+
+            <div class="p-[15px]">
+              <v-text-field
+                v-model="filterInput"
+                density="compact"
+                variant="outlined"
+                class="w-full !h-[48px] !rounded-[8px]"
+                :placeholder="`กรอก ${item} ที่ต้องการกรอง`"
+              ></v-text-field>
+            </div>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                text="ตกลง"
+                @click="
+                  isActive.value = false;
+                  fn_filterCheck(item);
+                "
+              ></v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
     </div>
   </div>
   <v-card
@@ -218,7 +321,7 @@ const fn_filterCheck = () => {
       :headers="tableHeader"
       :items-per-page="itemsPerPage"
       :page="page"
-      :items="tableItem"
+      :items="filterTableItem"
       id="table-header-black"
     >
       <template v-slot:item="{ item }">
@@ -287,3 +390,9 @@ const fn_filterCheck = () => {
     </div>
   </div>
 </template>
+
+<style>
+.prepend-chip .v-field__input {
+  height: 48px !important;
+}
+</style>

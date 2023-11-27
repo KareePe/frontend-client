@@ -334,9 +334,11 @@ const openModalDownload = ref(false);
             variant="outlined"
             hide-details
             density="compact"
+            class="!rounded-[8px]"
           ></v-text-field>
           <div class="pt-2">
-            <Chips v-for="(item, index) in chipData" :text="item" />
+            
+            <Chips v-for="(item, index) in chipData" :text="item" :key="index" />
           </div>
         </div>
 
