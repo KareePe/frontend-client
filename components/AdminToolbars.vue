@@ -161,7 +161,7 @@ const menu_list = [
       },
       {
         subtitle: "จัดการที่อยู่",
-        path: "/admin/business/addresses",
+        path: "/admin/business/address",
         disable: false
       },
       {

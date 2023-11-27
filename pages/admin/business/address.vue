@@ -15,9 +15,13 @@ const navBarNew = ref([
   },
   {
     text: "ข้อมูลธุรกิจ",
+    callback: async () =>
+      await navigateTo('/admin/business/info')
+  },
+  {
+    text: "จัดการที่อยู่",
     callback: () => { }
   },
-
 ]);
 </script>
 
