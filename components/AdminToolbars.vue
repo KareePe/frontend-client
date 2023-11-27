@@ -5,60 +5,50 @@
     data-drawer-toggle="default-sidebar"
     aria-controls="default-sidebar"
     type="button"
-    class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-  >
+    class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
     <span class="sr-only">Open sidebar</span>
     <svg
       class="w-6 h-6"
       aria-hidden="true"
       fill="currentColor"
       viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         clip-rule="evenodd"
         fill-rule="evenodd"
-        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-      ></path>
+        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
     </svg>
   </button>
 
   <div class="flex">
     <aside
       id="default-sidebar"
-      :class="`fixed top-0 left-0 z-40 w-[284px] h-screen transition-transform ${
-        shownav === true ? 'translate-none' : '-translate-x-full'
-      } lg:translate-x-0`"
-      aria-label="Sidenav"
-    >
+      :class="`fixed top-0 left-0 z-40 w-[284px] h-screen transition-transform ${shownav === true ? 'translate-none' : '-translate-x-full'
+        } lg:translate-x-0`"
+      aria-label="Sidenav">
       <div
-        class="fixed bg-gradient-to-b from-[#074F95] to-[#00AC86] w-[62px] h-screen"
-      >
+        class="fixed bg-gradient-to-b from-[#074F95] to-[#00AC86] w-[62px] h-screen">
         <div class="flex py-[15px] justify-center">
           <div>
             <img
               src="/images/SALESX_TECHNOLOGIES_LOGO_FINAL_ICONIC_VERSION-05.png"
               class="w-[36px] h-[36px]"
-              alt=""
-            />
+              alt="" />
 
             <div class="my-[25px]">
               <div class="flex w-full relative my-[10px] cursor-pointer">
                 <div
-                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px]"
-                ></div>
+                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px]"></div>
                 <div class="!w-[36px] !h-[36px] rounded-full bg-white"></div>
               </div>
               <div class="flex w-full relative my-[10px] cursor-pointer">
                 <div
-                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px] hidden"
-                ></div>
+                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px] hidden"></div>
                 <div class="!w-[36px] !h-[36px] rounded-full bg-white"></div>
               </div>
               <div class="flex w-full relative my-[10px] cursor-pointer">
                 <div
-                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px] hidden"
-                ></div>
+                  class="w-[4px] h-[36px] rounded-tr-[8px] rounded-br-[8px] bg-[#00AA84] absolute -left-[12px] hidden"></div>
                 <div class="!w-[36px] !h-[36px] rounded-full bg-white"></div>
               </div>
             </div>
@@ -66,8 +56,7 @@
         </div>
       </div>
       <div
-        class="h-full bg-white border-r border-gray-200 overflow-hidden pb-5 ml-[62px]"
-      >
+        class="h-full bg-white border-r border-gray-200 overflow-hidden pb-5 ml-[62px]">
         <!-- <v-card class="mx-auto !border-0" variant="outlined" width="auto"> -->
         <v-layout class="px-[15px]">
           <v-navigation-drawer>
@@ -99,8 +88,7 @@
                       <div class="flex gap-[15px] items-center">
                         <v-icon
                           :class="item.icon"
-                          style="font-size: 14px"
-                        ></v-icon>
+                          style="font-size: 14px"></v-icon>
                         <p class="text-[14px]">
                           {{ item.title }}
                         </p>
@@ -114,8 +102,7 @@
                       <div class="flex gap-[15px]">
                         <i
                           :class="item.icon"
-                          style="color: #43474e; font-size: 14px"
-                        ></i>
+                          style="color: #43474e; font-size: 14px"></i>
                         <p style="color: #43474e; font-size: 14px">
                           {{ item.title }}
                         </p>
@@ -156,66 +143,36 @@ const open = ref(null)
 
 const menu_list = [
   {
-    title: "หน้าแรก",
+    title: "กลับสู่ Business center",
     haveSubMenu: false,
     subMenu: [],
-    icon: "fa-solid fa-house",
+    icon: "fa-solid fa-chevron-left",
     path: "/"
   },
   {
-    title: "คำสั่งซื้อ",
+    title: "บัญชีธุรกิจ",
     openExpand: false,
     haveSubMenu: true,
     subMenu: [
       {
-        subtitle: "รายการคำสั่งซื้อ",
-        path: "/order",
+        subtitle: "ข้อมูลธุรกิจ",
+        path: "/admin/business/info",
         disable: false
       },
       {
-        subtitle: "จัดการงานจัดส่ง",
-        path: "/",
-        disable: true
+        subtitle: "จัดการที่อยู่",
+        path: "/admin/business/addresses",
+        disable: false
       },
       {
-        subtitle: "คืนสินค้าและเคลม",
-        path: "/",
-        disable: true
-      }
+        subtitle: "ทีมงาน",
+        path: "/admin/business/team",
+        disable: false
+      },
+
     ],
-    icon: "fa-solid fa-list",
+    icon: "fa-solid fa-bank",
     disable: false
-  },
-  {
-    title: "คลังและสินค้า",
-    openExpand: false,
-    haveSubMenu: true,
-    subMenu: [
-      {
-        subtitle: "ภาพรวม",
-        path: "/overview",
-        disable: false
-      },
-      {
-        subtitle: "สินค้า",
-        path: "/product",
-        disable: false
-      },
-      {
-        subtitle: "คลังสินค้า",
-        path: "/warehouse",
-        disable: false
-      }
-    ],
-    icon: "fa-solid fa-boxes-stacked",
-    disable: false
-  },
-  {
-    title: "คอนโซลผู้ดูแล",
-    haveSubMenu: false,
-    subMenu: [],
-    icon: "fa-solid fa-terminal",
-    path: "/admin"
   },
 ]
 </script>
@@ -255,6 +212,7 @@ const menu_list = [
     /* display: none; */
     @apply translate-x-0;
   }
+
   .menu-nav {
     margin-left: 0;
   }
