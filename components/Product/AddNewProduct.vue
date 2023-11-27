@@ -46,6 +46,22 @@ const fnHandleUploadFile = (e) => {
 const stockData = ref([]);
 const updateStockModal = ref(false);
 const selectCategoryModal = ref(false);
+
+let model = ref(false);
+let openDialogAddSubProduct = ref(false)
+
+const formAddSubProductValue = ref([
+  {
+    type: 'สี',
+    detail: "",
+  },
+]);
+
+const fnHandleChange = () => {
+  openDialogAddSubProduct.value = model.value === true ? true : false
+
+  console.log(openDialogAddSubProduct.value)
+};
 </script>
 
 <template>
@@ -139,7 +155,11 @@ const selectCategoryModal = ref(false);
           v-for="(item, index) in selectedImage"
           :key="index"
         >
-          <img :src="item" class="w-[105px] h-[105px] object-contain" alt="Preview" />
+          <img
+            :src="item"
+            class="w-[105px] h-[105px] object-contain"
+            alt="Preview"
+          />
           <div
             class="absolute flex w-full justify-end cursor-pointer top-2 right-1"
           >
@@ -237,7 +257,15 @@ const selectCategoryModal = ref(false);
         สินค้าย่อย
       </div>
       <div class="w-1/2 text-subTitle leading-5 tracking-23">
-        <Switch text="ไม่มี" />
+        <v-switch
+          v-model="model"
+          hide-details
+          inset
+          density="compact"
+          color="#084F93"
+          :label="model === false ? 'ไม่มี' : 'มี'"
+          @change="fnHandleChange"
+        ></v-switch>
       </div>
     </div>
     <div class="flex gap-2 mt-2 items-center">
@@ -274,6 +302,108 @@ const selectCategoryModal = ref(false);
     productname="ทดสอบ"
     :data="stockData"
   />
+
+  <v-dialog v-model="openDialogAddSubProduct" persistent width="680px">
+    <v-card class="rounded-lg">
+      <v-card-text>
+        <div class="flex justify-between items-center">
+          <div
+            class="text-[20px] font-[700] tracking-[-0.09px] leading-[24px] opacity-title text-black"
+          >
+            อัพเดทสต๊อค
+          </div>
+          <v-icon
+            size="20"
+            @click="openDialogAddSubProduct = false"
+            class="cursor-pointer hover:text-[#084F93] transition-all"
+          >
+            fa-solid fa-close
+          </v-icon>
+        </div>
+        <div class="text-subTitle opacity-detail leading-5 tracking-23 mt-1">
+          อัพเดทจำนวนสินค้าที่อยู่ในสต็อค
+        </div>
+        <v-form @submit.prevent="fnHandleSubmit">
+          <div class="max-h-[350px] overflow-y-auto">
+            <div v-for="(item, index) in formAddSubProductValue" :key="index">
+              <div class="flex gap-2 mt-4 items-center w-full">
+                <div
+                  class="w-32 text-subTitle leading-[22px] font-[600] text-black opacity-title tracking-31"
+                >
+                ประเภท
+                </div>
+                <div class="text-subTitle leading-5 tracking-23 w-full">
+                  <v-select
+                    label="เลือกประเภท"
+                    v-model="formAddSubProductValue[index].type"
+                    :items="[
+                      'ขนาด',
+                      'สี',
+                    ]"
+                    density="compact"
+                    hide-details
+                    variant="outlined"
+                    class="w-full preinner-center"
+                  ></v-select>
+                </div>
+              </div>
+
+              <div class="flex gap-2 mt-4 items-center w-full">
+                <div
+                  class="w-32 text-subTitle leading-[22px] font-[600] text-black opacity-title tracking-31"
+                >
+                  {{ formAddSubProductValue[index].type === 'ขนาด' ? 'ขนาด' :'สี' }}
+                </div>
+                <div class="text-subTitle leading-5 tracking-23 w-full">
+                  <v-text-field
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    v-model="formAddSubProductValue[index].detail"
+                    class="w-full preinner-center"
+                  ></v-text-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <v-btn
+            class="mt-2 !max-w-[311px] w-[311px] !h-[48px] !border !border-[#084F93] !rounded-[8px] !text-[#084F93]"
+            flat
+            @click="
+              formAddSubProductValue.push({
+                type: 'สี',
+                amount: '',
+              })
+            "
+          >
+          เพิ่มประเภทสินค้าย่อย
+            <template v-slot:prepend>
+              <v-icon color="#084F93" size="16" class=""
+                >fa-solid fa-plus</v-icon
+              >
+            </template>
+          </v-btn>
+
+          <div class="flex gap-4 mt-4 justify-center items-center">
+            <v-btn
+              class="rounded-lg w-[calc(50%-16px)]"
+              color="#084F93"
+              variant="outlined"
+              @click="openDialogAddSubProduct = false;model = false"
+              >ยกเลิก</v-btn
+            >
+            <v-btn
+              class="rounded-lg w-1/2"
+              color="#084F93"
+              variant="flat"
+              @click="openDialogAddSubProduct = false;model = false"
+              >บันทึก</v-btn
+            >
+          </div>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style>
@@ -283,5 +413,9 @@ const selectCategoryModal = ref(false);
 
 .checkbox-change-status div div {
   @apply !min-h-[auto];
+}
+
+.v-selection-control--dirty .v-switch__track {
+  opacity: 1 !important;
 }
 </style>
