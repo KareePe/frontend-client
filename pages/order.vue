@@ -615,6 +615,8 @@ const fnHandleClickCreateOrder = () => {
       }
     "
   />
+  
+  <OrderModalSelectOrder/>
 
   <OrderModalSelectOrderFormSystem
     :open="openModalSelectOrderSystem"
