@@ -10,6 +10,9 @@ const emit = defineEmits(["onSubmit", "onClose"]);
 const fnHandleClose = () => {
   emit("onClose");
 };
+const fnHandleSubmit = () => {
+  emit("onSubmit");
+};
 </script>
 
 <template>
@@ -88,7 +91,7 @@ const fnHandleClose = () => {
             variant="outlined"
             >ยกเลิก</v-btn
           >
-          <v-btn color="#084F93" class="rounded-lg w-[calc(35%)]" variant="flat"
+          <v-btn color="#084F93" class="rounded-lg w-[calc(35%)]" variant="flat" @click="fnHandleSubmit"
             >อัพเดท</v-btn
           >
         </div>
