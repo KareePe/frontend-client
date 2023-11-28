@@ -1,129 +1,136 @@
 <script setup>
-const payment = ref("CashOnDelivery");
-const cost = ref(40);
-const discount = ref(40);
-const qrpay = ref();
+const payment = ref("CashOnDelivery")
+const cost = ref(40)
+const discount = ref(40)
+const qrpay = ref()
 
-const emit = defineEmits(["selectPlatformClick", "selectDataSystem"]);
+const emit = defineEmits([
+  "selectPlatformClick",
+  "selectDataSystem",
+  "selectData"
+])
 
 const fnHandleSelectPlatform = () => {
-  emit("selectPlatformClick");
-};
+  emit("selectPlatformClick")
+}
 const fnHandleSelectDataSystem = () => {
-  emit("selectDataSystem");
-};
+  emit("selectDataSystem")
+}
+const fnHandleSelectData = () => {
+  emit("selectData")
+}
 
-const selectedImage = ref();
+const selectedImage = ref()
 
 const fnHandleUploadFile = (e) => {
-  const file = e.target.files[0];
+  const file = e.target.files[0]
   if (file) {
-    const reader = new FileReader();
+    const reader = new FileReader()
 
     reader.onload = function (e) {
-      selectedImage.value = e.target.result;
+      selectedImage.value = e.target.result
       //   selectedImage.value.push(e.target.result)
-    };
+    }
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file)
   } else {
-    selectedImage.value = null;
+    selectedImage.value = null
   }
-};
-const productFormData = ref([{}]);
-const productState = ref("system");
+}
+const productFormData = ref([{}])
+const productState = ref("system")
 
 const headersTable = ref([
   {
     title: "สินค้าหลัก",
     align: "center",
-    key: "name",
+    key: "name"
   },
   {
     title: "รุป",
     align: "center",
     key: "tel",
     sortable: false,
-    width: "60px",
+    width: "60px"
   },
   {
     title: "SKU ID",
     align: "center",
-    key: "product",
+    key: "product"
   },
   {
     title: "ชื่อสินค้า",
     align: "center",
-    key: "platform_sale",
+    key: "platform_sale"
   },
   {
     title: "ราคา",
     align: "center",
-    key: "platform_pay",
+    key: "platform_pay"
   },
   {
     title: "จำนวนที่ลูกค้าสั่ง",
     align: "center",
     key: "amount",
     sortable: false,
-    width: "150px",
+    width: "150px"
   },
   {
     title: "ราคารวม",
     align: "center",
-    key: "totals",
+    key: "totals"
   },
   {
     title: "คลัง",
     align: "center",
-    key: "warehouse",
+    key: "warehouse"
   },
   {
     title: "",
     align: "center",
-    width: "60px",
-  },
-]);
+    width: "60px"
+  }
+])
 
 const headersTableUser = ref([
   {
     title: "ชื่อสินค้า",
     align: "center",
-    key: "platform_sale",
+    key: "platform_sale"
   },
   {
     title: "น้ำหนัก (กก.)",
     align: "center",
-    key: "weight",
+    key: "weight"
   },
   {
     title: "ราคา",
     align: "center",
-    key: "platform_pay",
+    key: "platform_pay"
   },
   {
     title: "จำนวนที่ลูกค้าสั่ง",
     align: "center",
     key: "amount",
     sortable: false,
-    width: "150px",
+    width: "150px"
   },
   {
     title: "ราคารวม",
     align: "center",
-    key: "totals",
+    key: "totals"
   },
   {
     title: "คลัง",
     align: "center",
-    key: "warehouse",
+    key: "warehouse"
   },
   {
     title: "",
     align: "center",
-    width: "60px",
-  },
-]);
+    width: "60px"
+  }
+])
 
 const tableItemSystem = ref([
   {
@@ -135,9 +142,9 @@ const tableItemSystem = ref([
     amount: 60,
     totals: "720,000",
     warehouse: "หาดใหญ่",
-    weight: "5",
-  },
-]);
+    weight: "5"
+  }
+])
 </script>
 
 <template>
@@ -268,7 +275,11 @@ const tableItemSystem = ref([
               >fa-solid fa-magnifying-glass</v-icon
             ></template
           > </v-btn
-        ><v-btn color="#084F93" variant="flat" class="!rounded-lg"
+        ><v-btn
+          color="#084F93"
+          variant="flat"
+          class="!rounded-lg"
+          @click="fnHandleSelectData"
           >เลือกสินค้ากรองเอง
           <template v-slot:prepend
             ><v-icon class="mb-1" size="16">fa-solid fa-plus</v-icon></template
@@ -428,8 +439,20 @@ const tableItemSystem = ref([
           variant="outlined"
           color="#084F93"
           class="rounded-lg"
-          @click="fnHandleSelectDataSystem"
-          >เลือกสินค้าจากระบบ
+          @click="()=>{
+            if(productState === 'system'){
+              fnHandleSelectDataSystem()
+            }else{
+              fnHandleSelectData()
+            }
+          }"
+        >
+          {{
+            productState === "system"
+              ? "เลือกสินค้าจากระบบ"
+              : "เลือกสินค้ากรอกเอง"
+          }}
+
           <template v-slot:prepend
             ><v-icon size="16" class="mb-[2px]"
               >fa-solid fa-plus</v-icon
@@ -478,7 +501,7 @@ const tableItemSystem = ref([
           variant="outlined"
           :style="{
             borderColor: payment === 'CashOnDelivery' ? '#084f93' : '#EEEDF1',
-            color: payment === 'CashOnDelivery' ? '#084f93' : '#1A1C1E',
+            color: payment === 'CashOnDelivery' ? '#084f93' : '#1A1C1E'
           }"
           class="rounded-lg"
           @click="payment = 'CashOnDelivery'"
@@ -489,7 +512,7 @@ const tableItemSystem = ref([
           variant="outlined"
           :style="{
             borderColor: payment === 'QR' ? '#084f93' : '#EEEDF1',
-            color: payment === 'QR' ? '#084f93' : '#1A1C1E',
+            color: payment === 'QR' ? '#084f93' : '#1A1C1E'
           }"
           class="rounded-lg"
           @click="payment = 'QR'"
@@ -500,7 +523,7 @@ const tableItemSystem = ref([
           variant="outlined"
           :style="{
             borderColor: payment === 'Cash' ? '#084f93' : '#EEEDF1',
-            color: payment === 'Cash' ? '#084f93' : '#1A1C1E',
+            color: payment === 'Cash' ? '#084f93' : '#1A1C1E'
           }"
           class="rounded-lg"
           @click="payment = 'Cash'"
@@ -511,7 +534,7 @@ const tableItemSystem = ref([
           variant="outlined"
           :style="{
             borderColor: payment === 'Credit' ? '#084f93' : '#EEEDF1',
-            color: payment === 'Credit' ? '#084f93' : '#1A1C1E',
+            color: payment === 'Credit' ? '#084f93' : '#1A1C1E'
           }"
           class="rounded-lg"
           @click="payment = 'Credit'"
@@ -730,7 +753,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: cost === null ? '#084f93' : '#EEEDF1',
-                  color: cost === null ? '#084f93' : '#1A1C1E',
+                  color: cost === null ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-2 !min-w-[40px]"
                 @click="cost = null"
@@ -752,7 +775,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: cost === 0 ? '#084f93' : '#EEEDF1',
-                  color: cost === 0 ? '#084f93' : '#1A1C1E',
+                  color: cost === 0 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="cost = 0"
@@ -763,7 +786,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: cost === 40 ? '#084f93' : '#EEEDF1',
-                  color: cost === 40 ? '#084f93' : '#1A1C1E',
+                  color: cost === 40 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="cost = 40"
@@ -774,7 +797,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: cost === 50 ? '#084f93' : '#EEEDF1',
-                  color: cost === 50 ? '#084f93' : '#1A1C1E',
+                  color: cost === 50 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="cost = 50"
@@ -791,7 +814,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: discount === null ? '#084f93' : '#EEEDF1',
-                  color: discount === null ? '#084f93' : '#1A1C1E',
+                  color: discount === null ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-2 !min-w-[40px]"
                 @click="discount = null"
@@ -813,7 +836,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: discount === 0 ? '#084f93' : '#EEEDF1',
-                  color: discount === 0 ? '#084f93' : '#1A1C1E',
+                  color: discount === 0 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="discount = 0"
@@ -824,7 +847,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: discount === 40 ? '#084f93' : '#EEEDF1',
-                  color: discount === 40 ? '#084f93' : '#1A1C1E',
+                  color: discount === 40 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="discount = 40"
@@ -835,7 +858,7 @@ const tableItemSystem = ref([
                 variant="outlined"
                 :style="{
                   borderColor: discount === 50 ? '#084f93' : '#EEEDF1',
-                  color: discount === 50 ? '#084f93' : '#1A1C1E',
+                  color: discount === 50 ? '#084f93' : '#1A1C1E'
                 }"
                 class="rounded-lg !px-0 !min-w-[40px]"
                 @click="discount = 50"
