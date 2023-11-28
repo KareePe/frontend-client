@@ -2,23 +2,27 @@
 const navBarNew = ref([
   {
     text: "คำสั่งซื้อ",
-    callback: () => {}
+    callback: () => {},
   },
   {
     text: "จัดการงานจัดส่ง",
-    callback: () => fnHandleNavbarback(2, () => {})
-  }
-])
+    callback: () =>
+      fnHandleNavbarback(2, () => {
+        carManagePage.value = false;
+        settingRegularPage.value = false;
+      }),
+  },
+]);
 
 const fnHandleNavbarback = (index, callback) => {
-  let num = navBarNew.value.length - index
+  let num = navBarNew.value.length - index;
   for (let i = 1; i <= num; i++) {
-    navBarNew.value.pop()
+    navBarNew.value.pop();
   }
   if (callback) {
-    callback()
+    callback();
   }
-}
+};
 
 const tableItem = ref([
   {
@@ -29,7 +33,7 @@ const tableItem = ref([
     price: "100.00",
     status: "เสร็จสิ้น",
     print: "waiting",
-    join_date: "13/01/2556 21:00"
+    join_date: "13/01/2556 21:00",
   },
   {
     no: "SX1234567890",
@@ -39,7 +43,7 @@ const tableItem = ref([
     price: "100.00",
     join_date: "13/01/2556 21:00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "asdasdvvvv",
@@ -49,7 +53,7 @@ const tableItem = ref([
     join_date: "13/01/2556 21:00",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
+    print: "success",
   },
   {
     no: "ddddddddd",
@@ -59,9 +63,9 @@ const tableItem = ref([
     join_date: "13/01/2556 21:00",
     price: "100.00",
     status: "เสร็จสิ้น",
-    print: "success"
-  }
-])
+    print: "success",
+  },
+]);
 const headersTable = ref([
   {
     title: "วันที่เข้ารับ",
@@ -97,31 +101,62 @@ const headersTable = ref([
     title: "สถานะ",
     align: "center",
     key: "status",
-  }
-])
+  },
+]);
 
-const page = ref(1)
-const itemsPerPage = ref(10)
+const page = ref(1);
+const itemsPerPage = ref(10);
 
 const pageCount = computed(() => {
-  return Math.ceil(tableItem.value.length / itemsPerPage.value)
-})
+  return Math.ceil(tableItem.value.length / itemsPerPage.value);
+});
 
 const fnChangeRowPerPages = (e) => {
-  itemsPerPage.value = e
-}
+  itemsPerPage.value = e;
+};
 
-const tab = ref("all")
-const carManagePage = ref(true)
-const modalUploadDetail = ref(false)
+const fnHandleSettingDelivery = () => {
+  navBarNew.value.push({
+    text: "ตั้งค่าเรียกรถประจำ",
+    callback: () =>
+      fnHandleNavbarback(4, () => {
+      }),
+  });
+  settingRegularPage.value = true
+};
+
+const fnHandleManageDelivery = () => {
+  navBarNew.value.push({
+    text: "จัดการเรียกรถ",
+    callback: () =>
+      fnHandleNavbarback(3, () => {
+        settingRegularPage.value = false;
+      }),
+  });
+  carManagePage.value = true;
+};
+
+const tab = ref("all");
+const carManagePage = ref(false);
+const settingRegularPage = ref(false);
+const modalUploadDetail = ref(false);
+const modalCalldelivery = ref(false);
+const modalCallRegular = ref(false);
+const modalShowDetail = ref(false);
+const modalShowResult = ref(false);
 </script>
 
 <template>
+  <DeliveryModalResultCallRegular
+    :open="modalShowResult"
+    @on-close="modalShowResult = false"
+  />
+
   <Toolbars />
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
 
   <div class="containerLayout">
-    <div v-if="!carManagePage">
+    <div v-if="!carManagePage && !settingRegularPage">
       <div class="flex justify-between">
         <v-text-field
           density="compact"
@@ -191,7 +226,13 @@ const modalUploadDetail = ref(false)
           </v-btn>
         </div>
 
-        <v-btn variant="flat" color="#084F93" class="rounded-lg" size="large">
+        <v-btn
+          variant="flat"
+          color="#084F93"
+          class="rounded-lg"
+          size="large"
+          @click="fnHandleManageDelivery"
+        >
           จัดการการเรียกรถ
           <template v-slot:prepend>
             <v-icon size="16">fa-solid fa-truck</v-icon>
@@ -225,11 +266,11 @@ const modalUploadDetail = ref(false)
                 class="text-[16px] leading-5 tracking-[-0.23%] text-center text-[#084F93] cursor-pointer"
                 @click="
                   () => {
-                    itemSelected = item
+                    itemSelected = item;
                     navBarNew.push({
                       text: value,
-                      callback: () => {}
-                    })
+                      callback: () => {},
+                    });
                   }
                 "
               >
@@ -410,26 +451,67 @@ const modalUploadDetail = ref(false)
           <template #bottom></template>
         </v-data-table>
       </v-card>
+      <div class="text-center pt-2 flex justify-center items-center relative">
+        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        <div class="w-[140px] absolute right-0 mr-4">
+          <v-select
+            label="จำนวนแสดงผล"
+            variant="outlined"
+            :items="[5, 10, 15, 20, 25, 30]"
+            :item-title="(item) => item + ' รายการ'"
+            :item-value="(item) => item"
+            :model-value="itemsPerPage"
+            density="compact"
+            hide-details="auto"
+            @update:modelValue="fnChangeRowPerPages"
+          ></v-select>
+        </div>
+      </div>
     </div>
 
-    <div v-else>
-      <DeliveryCarManagement/>
+    <div v-if="carManagePage && !settingRegularPage">
+      <DeliveryCarManagement
+        @setting-delivery="modalCalldelivery = true"
+        @show-detail="modalShowDetail = true"
+        @setting-regular="fnHandleSettingDelivery"
+      />
     </div>
 
+    <div v-if="settingRegularPage">
+      <DeliverySettingRegularPage />
+    </div>
   </div>
 
   <DeliveryModalUpdateDetail
     :open="modalUploadDetail"
     @on-close="modalUploadDetail = false"
   />
+
+  <DeliveryModalCalldelivery
+    :open="modalCalldelivery"
+    @on-close="modalCalldelivery = false"
+  />
+
+  <DeliveryModalShowDetail
+    :open="modalShowDetail"
+    @on-close="modalShowDetail = false"
+  />
+
+  <DeliveryModalCallRegular
+    :open="modalCallRegular"
+    @on-submit="
+      () => {
+        modalCallRegular = false;
+        modalShowResult = true;
+      }
+    "
+    @on-close="modalCallRegular = false"
+  />
 </template>
-
-<style scoped>
-
-</style>
 
 <style>
 thead tr {
   @apply bg-[#E9E7EB];
 }
+
 </style>

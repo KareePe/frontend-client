@@ -68,6 +68,20 @@ const headersTable = ref([
   }
 ])
 
+const emit = defineEmits(["settingDelivery", "showDetail" ,'settingRegular' ]);
+
+const fnHandleSettingClick = () => {
+  emit('settingDelivery') 
+}
+
+const fnHandleSettingRegularClick = () => {
+  emit('settingRegular') 
+}
+
+const fnShowDetail = () => {
+  emit('showDetail') 
+}
+
 const page = ref(1)
 const itemsPerPage = ref(10)
 
@@ -93,14 +107,14 @@ const fnChangeRowPerPages = (e) => {
       </template>
     </v-text-field>
     <div class="flex gap-3">
-      <v-btn variant="outlined" size="large" class="rounded-lg" color="#084F93">
+      <v-btn variant="outlined" size="large" class="rounded-lg" color="#084F93" @click="fnHandleSettingRegularClick">
         ตั้งค่าเรียกรถประจำ
         <template v-slot:prepend>
           <v-icon class="mb-1" size="16">fa-solid fa-gear</v-icon>
         </template>
       </v-btn>
-      <v-btn variant="flat" size="large" class="rounded-lg" color="#084F93">
-        ตั้งค่าเรียกรถประจำ
+      <v-btn variant="flat" size="large" class="rounded-lg" color="#084F93" @click="fnHandleSettingClick">
+        เรียกรถเข้ารับ
         <template v-slot:prepend>
           <v-icon class="mb-1" size="16">fa-solid fa-truck-fast</v-icon>
         </template>
@@ -136,7 +150,7 @@ const fnChangeRowPerPages = (e) => {
         </div>
       </template>
       <template #item.action="{ item }">
-        <v-btn variant="text">
+        <v-btn @click="fnShowDetail" variant="text">
           <template v-slot:default><v-icon>fa-solid fa-eye</v-icon></template>
         </v-btn>
       </template>

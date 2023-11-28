@@ -2,14 +2,14 @@
 const { open } = defineProps({
   open: {
     type: Boolean,
-    default: true
-  }
-})
-const emit = defineEmits(["onSubmit", "onClose"])
+    default: true,
+  },
+});
+const emit = defineEmits(["onSubmit", "onClose"]);
 
 const fnHandleClose = () => {
-  emit("onClose")
-}
+  emit("onClose");
+};
 </script>
 
 <template>
@@ -81,8 +81,16 @@ const fnHandleClose = () => {
           ></v-text-field>
         </div>
         <div class="flex mt-3 w-full justify-end items-center gap-2 mb-[2px]">
-          <v-btn color="#084F93" class="rounded-lg w-[calc(35%)]" variant="outlined">ยกเลิก</v-btn>
-          <v-btn color="#084F93" class="rounded-lg w-[calc(35%)]" variant="flat">อัพเดท</v-btn>
+          <v-btn
+            color="#084F93"
+            @click="fnHandleClose"
+            class="rounded-lg w-[calc(35%)]"
+            variant="outlined"
+            >ยกเลิก</v-btn
+          >
+          <v-btn color="#084F93" class="rounded-lg w-[calc(35%)]" variant="flat"
+            >อัพเดท</v-btn
+          >
         </div>
       </v-card-text>
     </v-card>
