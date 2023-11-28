@@ -1,6 +1,16 @@
 <template>
   <AdminToolbars />
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
+
+  <div class="lg:ml-72 p-4">
+    <v-container class="mx-auto">
+      <v-row justify="center">
+        <v-col class="border">
+          team
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script setup>
