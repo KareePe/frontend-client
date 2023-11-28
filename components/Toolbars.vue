@@ -174,8 +174,8 @@ const menu_list = [
       },
       {
         subtitle: "จัดการงานจัดส่ง",
-        path: "/",
-        disable: true
+        path: "/delivery-management",
+        disable: false
       },
       {
         subtitle: "คืนสินค้าและเคลม",
