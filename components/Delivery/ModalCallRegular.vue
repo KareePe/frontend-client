@@ -163,6 +163,7 @@ const day = ref('')
             color="#084F93"
             class="rounded-lg w-[calc(50%-8px)]"
             variant="outlined"
+            @click="fnHandleClose"
             >ยกเลิก</v-btn
           >
           <v-btn

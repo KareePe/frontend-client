@@ -38,6 +38,11 @@ const headersTable = ref([
     width: "50px",
   },
 ]);
+const emit = defineEmits(["onAddClick", "onClose"]);
+
+const fnHandleAddClick = () => {
+  emit("onAddClick");
+};
 
 const dataTable = ref([
   {
@@ -134,6 +139,7 @@ const dataTable = ref([
       <template v-slot:no-data>
         <div class="h-[260px] flex justify-center items-center">
           <v-btn
+            @click="fnHandleAddClick"
             variant="text"
             class="add-btn"
             size="large"
@@ -144,8 +150,9 @@ const dataTable = ref([
       </template>
       <template #bottom></template>
     </v-data-table>
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" v-if="dataTable.length >= 1">
       <v-btn
+        @click="fnHandleAddClick"
         variant="text"
         class="add-btn !w-full"
         size="large"

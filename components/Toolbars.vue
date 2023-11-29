@@ -179,8 +179,8 @@ const menu_list = [
       },
       {
         subtitle: "คืนสินค้าและเคลม",
-        path: "/",
-        disable: true
+        path: "/clam-transition",
+        disable: false
       }
     ],
     icon: "fa-solid fa-list",

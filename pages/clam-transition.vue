@@ -115,57 +115,19 @@ const fnChangeRowPerPages = (e) => {
   itemsPerPage.value = e;
 };
 
-const fnHandleSettingDelivery = () => {
-  navBarNew.value.push({
-    text: "ตั้งค่าเรียกรถประจำ",
-    callback: () => fnHandleNavbarback(4, () => {}),
-  });
-  settingRegularPage.value = true;
-};
-
-const fnHandleManageDelivery = () => {
-  navBarNew.value.push({
-    text: "จัดการเรียกรถ",
-    callback: () =>
-      fnHandleNavbarback(3, () => {
-        settingRegularPage.value = false;
-      }),
-  });
-  carManagePage.value = true;
-};
-
+const modalShow = ref("");
 const tab = ref("all");
-const carManagePage = ref(false);
-const settingRegularPage = ref(false);
-const modalUploadDetail = ref(false);
-const modalCalldelivery = ref(false);
-const modalCallRegular = ref(false);
-const modalShowDetail = ref(false);
-const modalShowResult = ref(false);
-const modalAlertSuccess = ref(false);
-const modalAlertRollback = ref(false);
 </script>
 
 <template>
-  <DeliveryModalResultCallRegular
-    :open="modalShowResult"
-    @on-close="modalShowResult = false"
-  />
-  <ModalAlert
-    :open="modalAlertSuccess"
-    :onclose="() => (modalAlertSuccess = false)"
-    success-text="เร่งติดตามพัสดุสำเร็จ พัสดุของท่านอยู่ระหว่างการเร่งดำเนินการจัดส่ง"
-  />
-  <DeliveryModalRollback
-    :open="modalAlertRollback"
-    :onclose="() => (modalAlertRollback = false)"
-  />
   <Toolbars />
+  <ClamTransitionModalClam :open="modalShow" @on-close="modalShow = false" />
+
   <NavbarCallback :breadcrump="navBarNew" @nav-click="navBarNew.pop()" />
 
   <div class="containerLayout">
     <v-scroll-x-transition hide-on-leave>
-      <div v-if="!carManagePage && !settingRegularPage">
+      <div>
         <div class="flex justify-between">
           <v-text-field
             density="compact"
@@ -235,18 +197,32 @@ const modalAlertRollback = ref(false);
             </v-btn>
           </div>
 
-          <v-btn
-            variant="flat"
-            color="#084F93"
-            class="rounded-lg"
-            size="large"
-            @click="fnHandleManageDelivery"
-          >
-            จัดการการเรียกรถ
-            <template v-slot:prepend>
-              <v-icon size="16">fa-solid fa-truck</v-icon>
-            </template>
-          </v-btn>
+          <div class="flex gap-4">
+            <v-btn
+              variant="outlined"
+              color="#084F93"
+              class="rounded-lg"
+              size="large"
+            >
+              ประวัติการเรียกรถ
+              <template v-slot:prepend>
+                <v-icon size="16">fa-solid fa-history</v-icon>
+              </template>
+            </v-btn>
+
+            <v-btn
+              variant="flat"
+              color="#084F93"
+              class="rounded-lg"
+              @click="modalShow = true"
+              size="large"
+            >
+              ทำเคลม
+              <template v-slot:prepend>
+                <v-icon size="16">fa-solid fa-circle-exclamation</v-icon>
+              </template>
+            </v-btn>
+          </div>
         </div>
 
         <v-card
@@ -444,13 +420,13 @@ const modalAlertRollback = ref(false);
                       >
                     </template>
                     <v-list>
-                      <v-list-item @click="modalAlertRollback = true">
+                      <v-list-item>
                         <v-list-item-title>นำสินค้ากลับ</v-list-item-title>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-title>เร่งนำส่งพัสดุ</v-list-item-title>
                       </v-list-item>
-                      <v-list-item @click="modalUploadDetail = true">
+                      <v-list-item>
                         <v-list-item-title>แก้ไขข้อมูลพัสดุ</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -484,51 +460,8 @@ const modalAlertRollback = ref(false);
           </div>
         </div>
       </div>
-
-      <div v-if="carManagePage && !settingRegularPage">
-        <DeliveryCarManagement
-          @setting-delivery="modalCalldelivery = true"
-          @show-detail="modalShowDetail = true"
-          @setting-regular="fnHandleSettingDelivery"
-        />
-      </div>
-
-      <div v-if="settingRegularPage">
-        <DeliverySettingRegularPage @on-add-click="modalCallRegular = true" />
-      </div>
     </v-scroll-x-transition>
   </div>
-  <DeliveryModalUpdateDetail
-    :open="modalUploadDetail"
-    @on-close="modalUploadDetail = false"
-    @on-submit="
-      {
-        modalAlertSuccess = true;
-        modalUploadDetail = false;
-      }
-    "
-  />
-
-  <DeliveryModalCalldelivery
-    :open="modalCalldelivery"
-    @on-close="modalCalldelivery = false"
-  />
-
-  <DeliveryModalShowDetail
-    :open="modalShowDetail"
-    @on-close="modalShowDetail = false"
-  />
-
-  <DeliveryModalCallRegular
-    :open="modalCallRegular"
-    @on-submit="
-      () => {
-        modalCallRegular = false;
-        modalShowResult = true;
-      }
-    "
-    @on-close="modalCallRegular = false"
-  />
 </template>
 
 <style>
