@@ -18,6 +18,7 @@
                     v-model="businessCode"
                     :rules="nameRules"
                     :counter="10"
+                    variant="outlined"
                     label="รหัสธุรกิจ"
                     required
                     hide-details></v-text-field>
@@ -30,6 +31,7 @@
                     v-model="businessName"
                     :rules="nameRules"
                     :counter="10"
+                    variant="outlined"
                     label="ชื่อธุรกิจ"
                     required
                     hide-details></v-text-field>
@@ -40,7 +42,7 @@
                 <v-col>
                   <v-textarea
                     name="businessAddress"
-                    variant="filled"
+                    variant="outlined"
                     label="ที่อยู่"
                     auto-grow></v-textarea>
                 </v-col>
@@ -51,6 +53,7 @@
               <div class="h-full flex justify-center items-center">
                 <v-file-input
                   :rules="rules"
+                  variant="outlined"
                   accept="image/png, image/jpeg, image/bmp"
                   placeholder="Pick an avatar"
                   prepend-icon="fa-solid fa-camera"
