@@ -7,7 +7,7 @@ definePageMeta({
 type tabType = 1 | 7 | 30 | 365;
 
 const tab = ref<tabType>(1);
-const showModal = ref<boolean>(false);
+const showModal = ref<boolean>(true);
 const pageModal = ref(1);
 
 const radioSizeValue = ref("A");
@@ -92,9 +92,15 @@ const fnHandleCancelModal = () => {
 
 const options = ref({
   chart: {
-    type: "area",
     zoom: {
       enabled: false,
+    },
+    stacked: true,
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      columnWidth: "40%",
     },
   },
   dataLabels: {
@@ -118,6 +124,39 @@ const options = ref({
   },
   legend: {
     horizontalAlign: "left",
+    show: false,
+  },
+});
+
+const optionsDonut = ref({
+  chart: {
+    zoom: {
+      enabled: false,
+    },
+    type: "donut",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+  },
+  xaxis: {
+    type: "datetime",
+    labels: {
+      format: "d/MM",
+      showDuplicates: false,
+    },
+  },
+  tooltip: {
+    enable: "false",
+  },
+  yaxis: {
+    opposite: false,
+  },
+  legend: {
+    horizontalAlign: "left",
+    show: false,
   },
 });
 
@@ -147,7 +186,69 @@ const series = ref([
       },
     ],
   },
+  {
+    name: "โซเชียลมีเดีย",
+    data: [
+      {
+        x: new Date("2023-07-11").getTime(),
+        y: 12000000,
+      },
+      {
+        x: new Date("2023-08-12").getTime(),
+        y: 18000000,
+      },
+      {
+        x: new Date("2023-09-13").getTime(),
+        y: 7000000,
+      },
+      {
+        x: new Date("2023-10-14").getTime(),
+        y: 4000000,
+      },
+      {
+        x: new Date("2023-11-15").getTime(),
+        y: 13000000,
+      },
+    ],
+  },
 ]);
+
+const optionsProfit = ref({
+  chart: {
+    zoom: {
+      enabled: false,
+    },
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      columnWidth: "20%",
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+  },
+  xaxis: {
+    type: "datetime",
+    labels: {
+      format: "d/MM",
+      showDuplicates: false,
+    },
+  },
+  tooltip: {
+    enable: "false",
+  },
+  yaxis: {
+    opposite: false,
+  },
+  legend: {
+    horizontalAlign: "left",
+    show: false,
+  },
+});
 
 const tableItemTotals = ref({});
 </script>
@@ -155,7 +256,7 @@ const tableItemTotals = ref({});
 <template>
   <Toolbars />
   <NavbarDynamic :Breadcrumb="['หน้าแรก']" />
-  <div class="containerLayout h-[200vh]">
+  <div class="containerLayout h-[400vh]">
     <div class="card items-center relative">
       <div
         class="leading-[26px] tracking-[-0.079px] text-[#084F93] text-[22px] font-bold"
@@ -176,9 +277,13 @@ const tableItemTotals = ref({});
             <div
               class="h-full flex justify-center items-center flex-col space-y-4 relative"
             >
-              <div
-                class="w-[80px] h-[80px] bg-[#D4E3FF] justify-center flex items-center"
-              >
+              <div class="w-[80px] h-[80px] justify-center flex items-center">
+                <img
+                  src="@/assets/images/03.svg"
+                  width="80"
+                  height="80"
+                  class="z-50"
+                />
                 <div class="divider right-0 w-1/2"></div>
               </div>
               <div>ตั้งค่าเริ่มต้น</div>
@@ -186,9 +291,13 @@ const tableItemTotals = ref({});
             <div
               class="h-full flex justify-center items-center flex-col space-y-4 relative"
             >
-              <div
-                class="w-[80px] h-[80px] bg-[#D4E3FF] justify-center flex items-center"
-              >
+              <div class="w-[80px] h-[80px] justify-center flex items-center">
+                <img
+                  src="@/assets/images/04.svg"
+                  width="80"
+                  height="80"
+                  class="z-50"
+                />
                 <div class="divider w-full"></div>
               </div>
               <div>เรียนรู้การสร้างออเดอร์</div>
@@ -196,9 +305,13 @@ const tableItemTotals = ref({});
             <div
               class="h-full flex justify-center items-center flex-col space-y-4 relative"
             >
-              <div
-                class="w-[80px] h-[80px] bg-[#D4E3FF] justify-center flex items-center"
-              >
+              <div class="w-[80px] h-[80px] justify-center flex items-center">
+                <img
+                  src="@/assets/images/05.svg"
+                  width="80"
+                  height="80"
+                  class="z-50"
+                />
                 <div class="divider w-full"></div>
               </div>
               <div>เรียนรู้การสร้างคลังสินค้า</div>
@@ -206,9 +319,13 @@ const tableItemTotals = ref({});
             <div
               class="h-full flex justify-center items-center flex-col space-y-4 relative"
             >
-              <div
-                class="w-[80px] h-[80px] bg-[#D4E3FF] justify-center flex items-center"
-              >
+              <div class="w-[80px] h-[80px] justify-center flex items-center">
+                <img
+                  src="@/assets/images/06.svg"
+                  width="80"
+                  height="80"
+                  class="z-50"
+                />
                 <div class="divider w-1/2 left-0"></div>
               </div>
               <div>เรียนรู้การระบบขนส่ง</div>
@@ -265,7 +382,6 @@ const tableItemTotals = ref({});
 
           <div class="h-full flex flex-col space-y-4 pl-6">
             <div class="flex space-x-1">
-              <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
               <v-icon color="#D5E3FF" size="15"
                 >fa-solid fa-circle-check</v-icon
               >
@@ -276,7 +392,6 @@ const tableItemTotals = ref({});
               </div>
             </div>
             <div class="flex space-x-1">
-              <!-- <v-icon color="#D5E3FF" size="20">mdi-check-circle</v-icon> -->
               <v-icon color="#D5E3FF" size="15"
                 >fa-solid fa-circle-check</v-icon
               >
@@ -321,25 +436,24 @@ const tableItemTotals = ref({});
 
     <div class="mt-4 flex justify-between">
       <div class="flex space-x-2">
-        <!-- <div class="flex justify-center items-center">
-          <v-icon color="#084F93" size="15">fa-solid fa-coins</v-icon>
-        </div> -->
         <div
           class="text-[24px] text-[#084F93] leading-[32px] flex justify-center items-center"
         >
-          รายงานยอดขาย
+          รายได้รวม
+          <v-icon color="#000000DE" class="opacity-title ml-5" size="20"
+            >fa-solid fa-arrow-up-right-from-square</v-icon
+          >
         </div>
       </div>
       <!-- btn group -->
       <div class="flex space-x-2">
-        <!-- append-icon="fa-solid fa-coins" -->
-        <v-btn
+        <!-- <v-btn
           class="!border-[#EEEDF1] !min-w-[150px] !px-3 !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg color-icon"
           variant="outlined"
           append-icon="fa-plus"
         >
           เชื่อมต่อช่องทาง
-        </v-btn>
+        </v-btn> -->
         <v-btn
           class="!border-[#EEEDF1] !px-3 !min-w-[150px] !font-[400] !text-[14px] !tracking-[-0.032px] !leading-[20px] !rounded-lg color-icon"
           append-icon="fa-plus"
@@ -357,97 +471,701 @@ const tableItemTotals = ref({});
       </div>
     </div>
 
-    <div class="card mt-4">
-      <!-- header -->
+    <div class="card mt-4 flex-row">
       <div
-        class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+        class="bg-gradient-to-b from-[#074F95] to-[#00AC86] rounded-lg p-[2px] h-fit w-fit"
       >
-        รายได้รวม
-      </div>
+        <div class="bg-white flex rounded-lg p-4 flex-col">
+          <div class="flex flex-col">
+            <div>คำสั่งซื้อรวม</div>
+            <div
+              class="whitespace-nowrap leading-[22px] font-[600] text-transparent mt-1 text-[18px] bg-clip-text bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84]"
+            >
+              320,043 รายการ
+            </div>
+          </div>
 
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#084F93" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                โซเชียลมีเดีย
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#A6C8FF" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                มาร์เก็ตเพลส
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#00AA84" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                เว็บไซต์ของคุณ
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#77F9CE" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">พันธมิตร</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#FEDF89" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">ออฟไลน์</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#1B510D" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">อื่นๆ</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full rounded-lg mt-10">
+        <client-only placeholder="Loading..." fallback="Loading Chart...">
+          <apexchart
+            type="bar"
+            height="400"
+            :options="options"
+            :series="series"
+          ></apexchart>
+        </client-only>
+      </div>
+      <div class="w-[180px] absolute right-4 mr-4">
+        <v-select
+          label="จำนวนแสดงผล"
+          variant="outlined"
+          :items="['ปีปัจจุบัน']"
+          :item-value="(item) => item"
+          model-value="ปีปัจจุบัน"
+          density="compact"
+          hide-details="auto"
+        ></v-select>
+      </div>
+    </div>
+
+    <div class="flex p-4 gap-4 mt-4 w-full">
+      <div class="grid grid-cols-2 gap-8 w-full">
+        <div class="card">
+          <div class="flex justify-between items-center">
+            <div class="flex space-x-2 items-center">
+              <div
+                class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+              >
+                สินค้าที่ขายได้
+              </div>
+              <v-icon size="15">fa-solid fa-arrow-up-right-from-square</v-icon>
+            </div>
+            <div>
+              <v-select
+                label="วันที่แสดง"
+                density="compact"
+                hide-details
+                class="w-[130px] labelSize"
+                :items="[
+                  '1 เดือน',
+                  '3 เดือน',
+                  '5 เดือน',
+                  '7 เดือน',
+                  '9 เดือน',
+                  '12 เดือน',
+                ]"
+                variant="outlined"
+              ></v-select>
+            </div>
+          </div>
+
+          <v-card
+            variant="flat"
+            class="border border-[#EEEDF1] rounded-[8px] pb-[15px] mt-4"
+          >
+            <v-data-table
+              no-data-text="ไม่มีข้อมูล"
+              :headers="[
+                {
+                  title: 'ชื่อสินค้า',
+                  key: 'name',
+                },
+                {
+                  title: 'ยอดขาย',
+                  key: 'sales',
+                  align: 'center',
+                },
+                {
+                  title: 'ส่วนแบ่งยอดขาย',
+                  key: 'sales_share',
+                  align: 'center',
+                },
+              ]"
+              :items="[
+                {
+                  name: 'MI Monitor 5',
+                  id: 'Item ID - 568790',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'MI Monitor 5',
+                  id: 'Item ID - 568791',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'MI Monitor 5',
+                  id: 'Item ID - 568792',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'MI Monitor 5',
+                  id: 'Item ID - 568793',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'MI Monitor 45',
+                  id: 'Item ID - 568795',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+              ]"
+            >
+              <template v-slot:item="{ item, index }">
+                <tr v-if="index <= 3">
+                  <td>
+                    <div class="flex gap-3 items-center">
+                      <div>
+                        <div class="w-10 h-10 bg-gray-700"></div>
+                      </div>
+                      <div
+                        class="text-[12px] opacity-title leading-4 text-black"
+                      >
+                        <div>{{ item.name }}</div>
+                        <div class="opacity-subTitle">{{ item.id }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="center">
+                    {{ item.sales }}
+                  </td>
+                  <td class="center">
+                    {{ item.sales_share }}
+                  </td>
+                </tr>
+                <tr v-if="index === 3">
+                  <td>
+                    <div class="flex gap-2 items-center">
+                      <div class="border rounded-full h-fit p-2 w-fit">+32</div>
+                      <div class="p-2 text-[12px] leading-4 opacity-title">
+                        อื่นๆ อีก 32 รายการ
+                      </div>
+                    </div>
+                  </td>
+                  <td class="center">8,000,000.00</td>
+                  <td class="center">52.83%</td>
+                </tr>
+              </template>
+              <template v-slot:no-data>
+                <div
+                  class="h-[240px] flex justify-center items-center flex-col space-y-3"
+                >
+                  <div class="opacity-[60%]">ยังไม่มีรายการ</div>
+                </div>
+              </template>
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+        </div>
+
+        <div class="card">
+          <div class="flex justify-between items-center">
+            <div class="flex space-x-2 items-center">
+              <div
+                class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+              >
+                ทีมที่ขายได้
+              </div>
+              <v-icon size="15">fa-solid fa-arrow-up-right-from-square</v-icon>
+            </div>
+            <div>
+              <v-select
+                label="วันที่แสดง"
+                density="compact"
+                hide-details
+                class="w-[130px] labelSize"
+                :items="[
+                  '1 เดือน',
+                  '3 เดือน',
+                  '5 เดือน',
+                  '7 เดือน',
+                  '9 เดือน',
+                  '12 เดือน',
+                ]"
+                variant="outlined"
+              ></v-select>
+            </div>
+          </div>
+
+          <v-card
+            variant="flat"
+            class="border border-[#EEEDF1] rounded-[8px] pb-[15px] mt-4"
+          >
+            <v-data-table
+              no-data-text="ไม่มีข้อมูล"
+              :headers="[
+                {
+                  title: 'ทีมงาน',
+                  key: 'name',
+                },
+                {
+                  title: 'ยอดขาย',
+                  key: 'sales',
+                  align: 'center',
+                },
+                {
+                  title: 'ส่วนแบ่งยอดขาย',
+                  key: 'sales_share',
+                  align: 'center',
+                },
+              ]"
+              :items="[
+                {
+                  name: 'NaNa',
+                  id: 'Item ID - 568790',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'Phon',
+                  id: 'Item ID - 568791',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'Jack',
+                  id: 'Item ID - 568792',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'Michael',
+                  id: 'Item ID - 568793',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+                {
+                  name: 'John',
+                  id: 'Item ID - 568795',
+                  sales: '4,030,000.00',
+                  sales_share: '1.98%',
+                },
+              ]"
+            >
+              <template v-slot:item="{ item, index }">
+                <tr v-if="index <= 3">
+                  <td>
+                    <div class="flex gap-3 items-center">
+                      <div>
+                        <div class="w-10 h-10 rounded-full bg-gray-700"></div>
+                      </div>
+                      <div
+                        class="text-[12px] opacity-title leading-4 text-black"
+                      >
+                        <div>{{ item.name }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="center">
+                    {{ item.sales }}
+                  </td>
+                  <td class="center">
+                    {{ item.sales_share }}
+                  </td>
+                </tr>
+                <tr v-if="index === 3">
+                  <td>
+                    <div class="flex gap-2 items-center">
+                      <div class="border rounded-full h-fit p-2 w-fit">+32</div>
+                      <div class="p-2 text-[12px] leading-4 opacity-title">
+                        อื่นๆ อีก 32 รายการ
+                      </div>
+                    </div>
+                  </td>
+                  <td class="center">8,000,000.00</td>
+                  <td class="center">52.83%</td>
+                </tr>
+              </template>
+              <template v-slot:no-data>
+                <div
+                  class="h-[240px] flex justify-center items-center flex-col space-y-3"
+                >
+                  <div class="opacity-[60%]">ยังไม่มีรายการ</div>
+                </div>
+              </template>
+              <template #bottom></template>
+            </v-data-table>
+          </v-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex space-x-2 mt-4">
+      <div
+        class="text-[24px] text-[#084F93] leading-[32px] flex justify-center items-center"
+      >
+        คำสั่งซื้อ
+        <v-icon color="#000000DE" class="opacity-title ml-5" size="20"
+          >fa-solid fa-arrow-up-right-from-square</v-icon
+        >
+      </div>
+    </div>
+
+    <div class="card mt-4 flex-row">
+      <div
+        class="bg-gradient-to-b from-[#074F95] to-[#00AC86] rounded-lg p-[2px] h-fit w-fit"
+      >
+        <div class="bg-white flex rounded-lg p-4 flex-col">
+          <div class="flex flex-col">
+            <div>คำสั่งซื้อรวม</div>
+            <div
+              class="whitespace-nowrap leading-[22px] font-[600] text-transparent mt-1 text-[18px] bg-clip-text bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84]"
+            >
+              320,043 รายการ
+            </div>
+          </div>
+
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#084F93" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                โซเชียลมีเดีย
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#A6C8FF" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                มาร์เก็ตเพลส
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#00AA84" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">
+                เว็บไซต์ของคุณ
+              </div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#77F9CE" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">พันธมิตร</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#FEDF89" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">ออฟไลน์</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <v-icon class="mt-[6px] mr-3" color="#1B510D" size="10"
+              >fa-solid fa-circle</v-icon
+            >
+            <div class="flex flex-col">
+              <div class="opacity-title text-[12px] leading-4">อื่นๆ</div>
+              <div class="text-[12px] leading-4 !text-[#084F93]">
+                302 รายการ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full rounded-lg mt-10">
+        <client-only placeholder="Loading..." fallback="Loading Chart...">
+          <apexchart
+            type="bar"
+            height="400"
+            :options="options"
+            :series="series"
+          ></apexchart>
+        </client-only>
+      </div>
+      <div class="w-[180px] absolute right-4 mr-4">
+        <v-select
+          label="จำนวนแสดงผล"
+          variant="outlined"
+          :items="['ปีปัจจุบัน']"
+          :item-value="(item) => item"
+          model-value="ปีปัจจุบัน"
+          density="compact"
+          hide-details="auto"
+        ></v-select>
+      </div>
+    </div>
+
+    <div class="card w-1/2 mt-4">
+      <div class="">
+        <div>
+          <div class="flex justify-between items-center">
+            <div class="flex space-x-2 items-center">
+              <div
+                class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+              >
+                สินค้าที่ขายได้
+              </div>
+              <v-icon size="15">fa-solid fa-arrow-up-right-from-square</v-icon>
+            </div>
+            <div>
+              <v-select
+                label="วันที่แสดง"
+                density="compact"
+                hide-details
+                class="w-[130px] labelSize"
+                :items="[
+                  '1 เดือน',
+                  '3 เดือน',
+                  '5 เดือน',
+                  '7 เดือน',
+                  '9 เดือน',
+                  '12 เดือน',
+                ]"
+                variant="outlined"
+              ></v-select>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="card mt-4 w-fit p-2 h-fit whitespace-nowrap">
+              <div class="flex items-center gap-2">
+                <v-icon color="#084F93" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">
+                  รอดำเนินการ
+                </div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <v-icon color="#A6C8FF" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">
+                  เตรียมจัดส่ง
+                </div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <v-icon color="#00AA84" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">
+                  รอส่งมอบให้ขนส่ง
+                </div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <v-icon color="#77F9CE" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">
+                  จัดส่งสำเร็จ
+                </div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <v-icon color="#FEDF89" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">
+                  จัดไม่ส่งสำเร็จ
+                </div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <v-icon color="#1B510D" size="14">fa-solid fa-circle</v-icon>
+                <div class="opacity-title text-[12px] leading-4">ยกเลิก</div>
+                <div class="text-[12px] leading-4 !text-[#084F93]">
+                  302 รายการ
+                </div>
+              </div>
+            </div>
+            <div class="w-full rounded-lg mt-10">
+              <client-only placeholder="Loading..." fallback="Loading Chart...">
+                <apexchart
+                  type="donut"
+                  height="400"
+                  :options="optionsDonut"
+                  :series="[44, 55, 41, 17, 15]"
+                ></apexchart>
+              </client-only>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex space-x-2 mt-4">
+      <div
+        class="text-[24px] text-[#084F93] leading-[32px] flex justify-center items-center"
+      >
+        กำไรขาดทุนปี 2566
+        <v-icon color="#000000DE" class="opacity-title ml-5" size="20"
+          >fa-solid fa-arrow-up-right-from-square</v-icon
+        >
+      </div>
+    </div>
+
+    <div class="card mt-4">
       <div class="flex justify-between items-center">
-        <div class="flex space-x-2">
-          <div
-            class="flex p-4 flex-col self-stretch rounded-lg border border-[#eeedf1]"
-          >
-            <div class="subTitle-leading-3">จำนวนเงิน</div>
+        <div class="flex gap-2">
+          <div class="card">
+            <div class="leading-[18px] text-[14px] opacity-subTitle">
+              รายได้รวม
+            </div>
             <div
-              class="leading-[40px] font-bold text-transparent mt-1 text-[34px] bg-clip-text bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84]"
+              class="whitespace-nowrap text-[#12B76A] leading-[32px] font-bold text-[26px]"
             >
-              15,140,206.00 ฿
+              +15,140,206.00 ฿
             </div>
           </div>
-
-          <div
-            class="flex p-4 flex-col self-stretch rounded-lg border border-[#eeedf1]"
-          >
-            <div class="subTitle-leading-3">เทียบกับช่วงก่อนหน้า</div>
+          <div class="card">
+            <div class="leading-[18px] text-[14px] opacity-subTitle">
+              รายจ่ายรวม
+            </div>
             <div
-              class="leading-[40px] font-bold text-[34px] mt-1 text-[#12B76A]"
+              class="whitespace-nowrap text-[#E4847A] leading-[32px] font-bold text-[26px]"
             >
-              +16.18%
+              -5,140,206.00 ฿
+            </div>
+          </div>
+          <div class="card">
+            <div class="leading-[18px] text-[14px] opacity-subTitle">
+              รายจ่ายรวม
+            </div>
+            <div
+              class="whitespace-nowrap leading-[32px] font-bold text-[26px] text-transparent bg-clip-text bg-gradient-to-r from-[#084F93] via-[#153B65] to-[#00AA84]"
+            >
+              +10,140,206.00 ฿
             </div>
           </div>
         </div>
 
         <div>
-          <div class="cardTab">
-            <v-btn
-              :color="tab === 1 ? '#084F93' : '#fff'"
-              @click="fnChangeTab(1)"
-              variant="flat"
-              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-              >24 ชม</v-btn
-            >
-            <v-btn
-              @click="fnChangeTab(7)"
-              :color="tab === 7 ? '#084F93' : '#fff'"
-              variant="flat"
-              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-              >7 วัน</v-btn
-            >
-            <v-btn
-              @click="fnChangeTab(30)"
-              :color="tab === 30 ? '#084F93' : '#fff'"
-              variant="flat"
-              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-              >30 วัน</v-btn
-            >
-            <v-btn
-              @click="fnChangeTab(365)"
-              :color="tab === 365 ? '#084F93' : '#fff'"
-              variant="flat"
-              class="!rounded-[8px] !h-[36px] text-[14px] !p-[8px] tracking-[-0.032px] leading-[20px]"
-              >12 เดือน</v-btn
-            >
-          </div>
+          <v-select
+            label="วันที่แสดง"
+            density="compact"
+            hide-details
+            class="w-[130px] labelSize"
+            :items="[
+              '1 เดือน',
+              '3 เดือน',
+              '5 เดือน',
+              '7 เดือน',
+              '9 เดือน',
+              '12 เดือน',
+            ]"
+            variant="outlined"
+          ></v-select>
         </div>
       </div>
 
-      <!-- graph  -->
-      <div class="mt-4">
-        <div class="w-full rounded-lg">
-          <client-only placeholder="Loading..." fallback="Loading Chart...">
-            <apexchart
-              type="area"
-              height="400"
-              :options="options"
-              :series="series"
-            ></apexchart>
-          </client-only>
-        </div>
+      <div class="w-full rounded-lg mt-10">
+        <client-only placeholder="Loading..." fallback="Loading Chart...">
+          <apexchart
+            type="bar"
+            height="400"
+            :options="optionsProfit"
+            :series="series"
+          ></apexchart>
+        </client-only>
       </div>
 
-      <!-- pie chart -->
-      <div class="grid grid-cols-2 gap-8">
-        <div>
-          <div class="card mt-2">
+      <div class="w-full rounded-lg mt-10">
+        <client-only placeholder="Loading..." fallback="Loading Chart...">
+          <apexchart
+            type="line"
+            height="400"
+            :options="optionsProfit"
+            :series="series"
+          ></apexchart>
+        </client-only>
+      </div>
+
+      <div class="mt-4 flex p-4 gap-4">
+        <div class="grid grid-cols-2 gap-8 w-full">
+          <div class="card">
             <div class="flex justify-between items-center">
               <div class="flex space-x-2 items-center">
                 <div
                   class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
                 >
-                  สินค้าที่ขายได้
+                  กำไร/ขาดทุน
                 </div>
                 <v-icon size="15"
                   >fa-solid fa-arrow-up-right-from-square</v-icon
@@ -474,33 +1192,113 @@ const tableItemTotals = ref({});
 
             <v-card
               variant="flat"
-              class="border border-[#EEEDF1] rounded-[8px] pb-[15px]"
+              class="border border-[#EEEDF1] rounded-[8px] pb-[15px] mt-4"
             >
-              <!-- :headers="[]" -->
-              <!-- :items="[]" -->
               <v-data-table
-                item-key="id"
                 no-data-text="ไม่มีข้อมูล"
-                items-per-page-text="จำนวนแสดงผล"
+                :headers="[
+                  {
+                    title: 'ช่องทางการขาย',
+                    key: 'sale_platform',
+                    align: 'center',
+                    sortable: false,
+                  },
+                  {
+                    title: 'แพลตฟอร์ม',
+                    key: 'platform',
+                    align: 'center',
+                  },
+                  {
+                    title: 'รายได้',
+                    key: 'profit',
+                    align: 'center',
+                  },
+                  {
+                    title: 'ค่าใช้จ่าย',
+                    key: 'loss',
+                    align: 'center',
+                  },
+                  {
+                    title: 'กำไร/ขาดทุน',
+                    key: 'conclusion',
+                    align: 'center',
+                  },
+                ]"
+                :items="[
+                  {
+                    sale_platform: 'โซเชียลมีเดีย',
+                    platform: 'เฟซบุ๊ก',
+                    profit: '10,000,000.00',
+                    loss: '20,000,000.00',
+                    conclusion: '-10,000,000.00',
+                  },
+                  {
+                    sale_platform: 'โซเชียลมีเดีย',
+                    platform: 'เฟซบุ๊ก',
+                    profit: '10,000,000.00',
+                    loss: '20,000,000.00',
+                    conclusion: '-10,000,000.00',
+                  },
+                  {
+                    sale_platform: 'โซเชียลมีเดีย',
+                    platform: 'เฟซบุ๊ก',
+                    profit: '10,000,000.00',
+                    loss: '20,000,000.00',
+                    conclusion: '-10,000,000.00',
+                  },
+                  {
+                    sale_platform: 'โซเชียลมีเดีย',
+                    platform: 'เฟซบุ๊ก',
+                    profit: '10,000,000.00',
+                    loss: '20,000,000.00',
+                    conclusion: '-10,000,000.00',
+                  },
+                ]"
               >
-                <!-- :items-per-page="10" -->
-                <!-- :page="1" -->
-                <!-- :search="search" -->
-                <template
-                  v-slot:item="{ item, toggleExpand, isExpanded, internalItem }"
-                >
-                  <tr>
+                <template v-slot:item="{ item, index }">
+                  <tr v-if="index <= 3">
+                    <td class="center whitespace-nowrap">
+                      {{ item.sale_platform }}
+                    </td>
+                    <td class="center">
+                      <div class="flex items-center justify-center gap-3">
+                        <v-icon color="#74777F">fa-brands fa-facebook</v-icon>
+                        <div>{{ item.platform }}</div>
+                      </div>
+                    </td>
+                    <td class="center text-[#008768]">
+                      {{ item.profit }}
+                    </td>
+                    <td class="center text-[#DE3730]">
+                      {{ item.loss }}
+                    </td>
+                    <td class="center text-[#DE3730]">
+                      {{ item.conclusion }}
+                    </td>
+                  </tr>
+                  <tr v-if="index === 3">
                     <td>
-                      {{ item.primary }}
+                      <div class="flex gap-2 items-center justify-center">
+                        <div class="border rounded-full h-fit p-2 w-fit">
+                          +32
+                        </div>
+                      </div>
                     </td>
-                    <td>
-                      {{ item.secondary1 }}
+                    <td class="center">
+                      <div
+                        class="p-2 text-[12px] leading-4 opacity-title whitespace-nowrap"
+                      >
+                        อื่นๆ อีก 32 รายการ
+                      </div>
                     </td>
-                    <td class="text-table">
-                      {{ item.secondary2 }}
+                    <td class="center text-[#008768]">
+                      {{ item.profit }}
                     </td>
-                    <td class="text-table">
-                      {{ item.choice }}
+                    <td class="center text-[#DE3730]">
+                      {{ item.loss }}
+                    </td>
+                    <td class="center text-[#DE3730]">
+                      {{ item.conclusion }}
                     </td>
                   </tr>
                 </template>
@@ -515,64 +1313,89 @@ const tableItemTotals = ref({});
               </v-data-table>
             </v-card>
           </div>
-        </div>
 
-        <div>
-          <div class="tracking-[-0.05px] leading-[22px] text-[#000]">
-            พนักงานที่ขายได้
-          </div>
-          <div class="card mt-2">
+          <div class="card">
             <div class="flex justify-between items-center">
-              <!-- <div>
+              <div class="flex space-x-2 items-center">
+                <div
+                  class="text-black leading-[22px] tracking-[-0.05px] bg-[#F4F3F7] w-fit px-4 py-2 rounded-lg"
+                >
+                  สถานะการชำระเงิน
+                </div>
+                <v-icon size="15"
+                  >fa-solid fa-arrow-up-right-from-square</v-icon
+                >
+              </div>
+              <div>
                 <v-select
                   label="วันที่แสดง"
                   density="compact"
                   hide-details
                   class="w-[130px] labelSize"
                   :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
+                    '1 เดือน',
+                    '3 เดือน',
+                    '5 เดือน',
+                    '7 เดือน',
+                    '9 เดือน',
+                    '12 เดือน',
                   ]"
                   variant="outlined"
                 ></v-select>
               </div>
-
-              <div
-                class="cursor-pointer leading-[20px] tracking-[-0.03px] text-sm text-[#084F93]"
-              >
-                ดูเพิ่มเติม
-              </div> -->
             </div>
 
-            <div class="relative flex justify-center">
-              <!-- <div class="w-[250px] h-[250px]">
-                <Pie :data="chartData" :options="chartOption" />
-              </div>
-              <div
-                class="absolute top-1/2 right-5"
-                style="
-                  position: absolute;
-                  top: 50%;
-                  transform: translate(-50%, -50%);
-                "
-              >
-                <div
-                  v-for="(item, index) in chartData.datasets[0].backgroundColor"
-                  class="text-[12px] font-bold flex space-x-2 justify-center items-center legendSpace"
-                >
-                  <div
-                    class="w-5 h-5 rounded-full"
-                    :style="{
-                      backgroundColor: item,
-                    }"
-                  ></div>
-                  <div>{{ chartData.labels[index] }}</div>
+            <div class="flex gap-2">
+              <div class="card">
+                <div class="leading-[18px] text-[12px] opacity-subTitle">
+                  รอชำระ
                 </div>
-              </div> -->
+                <div
+                  class="whitespace-nowrap text-[#F79009] leading-[32px] font-bold text-[14บป]"
+                >
+                  15,140,206.00 ฿
+                </div>
+              </div>
+              <div class="card">
+                <div class="leading-[18px] text-[12px] opacity-subTitle">
+                  รอยืนยัน
+                </div>
+                <div
+                  class="whitespace-nowrap text-[#084F93] leading-[32px] font-bold text-[14บป]"
+                >
+                  15,140,206.00 ฿
+                </div>
+              </div>
+              <div class="card">
+                <div class="leading-[18px] text-[12px] opacity-subTitle">
+                  ได้รับเงินแล้ว
+                </div>
+                <div
+                  class="whitespace-nowrap text-[#00AA84] leading-[32px] font-bold text-[14บป]"
+                >
+                  5,140,206.00 ฿
+                </div>
+              </div>
+              <div class="card">
+                <div class="leading-[18px] text-[12px] opacity-subTitle">
+                  ปฏิเสธยอด
+                </div>
+                <div
+                  class="whitespace-nowrap text-[#E4847A] leading-[32px] font-bold text-[14บป]"
+                >
+                  5,140,206.00 ฿
+                </div>
+              </div>
+            </div>
+            <div class="w-full rounded-lg mt-10">
+              <client-only placeholder="Loading..." fallback="Loading Chart...">
+                <apexchart
+                  type="bar"
+                  height="200"
+                  :options="options"
+                  :series="series"
+                ></apexchart>
+              </client-only>
             </div>
           </div>
         </div>
@@ -585,7 +1408,9 @@ const tableItemTotals = ref({});
     <v-fade-transition leave-absolute hide-on-leave>
       <v-card v-if="pageModal === 1" class="rounded-lg min-w-[435px] pt-2">
         <v-card-text class="flex items-center justify-center relative">
-          <div class="w-[256px] h-[100px] bg-emerald-600 mx-4"></div>
+          <div class="w-[256px] h-[100px] mx-4">
+            <img src="@/assets/images/07.svg" />
+          </div>
           <div class="absolute top-2 right-5">
             <v-btn
               @click="fnHandleCancelModal"
@@ -1268,7 +2093,9 @@ const tableItemTotals = ref({});
         <v-card-text
           class="space-y-5 items-center flex justify-center flex-col"
         >
-          <div class="w-[360px] h-[160px] bg-emerald-500"></div>
+          <div class="w-[360px] h-[160px]">
+            <img src="@/assets/images/08.svg" />
+          </div>
 
           <div class="flex space-x-5 flex-row">
             <!-- <font-awesome-icon icon="fa-solid fa-repeat" /> -->
@@ -1314,7 +2141,7 @@ const tableItemTotals = ref({});
 <style scoped>
 .card {
   display: flex;
-  padding: 16px;
+  padding: 8px;
   flex-direction: column;
   gap: 16px;
   align-self: stretch;
@@ -1371,6 +2198,10 @@ const tableItemTotals = ref({});
 <style>
 .labelSize div div div label {
   font-size: 14px;
+}
+
+tbody tr .center {
+  @apply text-[14px] leading-5 tracking-[-0.23%] text-center !pr-10;
 }
 
 .color-icon .v-btn__append {
