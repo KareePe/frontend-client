@@ -69,7 +69,7 @@
                 <v-card-subtitle>ข้อมูลติดต่อสำหรับติดต่อเรื่องทั่วไป</v-card-subtitle>
               </div>
 
-              <v-btn min-width="164">อัพเดท</v-btn>
+              <v-btn min-width="164" @click="dialogContact = true">อัพเดท</v-btn>
             </v-col>
 
             <v-col cols="12" class="p-4 border-t flex justify-between items-center">
@@ -78,18 +78,152 @@
                 <v-card-subtitle>ดำเนินการยืนยันตัวตนเพื่อเปิดใช้งาน Delivery service กับ SalesX</v-card-subtitle>
               </div>
 
-              <v-btn min-width="164">ดำเนินการต่อ</v-btn>
+              <v-btn min-width="164" @click="dialogVerify = true">ดำเนินการต่อ</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
       </v-card>
     </v-container>
   </div>
+
+  <v-dialog
+    v-model="dialogContact"
+    persistent
+    width="1024">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        color="primary"
+        v-bind="props">
+        Open Dialog
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="text-h5">ที่อยู่</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal first name*"
+                required></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal middle name"
+                hint="example of helper text only on focus"></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal last name*"
+                hint="example of persistent helper text"
+                persistent-hint
+                required></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <small>*indicates required field</small>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          color="blue-darken-1"
+          variant="text"
+          @click="dialogContact = false">
+          Close
+        </v-btn>
+        <v-btn
+          color="blue-darken-1"
+          variant="text"
+          @click="dialogContact = false">
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog
+    v-model="dialogVerify"
+    persistent
+    width="1024">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        color="primary"
+        v-bind="props">
+        Open Dialog
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="text-h5">ยืนยันตัวตน</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal first name*"
+                required></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal middle name"
+                hint="example of helper text only on focus"></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="4">
+              <v-text-field
+                label="Legal last name*"
+                hint="example of persistent helper text"
+                persistent-hint
+                required></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <small>*indicates required field</small>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          color="blue-darken-1"
+          variant="text"
+          @click="dialogVerify = false">
+          Close
+        </v-btn>
+        <v-btn
+          color="blue-darken-1"
+          variant="text"
+          @click="dialogVerify = false">
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
 import { ref } from "vue";
 
+const dialogContact = ref(false);
+const dialogVerify = ref(false);
 const navBarNew = ref([
   {
     text: "คอนโซลผู้ดูแล",
