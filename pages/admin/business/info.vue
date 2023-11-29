@@ -89,14 +89,7 @@
   <v-dialog
     v-model="dialogContact"
     persistent
-    width="1024">
-    <template v-slot:activator="{ props }">
-      <v-btn
-        color="primary"
-        v-bind="props">
-        Open Dialog
-      </v-btn>
-    </template>
+    class="max-w-2xl">
     <v-card>
       <v-card-title>
         <span class="text-h5">ที่อยู่</span>
@@ -155,14 +148,7 @@
   <v-dialog
     v-model="dialogVerify"
     persistent
-    width="1024">
-    <template v-slot:activator="{ props }">
-      <v-btn
-        color="primary"
-        v-bind="props">
-        Open Dialog
-      </v-btn>
-    </template>
+    class="max-w-2xl">
     <v-card>
       <v-card-title>
         <span class="text-h5">ยืนยันตัวตน</span>
